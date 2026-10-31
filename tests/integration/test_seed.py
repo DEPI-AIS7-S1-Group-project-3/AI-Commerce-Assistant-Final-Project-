@@ -69,7 +69,8 @@ def test_every_customer_has_exactly_one_default_address(seed):
         customers = s.scalars(select(User.id).where(User.role == "customer")).all()
         for uid in customers:
             n = s.scalar(
-                select(func.count()).select_from(Address)
+                select(func.count())
+                .select_from(Address)
                 .where(Address.user_id == uid, Address.is_default)
             )
             assert n == 1

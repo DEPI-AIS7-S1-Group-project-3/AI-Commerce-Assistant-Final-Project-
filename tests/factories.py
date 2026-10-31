@@ -1,6 +1,6 @@
 import itertools
 import uuid
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from decimal import Decimal
 
 from ai_commerce_marketplace.database.models import (
@@ -104,7 +104,7 @@ def make_order(session, **kw):
         subtotal_egp=Decimal("1000.00"),
         shipping_fee_egp=Decimal("60.00"),
         total_egp=Decimal("1060.00"),
-        expected_delivery_at=datetime.now(timezone.utc) + timedelta(days=2),
+        expected_delivery_at=datetime.now(UTC) + timedelta(days=2),
     )
     return _save(session, Order(**{**data, **kw}))
 

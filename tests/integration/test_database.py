@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from decimal import Decimal
 
 import pytest
@@ -7,16 +7,28 @@ from sqlalchemy import delete, inspect
 from ai_commerce_marketplace.database.models import Product
 from tests import factories as f
 
-NOW = datetime.now(timezone.utc)
+NOW = datetime.now(UTC)
 
 
 # ───────────── الـ schema ─────────────
 def test_all_15_tables_exist(session):
     names = set(inspect(session.connection()).get_table_names())
     expected = {
-        "users", "addresses", "sellers", "categories", "brands", "products",
-        "product_images", "carts", "cart_items", "orders", "order_items",
-        "order_status_history", "returns", "reviews", "policies",
+        "users",
+        "addresses",
+        "sellers",
+        "categories",
+        "brands",
+        "products",
+        "product_images",
+        "carts",
+        "cart_items",
+        "orders",
+        "order_items",
+        "order_status_history",
+        "returns",
+        "reviews",
+        "policies",
     }
     assert expected <= names
 
@@ -52,8 +64,16 @@ def test_valid_product_is_accepted(session):
         {"rating_avg": Decimal("6")},
         {"specs": [1, 2]},
     ],
-    ids=["price_zero", "price_negative", "stock_negative", "old_eq_price",
-         "old_lt_price", "warranty_61", "rating_avg_6", "specs_not_object"],
+    ids=[
+        "price_zero",
+        "price_negative",
+        "stock_negative",
+        "old_eq_price",
+        "old_lt_price",
+        "warranty_61",
+        "rating_avg_6",
+        "specs_not_object",
+    ],
 )
 def test_product_checks_reject(session, rejected, overrides):
     with rejected():
@@ -79,9 +99,16 @@ def test_valid_orders_are_accepted(session):
         {"shipping_fee_egp": Decimal("-1"), "total_egp": Decimal("999")},
         {"status": "delivered", "delivered_at": NOW - timedelta(days=30)},
     ],
-    ids=["total_mismatch", "cancelled_no_date", "delivered_no_date", "bad_status",
-         "date_without_cancelled_status", "address_not_object", "negative_fee",
-         "delivered_before_created"],
+    ids=[
+        "total_mismatch",
+        "cancelled_no_date",
+        "delivered_no_date",
+        "bad_status",
+        "date_without_cancelled_status",
+        "address_not_object",
+        "negative_fee",
+        "delivered_before_created",
+    ],
 )
 def test_order_checks_reject(session, rejected, overrides):
     with rejected():
