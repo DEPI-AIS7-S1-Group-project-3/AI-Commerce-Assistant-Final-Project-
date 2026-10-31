@@ -7,7 +7,13 @@ authors = [
     { name = "Mo Elbadawy", email = "mohamed.asaad.elbadawy@gmail.com" }
 ]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "alembic>=1.20.1",
+    "psycopg[binary]>=3",
+    "pydantic>=2",
+    "pydantic-settings>=2.16.2",
+    "sqlalchemy>=2.0",
+]
 
 [project.scripts]
 ai-commerce-marketplace = "ai_commerce_marketplace:main"
@@ -15,3 +21,8 @@ ai-commerce-marketplace = "ai_commerce_marketplace:main"
 [build-system]
 requires = ["uv_build>=0.12.3,<0.13.0"]
 build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+]
