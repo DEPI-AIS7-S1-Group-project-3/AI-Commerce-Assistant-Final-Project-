@@ -2,7 +2,6 @@ import os
 from contextlib import contextmanager
 from pathlib import Path
 
-# لازم يحصل قبل أي import للتطبيق: الاختبارات تشتغل على DB منفصلة
 TEST_DATABASE_URL = os.environ.get(
     "TEST_DATABASE_URL",
     "postgresql+psycopg://app:app_dev_password@localhost:5432/ai_commerce_test",
@@ -26,7 +25,7 @@ assert make_url(TEST_DATABASE_URL).database.endswith("_test"), (
 )
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="session")
 def migrated_db():
     """يبني الـ schema من الصفر عن طريق الـ migrations (بيختبرها كمان)."""
     cfg = Config(str(ROOT / "alembic.ini"))
