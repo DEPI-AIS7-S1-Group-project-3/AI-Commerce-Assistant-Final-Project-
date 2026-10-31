@@ -15,7 +15,7 @@ An Egyptian electronics marketplace (mobiles, laptops, audio & accessories), bui
 | Database | PostgreSQL 16 (Docker Compose) |
 | ORM / migrations | SQLAlchemy 2.0 (typed, sync) + psycopg 3, Alembic |
 | Validation / config | Pydantic v2, pydantic-settings |
-| Tooling | uv, pytest |
+| Tooling | uv, pytest, ruff, mypy, pre-commit |
 
 ## Getting started
 
@@ -48,13 +48,12 @@ You should see 15 tables plus `alembic_version`.
 
 ### Running the tests
 
-The tests run against a separate database so your development data is never touched.
-Create it once:
-
 ```bash
-docker compose exec db psql -U app -d ai_commerce -c "CREATE DATABASE ai_commerce_test;"
-uv run pytest -v
+make setup   # install dependencies
+make test    # starts the db, creates the test database if needed, runs pytest
 ```
+
+Other useful targets: `make lint`, `make format`, `make seed`, `make migrate`, `make up`, `make down`.
 
 ### Useful migration commands
 

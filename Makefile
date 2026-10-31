@@ -1,12 +1,16 @@
-.PHONY: help setup test lint format typecheck seed migrate db-reset up down
+.PHONY: help setup test test-db lint format typecheck seed migrate db-reset up down
 
 help:
-	@echo Targets: setup test lint format typecheck seed migrate db-reset up down
+	@echo Targets: setup test test-db lint format typecheck seed migrate db-reset up down
 
 setup:
 	uv sync
 
-test:
+test-db:
+	docker compose up -d db
+	-docker compose exec -T db psql -U app -d ai_commerce -c "CREATE DATABASE ai_commerce_test"
+
+test: test-db
 	uv run pytest -q
 
 lint:
