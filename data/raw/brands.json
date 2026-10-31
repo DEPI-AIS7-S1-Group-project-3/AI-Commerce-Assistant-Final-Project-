@@ -1,0 +1,14 @@
+[
+  {"slug": "samsung", "name": "Samsung", "name_ar": "سامسونج"},
+  {"slug": "apple", "name": "Apple", "name_ar": "أبل"},
+  {"slug": "xiaomi", "name": "Xiaomi", "name_ar": "شاومي"},
+  {"slug": "oppo", "name": "Oppo", "name_ar": "أوبو"},
+  {"slug": "realme", "name": "Realme", "name_ar": "ريلمي"},
+  {"slug": "lenovo", "name": "Lenovo", "name_ar": "لينوفو"},
+  {"slug": "hp", "name": "HP", "name_ar": "إتش بي"},
+  {"slug": "dell", "name": "Dell", "name_ar": "ديل"},
+  {"slug": "asus", "name": "Asus", "name_ar": "أسوس"},
+  {"slug": "anker", "name": "Anker", "name_ar": "أنكر"},
+  {"slug": "jbl", "name": "JBL", "name_ar": "جي بي إل"},
+  {"slug": "baseus", "name": "Baseus", "name_ar": "بيسوس"}
+]
