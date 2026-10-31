@@ -3,6 +3,7 @@
 Deterministic and idempotent: running it twice does not duplicate rows.
 Run:  uv run python scripts/seed_database.py
 """
+
 import json
 from pathlib import Path
 

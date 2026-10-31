@@ -21,18 +21,14 @@ class Review(Base):
     __tablename__ = "reviews"
 
     id: Mapped[int] = mapped_column(Identity(always=False), primary_key=True)
-    product_id: Mapped[int] = mapped_column(
-        ForeignKey("products.id", ondelete="CASCADE")
-    )
+    product_id: Mapped[int] = mapped_column(ForeignKey("products.id", ondelete="CASCADE"))
     customer_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
     order_item_id: Mapped[int] = mapped_column(
         ForeignKey("order_items.id", ondelete="CASCADE"), unique=True
     )
     rating: Mapped[int] = mapped_column(SmallInteger)
     body: Mapped[str] = mapped_column(Text, server_default=text("''"))
-    is_verified_purchase: Mapped[bool] = mapped_column(
-        Boolean, server_default=text("true")
-    )
+    is_verified_purchase: Mapped[bool] = mapped_column(Boolean, server_default=text("true"))
     created_at: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True), server_default=func.now()
     )

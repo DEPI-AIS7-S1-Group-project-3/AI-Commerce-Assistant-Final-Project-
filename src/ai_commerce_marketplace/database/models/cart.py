@@ -13,12 +13,8 @@ class Cart(Base):
     __tablename__ = "carts"
 
     id: Mapped[int] = mapped_column(Identity(always=False), primary_key=True)
-    user_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id", ondelete="CASCADE"), unique=True
-    )
-    updated_at: Mapped[datetime] = mapped_column(
-        TZ, server_default=func.now(), onupdate=func.now()
-    )
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), unique=True)
+    updated_at: Mapped[datetime] = mapped_column(TZ, server_default=func.now(), onupdate=func.now())
 
 
 class CartItem(Base):
@@ -26,9 +22,7 @@ class CartItem(Base):
 
     id: Mapped[int] = mapped_column(Identity(always=False), primary_key=True)
     cart_id: Mapped[int] = mapped_column(ForeignKey("carts.id", ondelete="CASCADE"))
-    product_id: Mapped[int] = mapped_column(
-        ForeignKey("products.id", ondelete="CASCADE")
-    )
+    product_id: Mapped[int] = mapped_column(ForeignKey("products.id", ondelete="CASCADE"))
     qty: Mapped[int] = mapped_column(Integer)
     added_at: Mapped[datetime] = mapped_column(TZ, server_default=func.now())
 
