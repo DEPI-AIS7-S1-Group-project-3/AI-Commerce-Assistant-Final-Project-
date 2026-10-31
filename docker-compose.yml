@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres:16
+    container_name: ai_commerce_db
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app_dev_password
+      POSTGRES_DB: ai_commerce
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:
