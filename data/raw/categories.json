@@ -1,0 +1,6 @@
+[
+  {"slug": "electronics", "parent_slug": null, "name_ar": "إلكترونيات", "name_en": "Electronics", "spec_kind": null, "sort_order": 0},
+  {"slug": "mobiles", "parent_slug": "electronics", "name_ar": "موبايلات", "name_en": "Mobiles", "spec_kind": "mobile", "sort_order": 1},
+  {"slug": "laptops", "parent_slug": "electronics", "name_ar": "لابتوبات", "name_en": "Laptops", "spec_kind": "laptop", "sort_order": 2},
+  {"slug": "audio", "parent_slug": "electronics", "name_ar": "سماعات وإكسسوارات", "name_en": "Audio & Accessories", "spec_kind": "audio", "sort_order": 3}
+]

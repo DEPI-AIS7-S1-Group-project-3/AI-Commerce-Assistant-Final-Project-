@@ -1,0 +1,18 @@
+[
+  {"user_email": "customer01@example.com", "label": "المنزل", "recipient_name": "أحمد محمود", "phone": "01012000001", "governorate": "القاهرة", "city": "مدينة نصر", "street_address": "15 شارع تجريبي، الحي السابع", "is_default": true},
+  {"user_email": "customer01@example.com", "label": "العمل", "recipient_name": "أحمد محمود", "phone": "01012000001", "governorate": "القاهرة", "city": "التجمع الخامس", "street_address": "8 شارع تجريبي، القطامية", "is_default": false},
+  {"user_email": "customer02@example.com", "label": "المنزل", "recipient_name": "سارة علي", "phone": "01112000002", "governorate": "الإسكندرية", "city": "سموحة", "street_address": "22 شارع تجريبي", "is_default": true},
+  {"user_email": "customer02@example.com", "label": "العمل", "recipient_name": "سارة علي", "phone": "01112000002", "governorate": "الإسكندرية", "city": "المنتزه", "street_address": "4 شارع تجريبي", "is_default": false},
+  {"user_email": "customer03@example.com", "label": "المنزل", "recipient_name": "محمد حسن", "phone": "01212000003", "governorate": "أسيوط", "city": "أسيوط", "street_address": "9 شارع تجريبي، حي الجمهورية", "is_default": true},
+  {"user_email": "customer04@example.com", "label": "المنزل", "recipient_name": "منى إبراهيم", "phone": "01512000004", "governorate": "الدقهلية", "city": "المنصورة", "street_address": "31 شارع تجريبي، حي الجامعة", "is_default": true},
+  {"user_email": "customer05@example.com", "label": "المنزل", "recipient_name": "خالد عبد الله", "phone": "01012000005", "governorate": "الجيزة", "city": "الدقي", "street_address": "6 شارع تجريبي", "is_default": true},
+  {"user_email": "customer05@example.com", "label": "العمل", "recipient_name": "خالد عبد الله", "phone": "01012000005", "governorate": "الجيزة", "city": "6 أكتوبر", "street_address": "12 شارع تجريبي، الحي الثاني", "is_default": false},
+  {"user_email": "customer06@example.com", "label": "المنزل", "recipient_name": "نورهان سمير", "phone": "01112000006", "governorate": "الغربية", "city": "طنطا", "street_address": "18 شارع تجريبي", "is_default": true},
+  {"user_email": "customer07@example.com", "label": "المنزل", "recipient_name": "عمرو فاروق", "phone": "01212000007", "governorate": "القاهرة", "city": "المعادي", "street_address": "27 شارع تجريبي", "is_default": true},
+  {"user_email": "customer07@example.com", "label": "العمل", "recipient_name": "عمرو فاروق", "phone": "01212000007", "governorate": "القاهرة", "city": "وسط البلد", "street_address": "3 شارع تجريبي", "is_default": false},
+  {"user_email": "customer08@example.com", "label": "المنزل", "recipient_name": "هبة مصطفى", "phone": "01512000008", "governorate": "أسوان", "city": "أسوان", "street_address": "5 شارع تجريبي، الكورنيش", "is_default": true},
+  {"user_email": "customer09@example.com", "label": "المنزل", "recipient_name": "يوسف كمال", "phone": "01012000009", "governorate": "بورسعيد", "city": "بورسعيد", "street_address": "14 شارع تجريبي", "is_default": true},
+  {"user_email": "customer10@example.com", "label": "المنزل", "recipient_name": "دينا أشرف", "phone": "01112000010", "governorate": "الشرقية", "city": "الزقازيق", "street_address": "20 شارع تجريبي", "is_default": true},
+  {"user_email": "customer11@example.com", "label": "المنزل", "recipient_name": "مصطفى عادل", "phone": "01212000011", "governorate": "الإسكندرية", "city": "ميامي", "street_address": "11 شارع تجريبي", "is_default": true},
+  {"user_email": "customer12@example.com", "label": "المنزل", "recipient_name": "ريم طارق", "phone": "01512000012", "governorate": "المنيا", "city": "المنيا", "street_address": "7 شارع تجريبي", "is_default": true}
+]

@@ -1,0 +1,6 @@
+[
+  {"user_email": "seller1@example.com", "store_name": "تك ستور مصر", "description_ar": "متجر إلكترونيات متكامل: موبايلات ولابتوبات وإكسسوارات بضمان معتمد.", "rating": 4.2},
+  {"user_email": "seller2@example.com", "store_name": "نيل إلكترونيكس", "description_ar": "أحدث الموبايلات والسماعات بأسعار منافسة وشحن سريع.", "rating": 4.6},
+  {"user_email": "seller3@example.com", "store_name": "دلتا ديجيتال", "description_ar": "لابتوبات للدراسة والعمل والألعاب مع خدمة ما بعد البيع.", "rating": 3.9},
+  {"user_email": "seller4@example.com", "store_name": "ماستر جادجت", "description_ar": "إكسسوارات وسماعات وشواحن أصلية من أفضل الماركات.", "rating": 4.4}
+]

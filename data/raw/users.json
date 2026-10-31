@@ -1,0 +1,19 @@
+[
+  {"role": "seller", "full_name": "محمد أسعد", "email": "seller1@example.com", "phone": "01003839078"},
+  {"role": "seller", "full_name": "ليلى منصور", "email": "seller2@example.com", "phone": "01113000002"},
+  {"role": "seller", "full_name": "طارق الجمال", "email": "seller3@example.com", "phone": "01213000003"},
+  {"role": "seller", "full_name": "هالة فؤاد", "email": "seller4@example.com", "phone": "01513000004"},
+
+  {"role": "customer", "full_name": "أحمد محمود", "email": "customer01@example.com", "phone": "01012000001"},
+  {"role": "customer", "full_name": "سارة علي", "email": "customer02@example.com", "phone": "01112000002"},
+  {"role": "customer", "full_name": "محمد حسن", "email": "customer03@example.com", "phone": "01212000003"},
+  {"role": "customer", "full_name": "منى إبراهيم", "email": "customer04@example.com", "phone": "01512000004"},
+  {"role": "customer", "full_name": "خالد عبد الله", "email": "customer05@example.com", "phone": "01012000005"},
+  {"role": "customer", "full_name": "نورهان سمير", "email": "customer06@example.com", "phone": "01112000006"},
+  {"role": "customer", "full_name": "عمرو فاروق", "email": "customer07@example.com", "phone": "01212000007"},
+  {"role": "customer", "full_name": "هبة مصطفى", "email": "customer08@example.com", "phone": "01512000008"},
+  {"role": "customer", "full_name": "يوسف كمال", "email": "customer09@example.com", "phone": "01012000009"},
+  {"role": "customer", "full_name": "دينا أشرف", "email": "customer10@example.com", "phone": "01112000010"},
+  {"role": "customer", "full_name": "مصطفى عادل", "email": "customer11@example.com", "phone": "01212000011"},
+  {"role": "customer", "full_name": "ريم طارق", "email": "customer12@example.com", "phone": "01512000012"}
+]
