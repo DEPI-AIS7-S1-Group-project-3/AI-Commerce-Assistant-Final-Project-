@@ -2,12 +2,13 @@ import uuid
 from typing import Any
 
 from fastapi import FastAPI, Request
+from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from ai_commerce_marketplace.api.routes import health
+from ai_commerce_marketplace.api.routes import auth, health
 from ai_commerce_marketplace.core.config import settings
 from ai_commerce_marketplace.core.exceptions import AppError
 
@@ -63,9 +64,14 @@ def create_app() -> FastAPI:
 
     @app.exception_handler(RequestValidationError)
     async def validation_handler(request: Request, exc: RequestValidationError):
-        return _error(request, 422, "validation_error", "Invalid data", exc.errors())
+        # ctx may hold the raw ValueError, which is not JSON serializable.
+        details = [
+            {"loc": list(e["loc"]), "msg": e["msg"], "type": e["type"]} for e in exc.errors()
+        ]
+        return _error(request, 422, "validation_error", "Invalid data", jsonable_encoder(details))
 
     app.include_router(health.router)
+    app.include_router(auth.router)
     return app
 
 
