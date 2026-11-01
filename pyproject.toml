@@ -12,8 +12,9 @@ dependencies = [
     "argon2-cffi>=25.1.0",
     "fastapi>=0.162.0",
     "psycopg[binary]>=3",
-    "pydantic>=2",
+    "pydantic[email]>=2",
     "pydantic-settings>=2.16.2",
+    "pyjwt>=2.15.1",
     "sqlalchemy>=2.0",
     "uvicorn[standard]>=0.54.0",
 ]
@@ -45,7 +46,12 @@ extend-exclude = ["migrations/versions"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
-
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = [
+    "fastapi.Depends",
+    "fastapi.security.HTTPBearer",
+    "ai_commerce_marketplace.api.dependencies.require_role",
+]
 [tool.mypy]
 python_version = "3.12"
 mypy_path = "src"

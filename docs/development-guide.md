@@ -30,7 +30,7 @@ Settings are read from environment variables or `.env` (see `.env.example`):
 | Variable | Purpose | Default |
 |---|---|---|
 | `DATABASE_URL` | PostgreSQL connection string | required |
-| `JWT_SECRET` | signing key for auth tokens | `dev-only-change-me` (development only) |
+| `JWT_SECRET` | signing key for auth tokens | `dev-only-change-me-not-for-production-use` (development only) |
 | `CORS_ORIGINS` | allowed frontend origins (JSON list) | `["http://localhost:5173"]` |
 | `ENV` | `development` or `production` | `development` |
 
