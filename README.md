@@ -15,7 +15,9 @@ An Egyptian electronics marketplace (mobiles, laptops, audio & accessories), bui
 | Database | PostgreSQL 16 (Docker Compose) |
 | ORM / migrations | SQLAlchemy 2.0 (typed, sync) + psycopg 3, Alembic |
 | Validation / config | Pydantic v2, pydantic-settings |
-| Tooling | uv, pytest, ruff, mypy, pre-commit |
+| API | FastAPI, Uvicorn |
+| Auth | JWT (PyJWT), argon2 password hashing |
+| Tooling | uv, pytest, ruff, mypy, pre-commit, GitHub Actions |
 
 ## Getting started
 
@@ -24,6 +26,7 @@ An Egyptian electronics marketplace (mobiles, laptops, audio & accessories), bui
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) (running)
 - [uv](https://docs.astral.sh/uv/) (`pip install uv`)
 - Git
+- `make` (Windows: `winget install ezwinports.make`)
 
 ### Setup
 
@@ -31,11 +34,12 @@ An Egyptian electronics marketplace (mobiles, laptops, audio & accessories), bui
 git clone https://github.com/DEPI-AIS7-S1-Group-project-3/AI-Commerce-Assistant-Final-Project-.git
 cd AI-Commerce-Assistant-Final-Project-
 
-uv sync                          # install dependencies
 cp .env.example .env             # Windows PowerShell: Copy-Item .env.example .env
-
-docker compose up -d db          # start PostgreSQL 16
-uv run alembic upgrade head      # create all tables
+make setup                       # install dependencies
+uv run pre-commit install        # one time per machine
+make up                          # start PostgreSQL 16
+make migrate                     # create all tables
+make seed                        # load demo data
 ```
 
 Check that the tables exist:
@@ -49,11 +53,10 @@ You should see 15 tables plus `alembic_version`.
 ### Running the tests
 
 ```bash
-make setup   # install dependencies
 make test    # starts the db, creates the test database if needed, runs pytest
 ```
 
-Other useful targets: `make lint`, `make format`, `make seed`, `make migrate`, `make up`, `make down`.
+The tests run against a separate database (`ai_commerce_test`) so your development data is never touched.
 
 ### Useful migration commands
 
@@ -64,17 +67,71 @@ uv run alembic revision --autogenerate -m "message"  # new migration after chang
 uv run alembic check                                 # models and DB must match
 ```
 
+## Running the API
+
+```bash
+uv run uvicorn ai_commerce_marketplace.api.main:app --reload
+```
+
+Interactive docs (OpenAPI): http://localhost:8000/docs
+Full endpoint reference: [docs/api-contracts.md](docs/api-contracts.md)
+
+## Backend core (M1)
+
+The API is a thin layer over services:
+
+```
+routes  ->  services  ->  repositories / models
+```
+
+- **Routes** (`api/routes/`): HTTP only, no business logic.
+- **Services** (`services/`): all business rules. The AI agents will call these same services.
+- Identity (`customer_id`) always comes from the JWT, never from the request body.
+- Every error has the same shape `{code, message, details}` and every response carries an `X-Request-ID` header.
+
+| Area | Endpoints |
+|---|---|
+| Auth | `POST /auth/register`, `POST /auth/login`, `GET /auth/me` |
+| Addresses | CRUD + set default, one default per customer |
+| Cart | add / update / remove / clear, stock checked, subtotal computed on the server |
+| Checkout | `POST /orders`: one transaction, row locking, stock deduction, one order per seller |
+| Orders | list, detail with status timeline, cancel, return |
+
+Key design decisions:
+
+- **Checkout is atomic.** Product rows are locked (`SELECT ... FOR UPDATE`, ordered by id to avoid deadlocks); any failure rolls everything back. A real concurrency test proves two customers racing for the last unit cannot oversell.
+- **Prices and addresses are snapshotted** on the order at purchase time.
+- **One place changes order status.** `services/order_state.py` validates the transition and writes `order_status_history` (the future audit trail).
+- **Eligibility rules are pure functions** (`services/order_rules.py`): cancel only before shipping; return within 14 days of delivery (day 14 accepted, day 15 rejected). The Order Actions Agent will call these instead of deciding by itself.
+- **Role is read from the database,** not trusted from the token.
+
+Shipping: 60 EGP per order, free from 5000 EGP. Payment: `cod` is pending, `wallet`/`card` are simulated as paid.
+
+## Quality
+
+```bash
+make lint     # ruff check, ruff format --check, mypy
+make test     # starts the db, creates the test database if needed, runs pytest
+make format   # auto-fix
+```
+
+CI (`.github/workflows/backend.yml`) runs the same checks on every pull request against a PostgreSQL service container.
+See [docs/development-guide.md](docs/development-guide.md) for setup, configuration and resetting data.
+
 ## Project structure
 
 ```
 src/ai_commerce_marketplace/
-  core/          config.py, enums.py
-  database/
-    base.py      declarative base + naming convention
-    session.py   engine and session factory
-    models/      user, seller, catalog, cart, order, review, policy
+  api/           main.py (app factory), dependencies.py, routes/
+  core/          config.py, security.py, exceptions.py, enums.py
+  database/      base.py, session.py, models/
+  schemas/       request/response models (auth, address, cart, order, specs)
+  services/      auth, addresses, cart, checkout, orders, order_state, order_rules, order_actions
+  nlp/           Arabic text normalization for search
 migrations/      Alembic environment and versions
-tests/           pytest suite (runs on a real PostgreSQL database)
+tests/           pytest suite (real PostgreSQL)
+docs/            architecture.md, api-contracts.md, development-guide.md
+.github/         CI workflow (ruff, mypy, pytest)
 docker-compose.yml
 ```
 
@@ -107,3 +164,4 @@ Key design decisions:
 - Branch names: `feat/...`, `fix/...`, `test/...`, `docs/...`, `chore/...`.
 - Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/), for example `feat(db): add product model`.
 - After a migration is merged, never edit it. Add a new migration instead.
+- Run `make lint` and `make test` before opening a PR; CI runs the same checks.
