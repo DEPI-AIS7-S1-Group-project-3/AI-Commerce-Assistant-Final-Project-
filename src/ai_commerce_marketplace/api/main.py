@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from ai_commerce_marketplace.api.routes import auth, health
+from ai_commerce_marketplace.api.routes import addresses, auth, health
 from ai_commerce_marketplace.core.config import settings
 from ai_commerce_marketplace.core.exceptions import AppError
 
@@ -72,6 +72,7 @@ def create_app() -> FastAPI:
 
     app.include_router(health.router)
     app.include_router(auth.router)
+    app.include_router(addresses.router)
     return app
 
 
