@@ -2,9 +2,9 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Any
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
-from ai_commerce_marketplace.core.enums import PaymentMethod
+from ai_commerce_marketplace.core.enums import PaymentMethod, ReturnReason
 
 
 class CheckoutIn(BaseModel):
@@ -49,3 +49,16 @@ class TimelineEntry(BaseModel):
 
 class OrderDetailOut(OrderOut):
     timeline: list[TimelineEntry]
+
+
+class ReturnIn(BaseModel):
+    reason_code: ReturnReason
+    reason_text: str | None = Field(default=None, max_length=500)
+
+
+class ReturnOut(BaseModel):
+    id: int
+    order_item_id: int
+    qty: int
+    reason_code: str
+    status: str
