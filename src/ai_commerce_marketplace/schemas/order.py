@@ -38,3 +38,14 @@ class OrderOut(BaseModel):
 class CheckoutOut(BaseModel):
     checkout_group_id: str
     orders: list[OrderOut]
+
+
+class TimelineEntry(BaseModel):
+    from_status: str | None
+    to_status: str
+    actor_type: str
+    created_at: datetime
+
+
+class OrderDetailOut(OrderOut):
+    timeline: list[TimelineEntry]
