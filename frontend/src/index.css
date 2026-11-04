@@ -1,0 +1,80 @@
+@import "@fontsource/lalezar/arabic-400.css";
+@import "@fontsource/lalezar/latin-400.css";
+@import "@fontsource/readex-pro/arabic-400.css";
+@import "@fontsource/readex-pro/arabic-500.css";
+@import "@fontsource/readex-pro/arabic-600.css";
+@import "@fontsource/readex-pro/latin-400.css";
+@import "@fontsource/readex-pro/latin-500.css";
+@import "@fontsource/readex-pro/latin-600.css";
+@import "@fontsource/ibm-plex-mono/latin-400.css";
+@import "@fontsource/ibm-plex-mono/latin-500.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-display: "Lalezar";
+    --font-body: "Readex Pro";
+  }
+
+  html {
+    font-size: 18px;
+    background: #030407;
+    color: #f4f6ee;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Arabic letters join: never add tracking. */
+  body {
+    @apply font-body bg-paper text-ink;
+    letter-spacing: 0;
+    line-height: 1.75;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-normal;
+    letter-spacing: 0;
+    line-height: 1.3;
+  }
+
+  button {
+    font: inherit;
+  }
+
+  :focus-visible {
+    outline: 3px solid #d4ff24;
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-ctl border-2 border-line px-5 py-3 text-sm font-semibold transition-all disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn border-neon bg-neon text-paper shadow-pop hover:-translate-y-0.5 hover:bg-neon-deep hover:border-neon-deep;
+  }
+  .btn-dark {
+    @apply btn border-green bg-green text-white hover:bg-green-deep hover:border-green-deep;
+  }
+  .btn-ghost {
+    @apply btn bg-transparent text-ink hover:border-neon hover:text-neon;
+  }
+  .input {
+    @apply w-full rounded-ctl border-2 border-line bg-sand px-3 py-3 text-sm text-ink placeholder:text-ink-soft/70 focus:border-neon;
+  }
+  .chip {
+    @apply inline-flex items-center rounded-ctl border border-line bg-sand px-2 py-0.5 text-xs font-medium text-ink-soft;
+  }
+  .chip-neon {
+    @apply inline-flex items-center rounded-ctl border border-neon bg-neon px-2 py-0.5 text-xs font-semibold text-paper;
+  }
+  .card {
+    @apply rounded-card border-2 border-line bg-surface;
+  }
+}
