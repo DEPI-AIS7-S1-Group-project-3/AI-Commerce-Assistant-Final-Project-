@@ -6,6 +6,8 @@ import AssistantPage from "@/pages/AssistantPage";
 import NotFoundPage from "@/pages/NotFoundPage";
 import LoginPage from "@/pages/LoginPage";
 import RegisterPage from "@/pages/RegisterPage";
+import CartPage from "@/pages/CartPage";
+
 
 export default function App() {
   return (
@@ -18,6 +20,7 @@ export default function App() {
         <Route path="*" element={<NotFoundPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
+        <Route path="cart" element={<CartPage />} />
       </Route>
     </Routes>
   );

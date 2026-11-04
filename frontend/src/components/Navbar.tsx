@@ -5,6 +5,7 @@ import { useCart } from "@/hooks/useCart";
 import { useI18n } from "@/lib/i18n";
 import Logo from "./Logo";
 import LanguageSwitch from "./LanguageSwitch";
+import { useAuth } from "@/hooks/useAuth";
 
 const linkClass = ({ isActive }: { isActive: boolean }) =>
   `text-sm font-medium transition-colors ${isActive ? "text-neon" : "text-ink-soft hover:text-ink"}`;

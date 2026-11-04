@@ -1,4 +1,4 @@
-# AGENTS.md — Dalil frontend (short rules, read with HANDOFF.md)
+# AGENTS.md — Dokkan Tech frontend (short rules, read with HANDOFF.md)
 
 Full context, decisions, backend contract and progress log: **HANDOFF.md** (read it first).
 
