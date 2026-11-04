@@ -12,6 +12,7 @@ const linkClass = ({ isActive }: { isActive: boolean }) =>
 
 export default function Navbar() {
   const { count } = useCart();
+  const { user, logout } = useAuth();
   const { t } = useI18n();
   const navigate = useNavigate();
   const [term, setTerm] = useState("");
@@ -60,9 +61,24 @@ export default function Navbar() {
               </span>
             )}
           </Link>
-          <Link to="/login" className="btn-dark hidden !py-2 sm:inline-flex">
-            {t("nav.login")}
-          </Link>
+          {user ? (
+            <div className="hidden items-center gap-2 sm:inline-flex">
+              <span className="max-w-[120px] truncate text-sm font-medium text-ink">
+                {user.full_name.split(" ")[0]}
+              </span>
+              <button
+                type="button"
+                onClick={logout}
+                className="btn-ghost !px-2.5 !py-1.5 text-xs text-ink-soft hover:text-danger"
+              >
+                {t("auth.logout")}
+              </button>
+            </div>
+          ) : (
+            <Link to="/login" className="btn-dark hidden !py-2 sm:inline-flex">
+              {t("nav.login")}
+            </Link>
+          )}
         </div>
       </div>
     </header>
