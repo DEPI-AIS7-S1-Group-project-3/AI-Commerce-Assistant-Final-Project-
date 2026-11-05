@@ -1,0 +1,812 @@
+[
+ {
+  "order_id": 10006,
+  "product_sku": "LAP-LEN-L3-8-256",
+  "customer_email": "customer01@example.com",
+  "rating": 5,
+  "body": "تعامل محترم من البائع والمنتج شغال تمام. خفيف وسهل أشيله معايا للجامعة والشغل.",
+  "is_verified_purchase": true,
+  "created_at": "2026-08-18T13:58:17+00:00"
+ },
+ {
+  "order_id": 10006,
+  "product_sku": "LAP-ASU-A3-8-256",
+  "customer_email": "customer01@example.com",
+  "rating": 5,
+  "body": "تعامل محترم من البائع والمنتج شغال تمام. خفيف وسهل أشيله معايا للجامعة والشغل.",
+  "is_verified_purchase": true,
+  "created_at": "2026-08-18T21:39:55+00:00"
+ },
+ {
+  "order_id": 10009,
+  "product_sku": "AUD-ANK-C20",
+  "customer_email": "customer02@example.com",
+  "rating": 4,
+  "body": "اشتريته من هنا وكان أحسن قرار، الجودة تحفة. شغال بكفاءة مع الموبايل واللابتوب.",
+  "is_verified_purchase": true,
+  "created_at": "2026-08-20T01:20:41+00:00"
+ },
+ {
+  "order_id": 10008,
+  "product_sku": "AUD-ANK-C20",
+  "customer_email": "customer08@example.com",
+  "rating": 5,
+  "body": "المنتج زي الوصف بالظبط، وأنا راضي جدًا.",
+  "is_verified_purchase": true,
+  "created_at": "2026-08-20T01:29:00+00:00"
+ },
+ {
+  "order_id": 10007,
+  "product_sku": "AUD-JBL-S2",
+  "customer_email": "customer03@example.com",
+  "rating": 3,
+  "body": "تجربة معقولة، ومحتاج وقت أكتر أحكم عليه.",
+  "is_verified_purchase": true,
+  "created_at": "2026-08-21T11:16:30+00:00"
+ },
+ {
+  "order_id": 10010,
+  "product_sku": "AUD-ANK-C20",
+  "customer_email": "customer08@example.com",
+  "rating": 5,
+  "body": "المنتج ممتاز وفوق التوقعات، والتوصيل كان سريع.",
+  "is_verified_purchase": true,
+  "created_at": "2026-08-23T02:11:33+00:00"
+ },
+ {
+  "order_id": 10009,
+  "product_sku": "MOB-XIA-D14Plus-8-256",
+  "customer_email": "customer02@example.com",
+  "rating": 4,
+  "body": "تعامل محترم من البائع والمنتج شغال تمام. الكاميرا حلوة والبطارية بتكمّل اليوم كله.",
+  "is_verified_purchase": true,
+  "created_at": "2026-08-23T05:29:21+00:00"
+ },
+ {
+  "order_id": 10012,
+  "product_sku": "LAP-ASU-AU7-16-512",
+  "customer_email": "customer12@example.com",
+  "rating": 3,
+  "body": "رجّعته لأن فيه عيب واضح.",
+  "is_verified_purchase": true,
+  "created_at": "2026-08-23T23:15:14+00:00"
+ },
+ {
+  "order_id": 10011,
+  "product_sku": "MOB-XIA-R13-3-32",
+  "customer_email": "customer08@example.com",
+  "rating": 4,
+  "body": "وصلني في ميعاده والمنتج مقفول وأصلي.",
+  "is_verified_purchase": true,
+  "created_at": "2026-08-25T01:40:25+00:00"
+ },
+ {
+  "order_id": 10014,
+  "product_sku": "MOB-APP-D15Pro-8-256",
+  "customer_email": "customer01@example.com",
+  "rating": 2,
+  "body": "للأسف جالي بمشكلة وطلبت إرجاع.",
+  "is_verified_purchase": true,
+  "created_at": "2026-08-27T02:52:14+00:00"
+ },
+ {
+  "order_id": 10016,
+  "product_sku": "MOB-XIA-R13-3-32",
+  "customer_email": "customer08@example.com",
+  "rating": 5,
+  "body": "المنتج زي الوصف بالظبط، وأنا راضي جدًا.",
+  "is_verified_purchase": true,
+  "created_at": "2026-08-27T13:42:36+00:00"
+ },
+ {
+  "order_id": 10013,
+  "product_sku": "MOB-XIA-R13-3-32",
+  "customer_email": "customer04@example.com",
+  "rating": 4,
+  "body": "قيمة حقيقية مقابل السعر، هشتري منهم تاني.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-02T00:04:42+00:00"
+ },
+ {
+  "order_id": 10020,
+  "product_sku": "LAP-DEL-DL5-16-512",
+  "customer_email": "customer11@example.com",
+  "rating": 4,
+  "body": "سعره حلو بالنسبة للمواصفات، وأنصح بيه. خفيف وسهل أشيله معايا للجامعة والشغل.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-02T08:37:24+00:00"
+ },
+ {
+  "order_id": 10019,
+  "product_sku": "AUD-JBL-S2",
+  "customer_email": "customer02@example.com",
+  "rating": 5,
+  "body": "المنتج زي الوصف بالظبط، وأنا راضي جدًا. الصوت نقي والباس واضح، والبلوتوث بيثبت من أول مرة.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-03T20:09:54+00:00"
+ },
+ {
+  "order_id": 10020,
+  "product_sku": "AUD-ANK-C20",
+  "customer_email": "customer11@example.com",
+  "rating": 5,
+  "body": "المنتج زي الوصف بالظبط، وأنا راضي جدًا. شغال بكفاءة مع الموبايل واللابتوب.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-04T13:14:03+00:00"
+ },
+ {
+  "order_id": 10021,
+  "product_sku": "LAP-HP-H3-8-256",
+  "customer_email": "customer02@example.com",
+  "rating": 5,
+  "body": "المنتج زي الوصف بالظبط، وأنا راضي جدًا. خفيف وسهل أشيله معايا للجامعة والشغل.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-05T13:16:09+00:00"
+ },
+ {
+  "order_id": 10024,
+  "product_sku": "MOB-OPP-A60-6-128",
+  "customer_email": "customer05@example.com",
+  "rating": 2,
+  "body": "المنتج مش زي ما توقعت وللأسف مش هشتريه تاني.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-05T13:25:36+00:00"
+ },
+ {
+  "order_id": 10026,
+  "product_sku": "AUD-JBL-E5",
+  "customer_email": "customer11@example.com",
+  "rating": 4,
+  "body": "سعره حلو بالنسبة للمواصفات، وأنصح بيه.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-05T23:47:18+00:00"
+ },
+ {
+  "order_id": 10017,
+  "product_sku": "AUD-ANK-S3",
+  "customer_email": "customer12@example.com",
+  "rating": 4,
+  "body": "اشتريته من هنا وكان أحسن قرار، الجودة تحفة. مريحة جدًا حتى مع الاستخدام الطويل.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-06T06:53:33+00:00"
+ },
+ {
+  "order_id": 10017,
+  "product_sku": "MOB-REA-N6-8-256",
+  "customer_email": "customer12@example.com",
+  "rating": 4,
+  "body": "قيمة حقيقية مقابل السعر، هشتري منهم تاني. الموبايل خفيف وسريع، والتخزين كفاية جدًا.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-07T16:13:56+00:00"
+ },
+ {
+  "order_id": 10018,
+  "product_sku": "AUD-BAS-B9",
+  "customer_email": "customer09@example.com",
+  "rating": 5,
+  "body": "اشتريته من هنا وكان أحسن قرار، الجودة تحفة. جودة الصوت ممتازة بالنسبة للسعر.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-08T03:31:22+00:00"
+ },
+ {
+  "order_id": 10028,
+  "product_sku": "AUD-JBL-S9",
+  "customer_email": "customer11@example.com",
+  "rating": 4,
+  "body": "قيمة حقيقية مقابل السعر، هشتري منهم تاني. الصوت عالي وواضح والتوصيل ثابت.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-08T07:27:29+00:00"
+ },
+ {
+  "order_id": 10028,
+  "product_sku": "LAP-ASU-AG7-16-1024",
+  "customer_email": "customer11@example.com",
+  "rating": 5,
+  "body": "تعامل محترم من البائع والمنتج شغال تمام.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-08T19:33:34+00:00"
+ },
+ {
+  "order_id": 10025,
+  "product_sku": "LAP-HP-H5-16-512",
+  "customer_email": "customer11@example.com",
+  "rating": 5,
+  "body": "أداء ممتاز ومفيش أي ملاحظات تُذكر. البطارية بتعدي ساعات كويسة والأداء ثابت.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-09T04:04:46+00:00"
+ },
+ {
+  "order_id": 10029,
+  "product_sku": "AUD-JBL-S9",
+  "customer_email": "customer02@example.com",
+  "rating": 3,
+  "body": "قيمة حقيقية مقابل السعر، هشتري منهم تاني. الصوت عالي وواضح والتوصيل ثابت. الشحن اتأخر عن الميعاد المتوقع.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-09T08:01:34+00:00"
+ },
+ {
+  "order_id": 10031,
+  "product_sku": "LAP-DEL-DL7-16-1024",
+  "customer_email": "customer12@example.com",
+  "rating": 4,
+  "body": "المنتج زي الوصف بالظبط، وأنا راضي جدًا. البطارية بتعدي ساعات كويسة والأداء ثابت.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-11T08:40:17+00:00"
+ },
+ {
+  "order_id": 10032,
+  "product_sku": "MOB-SAM-D140-4-128",
+  "customer_email": "customer09@example.com",
+  "rating": 5,
+  "body": "سعره حلو بالنسبة للمواصفات، وأنصح بيه. الموبايل خفيف وسريع، والتخزين كفاية جدًا.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-11T14:51:40+00:00"
+ },
+ {
+  "order_id": 10032,
+  "product_sku": "AUD-ANK-C20",
+  "customer_email": "customer09@example.com",
+  "rating": 5,
+  "body": "قيمة حقيقية مقابل السعر، هشتري منهم تاني. بيشحن بسرعة وما بيسخنش، والمنتج متين.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-12T22:05:30+00:00"
+ },
+ {
+  "order_id": 10030,
+  "product_sku": "AUD-JBL-S2",
+  "customer_email": "customer01@example.com",
+  "rating": 5,
+  "body": "جربته أسبوع والحمد لله مفيش أي مشكلة. الصوت نقي والباس واضح، والبلوتوث بيثبت من أول مرة.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-14T06:31:00+00:00"
+ },
+ {
+  "order_id": 10034,
+  "product_sku": "MOB-XIA-R13-3-32",
+  "customer_email": "customer02@example.com",
+  "rating": 5,
+  "body": "جربته أسبوع والحمد لله مفيش أي مشكلة. الشحن سريع والبطارية بتعدي اليوم بسهولة.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-14T22:03:23+00:00"
+ },
+ {
+  "order_id": 10038,
+  "product_sku": "MOB-APP-D12-4-128",
+  "customer_email": "customer05@example.com",
+  "rating": 4,
+  "body": "تعامل محترم من البائع والمنتج شغال تمام. الشحن سريع والبطارية بتعدي اليوم بسهولة.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-16T05:01:55+00:00"
+ },
+ {
+  "order_id": 10036,
+  "product_sku": "AUD-ANK-U1",
+  "customer_email": "customer01@example.com",
+  "rating": 4,
+  "body": "اشتريته من هنا وكان أحسن قرار، الجودة تحفة. الشحن بيشتغل تمام والتشطيب كويس.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-16T07:27:48+00:00"
+ },
+ {
+  "order_id": 10037,
+  "product_sku": "LAP-DEL-DX9-32-1024",
+  "customer_email": "customer02@example.com",
+  "rating": 3,
+  "body": "جربته أسبوع والحمد لله مفيش أي مشكلة. اللابتوب سريع في الشغل والمذاكرة والبرامج بتفتح بسرعة. الصندوق وصل مبعوج من برّه، ولحسن الحظ المنتج سليم.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-20T05:59:18+00:00"
+ },
+ {
+  "order_id": 10040,
+  "product_sku": "AUD-BAS-B9",
+  "customer_email": "customer07@example.com",
+  "rating": 4,
+  "body": "سعره حلو بالنسبة للمواصفات، وأنصح بيه. الصوت نقي والباس واضح، والبلوتوث بيثبت من أول مرة.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-20T19:24:42+00:00"
+ },
+ {
+  "order_id": 10037,
+  "product_sku": "LAP-HP-H5-16-512",
+  "customer_email": "customer02@example.com",
+  "rating": 4,
+  "body": "التغليف كان ممتاز والمنتج وصل سليم. خفيف وسهل أشيله معايا للجامعة والشغل.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-21T20:57:39+00:00"
+ },
+ {
+  "order_id": 10040,
+  "product_sku": "AUD-ANK-P10",
+  "customer_email": "customer07@example.com",
+  "rating": 5,
+  "body": "المنتج ممتاز وفوق التوقعات، والتوصيل كان سريع. بيشحن بسرعة وما بيسخنش، والمنتج متين.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-23T05:54:21+00:00"
+ },
+ {
+  "order_id": 10035,
+  "product_sku": "AUD-ANK-C65",
+  "customer_email": "customer03@example.com",
+  "rating": 4,
+  "body": "جربته أسبوع والحمد لله مفيش أي مشكلة. شغال بكفاءة مع الموبايل واللابتوب.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-23T07:09:46+00:00"
+ },
+ {
+  "order_id": 10045,
+  "product_sku": "AUD-ANK-C65",
+  "customer_email": "customer11@example.com",
+  "rating": 5,
+  "body": "سعره حلو بالنسبة للمواصفات، وأنصح بيه.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-26T03:21:05+00:00"
+ },
+ {
+  "order_id": 10042,
+  "product_sku": "AUD-JBL-H4",
+  "customer_email": "customer12@example.com",
+  "rating": 4,
+  "body": "سعره حلو بالنسبة للمواصفات، وأنصح بيه. مريحة جدًا حتى مع الاستخدام الطويل.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-26T10:35:04+00:00"
+ },
+ {
+  "order_id": 10039,
+  "product_sku": "MOB-REA-N6-8-256",
+  "customer_email": "customer12@example.com",
+  "rating": 4,
+  "body": "اشتريته من هنا وكان أحسن قرار، الجودة تحفة.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-26T19:02:41+00:00"
+ },
+ {
+  "order_id": 10039,
+  "product_sku": "AUD-ANK-U1",
+  "customer_email": "customer12@example.com",
+  "rating": 3,
+  "body": "شغال تمام، بس التوصيل اتأخر يوم عن الميعاد. الطلب وصل متأخر عن الميعاد.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-27T07:04:03+00:00"
+ },
+ {
+  "order_id": 10041,
+  "product_sku": "AUD-BAS-B9",
+  "customer_email": "customer12@example.com",
+  "rating": 4,
+  "body": "سعره حلو بالنسبة للمواصفات، وأنصح بيه. مريحة جدًا حتى مع الاستخدام الطويل.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-28T05:34:55+00:00"
+ },
+ {
+  "order_id": 10043,
+  "product_sku": "AUD-ANK-C20",
+  "customer_email": "customer06@example.com",
+  "rating": 3,
+  "body": "المنتج مش مطابق للوصف فاضطريت أرجعه.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-29T01:40:13+00:00"
+ },
+ {
+  "order_id": 10044,
+  "product_sku": "LAP-DEL-DL7-16-1024",
+  "customer_email": "customer07@example.com",
+  "rating": 3,
+  "body": "للأسف جالي بمشكلة وطلبت إرجاع.",
+  "is_verified_purchase": true,
+  "created_at": "2026-09-29T02:25:16+00:00"
+ },
+ {
+  "order_id": 10048,
+  "product_sku": "LAP-DEL-DX9-32-1024",
+  "customer_email": "customer07@example.com",
+  "rating": 5,
+  "body": "وصلني في ميعاده والمنتج مقفول وأصلي. البطارية بتعدي ساعات كويسة والأداء ثابت.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-02T20:03:26+00:00"
+ },
+ {
+  "order_id": 10046,
+  "product_sku": "LAP-HP-H5-16-512",
+  "customer_email": "customer06@example.com",
+  "rating": 5,
+  "body": "وصلني في ميعاده والمنتج مقفول وأصلي.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-04T04:04:40+00:00"
+ },
+ {
+  "order_id": 10050,
+  "product_sku": "LAP-HP-H3-8-256",
+  "customer_email": "customer07@example.com",
+  "rating": 5,
+  "body": "سعره حلو بالنسبة للمواصفات، وأنصح بيه. خفيف وسهل أشيله معايا للجامعة والشغل.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-05T11:33:26+00:00"
+ },
+ {
+  "order_id": 10049,
+  "product_sku": "MOB-OPP-A60-6-128",
+  "customer_email": "customer07@example.com",
+  "rating": 3,
+  "body": "المنتج كويس بس كنت متوقع أحسن شوية في الأداء. السيستم تقيل وبيتقطع كتير.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-05T22:37:06+00:00"
+ },
+ {
+  "order_id": 10065,
+  "product_sku": "AUD-JBL-E7",
+  "customer_email": "customer05@example.com",
+  "rating": 5,
+  "body": "المنتج ممتاز وفوق التوقعات، والتوصيل كان سريع. جودة الصوت ممتازة بالنسبة للسعر.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-06T16:04:50+00:00"
+ },
+ {
+  "order_id": 10052,
+  "product_sku": "AUD-JBL-E7",
+  "customer_email": "customer09@example.com",
+  "rating": 3,
+  "body": "شغال تمام، بس التوصيل اتأخر يوم عن الميعاد.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-07T06:44:09+00:00"
+ },
+ {
+  "order_id": 10051,
+  "product_sku": "LAP-HP-H3-8-256",
+  "customer_email": "customer09@example.com",
+  "rating": 5,
+  "body": "أداء ممتاز ومفيش أي ملاحظات تُذكر. اللابتوب سريع في الشغل والمذاكرة والبرامج بتفتح بسرعة.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-07T09:00:31+00:00"
+ },
+ {
+  "order_id": 10054,
+  "product_sku": "LAP-ASU-A5R-16-512",
+  "customer_email": "customer08@example.com",
+  "rating": 5,
+  "body": "قيمة حقيقية مقابل السعر، هشتري منهم تاني. الشاشة مريحة للعين والكيبورد ممتاز.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-08T10:57:16+00:00"
+ },
+ {
+  "order_id": 10062,
+  "product_sku": "LAP-ASU-A5R-16-512",
+  "customer_email": "customer08@example.com",
+  "rating": 5,
+  "body": "اشتريته من هنا وكان أحسن قرار، الجودة تحفة. اللابتوب سريع في الشغل والمذاكرة والبرامج بتفتح بسرعة.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-08T18:15:58+00:00"
+ },
+ {
+  "order_id": 10060,
+  "product_sku": "AUD-ANK-C20",
+  "customer_email": "customer05@example.com",
+  "rating": 4,
+  "body": "اشتريته من هنا وكان أحسن قرار، الجودة تحفة. شغال بكفاءة مع الموبايل واللابتوب.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-08T21:29:43+00:00"
+ },
+ {
+  "order_id": 10004,
+  "product_sku": "MOB-XIA-D14Plus-8-256",
+  "customer_email": "customer05@example.com",
+  "rating": 4,
+  "body": "التغليف كان ممتاز والمنتج وصل سليم. الكاميرا حلوة والبطارية بتكمّل اليوم كله.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-10T00:59:32+00:00"
+ },
+ {
+  "order_id": 10054,
+  "product_sku": "AUD-JBL-S2",
+  "customer_email": "customer08@example.com",
+  "rating": 3,
+  "body": "المنتج كويس، التغليف كان ممكن يبقى أحسن.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-10T22:51:24+00:00"
+ },
+ {
+  "order_id": 10053,
+  "product_sku": "AUD-JBL-S9",
+  "customer_email": "customer08@example.com",
+  "rating": 1,
+  "body": "للأسف جالي بمشكلة وطلبت إرجاع.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-11T02:04:28+00:00"
+ },
+ {
+  "order_id": 10057,
+  "product_sku": "MOB-XIA-P7Pro-12-512",
+  "customer_email": "customer09@example.com",
+  "rating": 4,
+  "body": "المنتج ممتاز وفوق التوقعات، والتوصيل كان سريع. الكاميرا حلوة والبطارية بتكمّل اليوم كله.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-11T08:54:50+00:00"
+ },
+ {
+  "order_id": 10070,
+  "product_sku": "AUD-BAS-H9",
+  "customer_email": "customer06@example.com",
+  "rating": 4,
+  "body": "أداء ممتاز ومفيش أي ملاحظات تُذكر. الصوت عالي وواضح والتوصيل ثابت.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-12T21:23:22+00:00"
+ },
+ {
+  "order_id": 10056,
+  "product_sku": "AUD-ANK-P10",
+  "customer_email": "customer09@example.com",
+  "rating": 5,
+  "body": "جربته أسبوع والحمد لله مفيش أي مشكلة.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-13T04:31:44+00:00"
+ },
+ {
+  "order_id": 10058,
+  "product_sku": "AUD-ANK-P20",
+  "customer_email": "customer04@example.com",
+  "rating": 2,
+  "body": "رجّعته لأن فيه عيب واضح.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-13T11:52:27+00:00"
+ },
+ {
+  "order_id": 10055,
+  "product_sku": "AUD-ANK-C20",
+  "customer_email": "customer03@example.com",
+  "rating": 5,
+  "body": "المنتج ممتاز وفوق التوقعات، والتوصيل كان سريع.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-14T03:15:18+00:00"
+ },
+ {
+  "order_id": 10065,
+  "product_sku": "AUD-ANK-S1",
+  "customer_email": "customer05@example.com",
+  "rating": 4,
+  "body": "وصلني في ميعاده والمنتج مقفول وأصلي. مريحة جدًا حتى مع الاستخدام الطويل.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-14T10:18:41+00:00"
+ },
+ {
+  "order_id": 10067,
+  "product_sku": "AUD-ANK-P10",
+  "customer_email": "customer03@example.com",
+  "rating": 4,
+  "body": "سعره حلو بالنسبة للمواصفات، وأنصح بيه. بيشحن بسرعة وما بيسخنش، والمنتج متين.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-14T12:14:33+00:00"
+ },
+ {
+  "order_id": 10071,
+  "product_sku": "MOB-APP-D12-4-128",
+  "customer_email": "customer02@example.com",
+  "rating": 5,
+  "body": "اشتريته من هنا وكان أحسن قرار، الجودة تحفة. الشحن سريع والبطارية بتعدي اليوم بسهولة.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-14T16:33:52+00:00"
+ },
+ {
+  "order_id": 10069,
+  "product_sku": "LAP-LEN-L5-16-512",
+  "customer_email": "customer04@example.com",
+  "rating": 5,
+  "body": "أداء ممتاز ومفيش أي ملاحظات تُذكر.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-14T23:40:20+00:00"
+ },
+ {
+  "order_id": 10075,
+  "product_sku": "AUD-ANK-C20",
+  "customer_email": "customer04@example.com",
+  "rating": 4,
+  "body": "اشتريته من هنا وكان أحسن قرار، الجودة تحفة. شغال بكفاءة مع الموبايل واللابتوب.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-15T23:48:45+00:00"
+ },
+ {
+  "order_id": 10071,
+  "product_sku": "AUD-BAS-B9",
+  "customer_email": "customer02@example.com",
+  "rating": 4,
+  "body": "التغليف كان ممتاز والمنتج وصل سليم. الصوت نقي والباس واضح، والبلوتوث بيثبت من أول مرة.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-16T02:28:19+00:00"
+ },
+ {
+  "order_id": 10067,
+  "product_sku": "AUD-BAS-B9",
+  "customer_email": "customer03@example.com",
+  "rating": 4,
+  "body": "جربته أسبوع والحمد لله مفيش أي مشكلة. جودة الصوت ممتازة بالنسبة للسعر.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-16T02:36:21+00:00"
+ },
+ {
+  "order_id": 10078,
+  "product_sku": "MOB-REA-C5-4-64",
+  "customer_email": "customer05@example.com",
+  "rating": 4,
+  "body": "جربته أسبوع والحمد لله مفيش أي مشكلة. الكاميرا حلوة والبطارية بتكمّل اليوم كله.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-16T14:42:37+00:00"
+ },
+ {
+  "order_id": 10075,
+  "product_sku": "LAP-ASU-A3-8-256",
+  "customer_email": "customer04@example.com",
+  "rating": 4,
+  "body": "التغليف كان ممتاز والمنتج وصل سليم. الشاشة مريحة للعين والكيبورد ممتاز.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-16T18:32:31+00:00"
+ },
+ {
+  "order_id": 10072,
+  "product_sku": "AUD-ANK-P10",
+  "customer_email": "customer12@example.com",
+  "rating": 3,
+  "body": "الجودة كويسة لكن السعر عالي شوية.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-18T00:29:32+00:00"
+ },
+ {
+  "order_id": 10074,
+  "product_sku": "MOB-REA-C5-4-64",
+  "customer_email": "customer04@example.com",
+  "rating": 2,
+  "body": "المنتج مش مطابق للوصف فاضطريت أرجعه.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-18T03:54:05+00:00"
+ },
+ {
+  "order_id": 10069,
+  "product_sku": "LAP-ASU-AU7-16-512",
+  "customer_email": "customer04@example.com",
+  "rating": 5,
+  "body": "قيمة حقيقية مقابل السعر، هشتري منهم تاني.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-18T06:46:38+00:00"
+ },
+ {
+  "order_id": 10061,
+  "product_sku": "MOB-REA-C5-4-64",
+  "customer_email": "customer08@example.com",
+  "rating": 3,
+  "body": "وصلني في ميعاده والمنتج مقفول وأصلي. الشاشة واضحة والأداء سلس حتى مع الألعاب. الطلب وصل متأخر عن الميعاد.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-19T09:18:38+00:00"
+ },
+ {
+  "order_id": 10072,
+  "product_sku": "MOB-OPP-A60-6-128",
+  "customer_email": "customer12@example.com",
+  "rating": 2,
+  "body": "مش مستاهل السعر، كنت متوقع أحسن من كده. السيستم تقيل وبيتقطع كتير.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-19T15:54:33+00:00"
+ },
+ {
+  "order_id": 10073,
+  "product_sku": "AUD-JBL-H4",
+  "customer_email": "customer08@example.com",
+  "rating": 5,
+  "body": "المنتج ممتاز وفوق التوقعات، والتوصيل كان سريع. الصوت عالي وواضح والتوصيل ثابت.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-20T08:02:16+00:00"
+ },
+ {
+  "order_id": 10076,
+  "product_sku": "MOB-REA-N6-8-256",
+  "customer_email": "customer08@example.com",
+  "rating": 3,
+  "body": "الجودة كويسة لكن السعر عالي شوية.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-20T14:50:44+00:00"
+ },
+ {
+  "order_id": 10079,
+  "product_sku": "MOB-OPP-R8-8-256",
+  "customer_email": "customer10@example.com",
+  "rating": 4,
+  "body": "المنتج ممتاز وفوق التوقعات، والتوصيل كان سريع. الكاميرا حلوة والبطارية بتكمّل اليوم كله.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-20T21:54:46+00:00"
+ },
+ {
+  "order_id": 10077,
+  "product_sku": "AUD-JBL-E5",
+  "customer_email": "customer07@example.com",
+  "rating": 3,
+  "body": "سعره حلو بالنسبة للمواصفات، وأنصح بيه. جودة الصوت ممتازة بالنسبة للسعر. الشحن اتأخر عن الميعاد المتوقع.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-22T14:48:02+00:00"
+ },
+ {
+  "order_id": 10080,
+  "product_sku": "AUD-BAS-B9",
+  "customer_email": "customer10@example.com",
+  "rating": 3,
+  "body": "المنتج ممتاز وفوق التوقعات، والتوصيل كان سريع. جودة الصوت ممتازة بالنسبة للسعر. الطلب وصل متأخر عن الميعاد.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-25T13:08:55+00:00"
+ },
+ {
+  "order_id": 10081,
+  "product_sku": "AUD-JBL-E5",
+  "customer_email": "customer12@example.com",
+  "rating": 5,
+  "body": "تعامل محترم من البائع والمنتج شغال تمام. الصوت عالي وواضح والتوصيل ثابت.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-25T21:53:44+00:00"
+ },
+ {
+  "order_id": 10082,
+  "product_sku": "MOB-REA-C5-4-64",
+  "customer_email": "customer02@example.com",
+  "rating": 5,
+  "body": "أداء ممتاز ومفيش أي ملاحظات تُذكر.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-27T22:31:36+00:00"
+ },
+ {
+  "order_id": 10091,
+  "product_sku": "MOB-OPP-A60-6-128",
+  "customer_email": "customer07@example.com",
+  "rating": 4,
+  "body": "شغال تمام، بس التوصيل اتأخر يوم عن الميعاد. السيستم تقيل وبيتقطع كتير.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-28T12:30:19+00:00"
+ },
+ {
+  "order_id": 10083,
+  "product_sku": "MOB-OPP-A60-6-128",
+  "customer_email": "customer11@example.com",
+  "rating": 3,
+  "body": "الجودة كويسة لكن السعر عالي شوية.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-28T14:42:26+00:00"
+ },
+ {
+  "order_id": 10084,
+  "product_sku": "AUD-ANK-C65",
+  "customer_email": "customer03@example.com",
+  "rating": 4,
+  "body": "المنتج زي الوصف بالظبط، وأنا راضي جدًا. بيشحن بسرعة وما بيسخنش، والمنتج متين.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-29T18:51:59+00:00"
+ },
+ {
+  "order_id": 10089,
+  "product_sku": "LAP-ASU-AU7-16-512",
+  "customer_email": "customer05@example.com",
+  "rating": 4,
+  "body": "المنتج زي الوصف بالظبط، وأنا راضي جدًا.",
+  "is_verified_purchase": true,
+  "created_at": "2026-10-30T06:21:01+00:00"
+ },
+ {
+  "order_id": 10096,
+  "product_sku": "MOB-REA-C5-4-64",
+  "customer_email": "customer06@example.com",
+  "rating": 4,
+  "body": "المنتج ممتاز وفوق التوقعات، والتوصيل كان سريع. الشاشة واضحة والأداء سلس حتى مع الألعاب.",
+  "is_verified_purchase": true,
+  "created_at": "2026-11-01T01:08:52+00:00"
+ },
+ {
+  "order_id": 10091,
+  "product_sku": "AUD-ANK-P10",
+  "customer_email": "customer07@example.com",
+  "rating": 5,
+  "body": "أداء ممتاز ومفيش أي ملاحظات تُذكر.",
+  "is_verified_purchase": true,
+  "created_at": "2026-11-01T08:20:43+00:00"
+ },
+ {
+  "order_id": 10090,
+  "product_sku": "AUD-JBL-E7",
+  "customer_email": "customer03@example.com",
+  "rating": 5,
+  "body": "المنتج زي الوصف بالظبط، وأنا راضي جدًا. جودة الصوت ممتازة بالنسبة للسعر.",
+  "is_verified_purchase": true,
+  "created_at": "2026-11-03T08:44:33+00:00"
+ }
+]

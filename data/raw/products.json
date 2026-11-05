@@ -1,0 +1,1639 @@
+[
+ {
+  "sku": "MOB-SAM-D140-4-128",
+  "seller_email": "seller1@example.com",
+  "category_slug": "mobiles",
+  "brand_slug": "samsung",
+  "title_ar": "سامسونج D140 هاتف ذكي رام 4 جيجا تخزين 128 جيجا",
+  "description_ar": "هاتف ذكي بشاشة 6.6 بوصة، رام 4 جيجا ومساحة تخزين 128 جيجا، بطارية 5000 مللي أمبير وكاميرا رئيسية 50 ميجابكسل. يدعم شبكات الجيل الرابع 4G ويعمل بنظام Android. اللون: أسود. الضمان 12 شهر.",
+  "price_egp": 6499.0,
+  "old_price_egp": 6999.0,
+  "stock_qty": 34,
+  "warranty_months": 12,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 4,
+   "storage_gb": 128,
+   "screen_inch": 6.6,
+   "battery_mah": 5000,
+   "camera_mp": 50,
+   "os": "android",
+   "network": "4g",
+   "color_ar": "أسود"
+  },
+  "created_at": "2026-07-13T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/MOB-SAM-D140-4-128-1.svg",
+    "alt_ar": "سامسونج D140 هاتف ذكي رام 4 جيجا تخزين 128 جيجا - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/MOB-SAM-D140-4-128-2.svg",
+    "alt_ar": "سامسونج D140 هاتف ذكي رام 4 جيجا تخزين 128 جيجا - صورة 2",
+    "sort_order": 1
+   }
+  ]
+ },
+ {
+  "sku": "MOB-SAM-D350-8-256",
+  "seller_email": "seller1@example.com",
+  "category_slug": "mobiles",
+  "brand_slug": "samsung",
+  "title_ar": "سامسونج D350 هاتف ذكي رام 8 جيجا تخزين 256 جيجا",
+  "description_ar": "هاتف ذكي بشاشة 6.6 بوصة، رام 8 جيجا ومساحة تخزين 256 جيجا، بطارية 5000 مللي أمبير وكاميرا رئيسية 50 ميجابكسل. يدعم شبكات الجيل الخامس 5G ويعمل بنظام Android. اللون: أزرق. الضمان 12 شهر.",
+  "price_egp": 14999.0,
+  "old_price_egp": null,
+  "stock_qty": 21,
+  "warranty_months": 12,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 8,
+   "storage_gb": 256,
+   "screen_inch": 6.6,
+   "battery_mah": 5000,
+   "camera_mp": 50,
+   "os": "android",
+   "network": "5g",
+   "color_ar": "أزرق"
+  },
+  "created_at": "2026-07-24T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/MOB-SAM-D350-8-256-1.svg",
+    "alt_ar": "سامسونج D350 هاتف ذكي رام 8 جيجا تخزين 256 جيجا - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/MOB-SAM-D350-8-256-2.svg",
+    "alt_ar": "سامسونج D350 هاتف ذكي رام 8 جيجا تخزين 256 جيجا - صورة 2",
+    "sort_order": 1
+   }
+  ]
+ },
+ {
+  "sku": "MOB-SAM-D250Ultra-12-256",
+  "seller_email": "seller1@example.com",
+  "category_slug": "mobiles",
+  "brand_slug": "samsung",
+  "title_ar": "سامسونج D250 Ultra هاتف ذكي رام 12 جيجا تخزين 256 جيجا",
+  "description_ar": "هاتف ذكي بشاشة 6.2 بوصة، رام 12 جيجا ومساحة تخزين 256 جيجا، بطارية 4000 مللي أمبير وكاميرا رئيسية 50 ميجابكسل. يدعم شبكات الجيل الخامس 5G ويعمل بنظام Android. اللون: رمادي. الضمان 24 شهر.",
+  "price_egp": 38999.0,
+  "old_price_egp": 41999.0,
+  "stock_qty": 9,
+  "warranty_months": 24,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 12,
+   "storage_gb": 256,
+   "screen_inch": 6.2,
+   "battery_mah": 4000,
+   "camera_mp": 50,
+   "os": "android",
+   "network": "5g",
+   "color_ar": "رمادي"
+  },
+  "created_at": "2026-06-22T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/MOB-SAM-D250Ultra-12-256-1.svg",
+    "alt_ar": "سامسونج D250 Ultra هاتف ذكي رام 12 جيجا تخزين 256 جيجا - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/MOB-SAM-D250Ultra-12-256-2.svg",
+    "alt_ar": "سامسونج D250 Ultra هاتف ذكي رام 12 جيجا تخزين 256 جيجا - صورة 2",
+    "sort_order": 1
+   },
+   {
+    "url": "/static/products/MOB-SAM-D250Ultra-12-256-3.svg",
+    "alt_ar": "سامسونج D250 Ultra هاتف ذكي رام 12 جيجا تخزين 256 جيجا - صورة 3",
+    "sort_order": 2
+   }
+  ]
+ },
+ {
+  "sku": "MOB-APP-D12-4-128",
+  "seller_email": "seller2@example.com",
+  "category_slug": "mobiles",
+  "brand_slug": "apple",
+  "title_ar": "أبل D12 هاتف ذكي رام 4 جيجا تخزين 128 جيجا",
+  "description_ar": "هاتف ذكي بشاشة 6.1 بوصة، رام 4 جيجا ومساحة تخزين 128 جيجا، بطارية 3200 مللي أمبير وكاميرا رئيسية 12 ميجابكسل. يدعم شبكات الجيل الخامس 5G ويعمل بنظام iOS. اللون: أبيض. الضمان 12 شهر.",
+  "price_egp": 33999.0,
+  "old_price_egp": null,
+  "stock_qty": 12,
+  "warranty_months": 12,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 4,
+   "storage_gb": 128,
+   "screen_inch": 6.1,
+   "battery_mah": 3200,
+   "camera_mp": 12,
+   "os": "ios",
+   "network": "5g",
+   "color_ar": "أبيض"
+  },
+  "created_at": "2026-06-26T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/MOB-APP-D12-4-128-1.svg",
+    "alt_ar": "أبل D12 هاتف ذكي رام 4 جيجا تخزين 128 جيجا - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/MOB-APP-D12-4-128-2.svg",
+    "alt_ar": "أبل D12 هاتف ذكي رام 4 جيجا تخزين 128 جيجا - صورة 2",
+    "sort_order": 1
+   },
+   {
+    "url": "/static/products/MOB-APP-D12-4-128-3.svg",
+    "alt_ar": "أبل D12 هاتف ذكي رام 4 جيجا تخزين 128 جيجا - صورة 3",
+    "sort_order": 2
+   }
+  ]
+ },
+ {
+  "sku": "MOB-APP-D15Pro-8-256",
+  "seller_email": "seller2@example.com",
+  "category_slug": "mobiles",
+  "brand_slug": "apple",
+  "title_ar": "أبل D15 Pro هاتف ذكي رام 8 جيجا تخزين 256 جيجا",
+  "description_ar": "هاتف ذكي بشاشة 6.1 بوصة، رام 8 جيجا ومساحة تخزين 256 جيجا، بطارية 3600 مللي أمبير وكاميرا رئيسية 48 ميجابكسل. يدعم شبكات الجيل الخامس 5G ويعمل بنظام iOS. اللون: تيتانيوم. الضمان 12 شهر.",
+  "price_egp": 62999.0,
+  "old_price_egp": null,
+  "stock_qty": 5,
+  "warranty_months": 12,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 8,
+   "storage_gb": 256,
+   "screen_inch": 6.1,
+   "battery_mah": 3600,
+   "camera_mp": 48,
+   "os": "ios",
+   "network": "5g",
+   "color_ar": "تيتانيوم"
+  },
+  "created_at": "2026-06-29T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/MOB-APP-D15Pro-8-256-1.svg",
+    "alt_ar": "أبل D15 Pro هاتف ذكي رام 8 جيجا تخزين 256 جيجا - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/MOB-APP-D15Pro-8-256-2.svg",
+    "alt_ar": "أبل D15 Pro هاتف ذكي رام 8 جيجا تخزين 256 جيجا - صورة 2",
+    "sort_order": 1
+   },
+   {
+    "url": "/static/products/MOB-APP-D15Pro-8-256-3.svg",
+    "alt_ar": "أبل D15 Pro هاتف ذكي رام 8 جيجا تخزين 256 جيجا - صورة 3",
+    "sort_order": 2
+   }
+  ]
+ },
+ {
+  "sku": "MOB-XIA-D13-6-128",
+  "seller_email": "seller1@example.com",
+  "category_slug": "mobiles",
+  "brand_slug": "xiaomi",
+  "title_ar": "شاومي D13 هاتف ذكي رام 6 جيجا تخزين 128 جيجا",
+  "description_ar": "هاتف ذكي بشاشة 6.67 بوصة، رام 6 جيجا ومساحة تخزين 128 جيجا، بطارية 5000 مللي أمبير وكاميرا رئيسية 108 ميجابكسل. يدعم شبكات الجيل الرابع 4G ويعمل بنظام Android. اللون: أسود. الضمان 12 شهر.",
+  "price_egp": 7999.0,
+  "old_price_egp": null,
+  "stock_qty": 40,
+  "warranty_months": 12,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 6,
+   "storage_gb": 128,
+   "screen_inch": 6.67,
+   "battery_mah": 5000,
+   "camera_mp": 108,
+   "os": "android",
+   "network": "4g",
+   "color_ar": "أسود"
+  },
+  "created_at": "2026-07-10T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/MOB-XIA-D13-6-128-1.svg",
+    "alt_ar": "شاومي D13 هاتف ذكي رام 6 جيجا تخزين 128 جيجا - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/MOB-XIA-D13-6-128-2.svg",
+    "alt_ar": "شاومي D13 هاتف ذكي رام 6 جيجا تخزين 128 جيجا - صورة 2",
+    "sort_order": 1
+   }
+  ]
+ },
+ {
+  "sku": "MOB-XIA-D14Plus-8-256",
+  "seller_email": "seller1@example.com",
+  "category_slug": "mobiles",
+  "brand_slug": "xiaomi",
+  "title_ar": "شاومي D14 Plus هاتف ذكي رام 8 جيجا تخزين 256 جيجا",
+  "description_ar": "هاتف ذكي بشاشة 6.67 بوصة، رام 8 جيجا ومساحة تخزين 256 جيجا، بطارية 5110 مللي أمبير وكاميرا رئيسية 200 ميجابكسل. يدعم شبكات الجيل الخامس 5G ويعمل بنظام Android. اللون: أخضر. الضمان 12 شهر.",
+  "price_egp": 12499.0,
+  "old_price_egp": 13499.0,
+  "stock_qty": 28,
+  "warranty_months": 12,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 8,
+   "storage_gb": 256,
+   "screen_inch": 6.67,
+   "battery_mah": 5110,
+   "camera_mp": 200,
+   "os": "android",
+   "network": "5g",
+   "color_ar": "أخضر"
+  },
+  "created_at": "2026-07-14T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/MOB-XIA-D14Plus-8-256-1.svg",
+    "alt_ar": "شاومي D14 Plus هاتف ذكي رام 8 جيجا تخزين 256 جيجا - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/MOB-XIA-D14Plus-8-256-2.svg",
+    "alt_ar": "شاومي D14 Plus هاتف ذكي رام 8 جيجا تخزين 256 جيجا - صورة 2",
+    "sort_order": 1
+   }
+  ]
+ },
+ {
+  "sku": "MOB-XIA-P7Pro-12-512",
+  "seller_email": "seller4@example.com",
+  "category_slug": "mobiles",
+  "brand_slug": "xiaomi",
+  "title_ar": "شاومي P7 Pro هاتف ذكي رام 12 جيجا تخزين 512 جيجا",
+  "description_ar": "هاتف ذكي بشاشة 6.73 بوصة، رام 12 جيجا ومساحة تخزين 512 جيجا، بطارية 5500 مللي أمبير وكاميرا رئيسية 50 ميجابكسل. يدعم شبكات الجيل الخامس 5G ويعمل بنظام Android. اللون: أسود. الضمان 12 شهر.",
+  "price_egp": 24999.0,
+  "old_price_egp": null,
+  "stock_qty": 7,
+  "warranty_months": 12,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 12,
+   "storage_gb": 512,
+   "screen_inch": 6.73,
+   "battery_mah": 5500,
+   "camera_mp": 50,
+   "os": "android",
+   "network": "5g",
+   "color_ar": "أسود"
+  },
+  "created_at": "2026-05-19T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/MOB-XIA-P7Pro-12-512-1.svg",
+    "alt_ar": "شاومي P7 Pro هاتف ذكي رام 12 جيجا تخزين 512 جيجا - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/MOB-XIA-P7Pro-12-512-2.svg",
+    "alt_ar": "شاومي P7 Pro هاتف ذكي رام 12 جيجا تخزين 512 جيجا - صورة 2",
+    "sort_order": 1
+   },
+   {
+    "url": "/static/products/MOB-XIA-P7Pro-12-512-3.svg",
+    "alt_ar": "شاومي P7 Pro هاتف ذكي رام 12 جيجا تخزين 512 جيجا - صورة 3",
+    "sort_order": 2
+   }
+  ]
+ },
+ {
+  "sku": "MOB-OPP-R8-8-256",
+  "seller_email": "seller1@example.com",
+  "category_slug": "mobiles",
+  "brand_slug": "oppo",
+  "title_ar": "أوبو R8 هاتف ذكي رام 8 جيجا تخزين 256 جيجا",
+  "description_ar": "هاتف ذكي بشاشة 6.4 بوصة، رام 8 جيجا ومساحة تخزين 256 جيجا، بطارية 4500 مللي أمبير وكاميرا رئيسية 50 ميجابكسل. يدعم شبكات الجيل الخامس 5G ويعمل بنظام Android. اللون: ذهبي. الضمان 12 شهر.",
+  "price_egp": 15499.0,
+  "old_price_egp": null,
+  "stock_qty": 15,
+  "warranty_months": 12,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 8,
+   "storage_gb": 256,
+   "screen_inch": 6.4,
+   "battery_mah": 4500,
+   "camera_mp": 50,
+   "os": "android",
+   "network": "5g",
+   "color_ar": "ذهبي"
+  },
+  "created_at": "2026-07-16T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/MOB-OPP-R8-8-256-1.svg",
+    "alt_ar": "أوبو R8 هاتف ذكي رام 8 جيجا تخزين 256 جيجا - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/MOB-OPP-R8-8-256-2.svg",
+    "alt_ar": "أوبو R8 هاتف ذكي رام 8 جيجا تخزين 256 جيجا - صورة 2",
+    "sort_order": 1
+   }
+  ]
+ },
+ {
+  "sku": "MOB-OPP-A60-6-128",
+  "seller_email": "seller2@example.com",
+  "category_slug": "mobiles",
+  "brand_slug": "oppo",
+  "title_ar": "أوبو A60 هاتف ذكي رام 6 جيجا تخزين 128 جيجا",
+  "description_ar": "هاتف ذكي بشاشة 6.67 بوصة، رام 6 جيجا ومساحة تخزين 128 جيجا، بطارية 5000 مللي أمبير وكاميرا رئيسية 50 ميجابكسل. يدعم شبكات الجيل الرابع 4G ويعمل بنظام Android. اللون: بنفسجي. الضمان 12 شهر.",
+  "price_egp": 6999.0,
+  "old_price_egp": null,
+  "stock_qty": 30,
+  "warranty_months": 12,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 6,
+   "storage_gb": 128,
+   "screen_inch": 6.67,
+   "battery_mah": 5000,
+   "camera_mp": 50,
+   "os": "android",
+   "network": "4g",
+   "color_ar": "بنفسجي"
+  },
+  "created_at": "2026-06-03T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/MOB-OPP-A60-6-128-1.svg",
+    "alt_ar": "أوبو A60 هاتف ذكي رام 6 جيجا تخزين 128 جيجا - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/MOB-OPP-A60-6-128-2.svg",
+    "alt_ar": "أوبو A60 هاتف ذكي رام 6 جيجا تخزين 128 جيجا - صورة 2",
+    "sort_order": 1
+   }
+  ]
+ },
+ {
+  "sku": "MOB-REA-C5-4-64",
+  "seller_email": "seller2@example.com",
+  "category_slug": "mobiles",
+  "brand_slug": "realme",
+  "title_ar": "ريلمي C5 هاتف ذكي رام 4 جيجا تخزين 64 جيجا",
+  "description_ar": "هاتف ذكي بشاشة 6.6 بوصة، رام 4 جيجا ومساحة تخزين 64 جيجا، بطارية 5000 مللي أمبير وكاميرا رئيسية 13 ميجابكسل. يدعم شبكات الجيل الرابع 4G ويعمل بنظام Android. اللون: أزرق. الضمان 12 شهر.",
+  "price_egp": 3999.0,
+  "old_price_egp": null,
+  "stock_qty": 0,
+  "warranty_months": 12,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 4,
+   "storage_gb": 64,
+   "screen_inch": 6.6,
+   "battery_mah": 5000,
+   "camera_mp": 13,
+   "os": "android",
+   "network": "4g",
+   "color_ar": "أزرق"
+  },
+  "created_at": "2026-07-23T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/MOB-REA-C5-4-64-1.svg",
+    "alt_ar": "ريلمي C5 هاتف ذكي رام 4 جيجا تخزين 64 جيجا - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/MOB-REA-C5-4-64-2.svg",
+    "alt_ar": "ريلمي C5 هاتف ذكي رام 4 جيجا تخزين 64 جيجا - صورة 2",
+    "sort_order": 1
+   }
+  ]
+ },
+ {
+  "sku": "MOB-REA-N6-8-256",
+  "seller_email": "seller4@example.com",
+  "category_slug": "mobiles",
+  "brand_slug": "realme",
+  "title_ar": "ريلمي N6 هاتف ذكي رام 8 جيجا تخزين 256 جيجا",
+  "description_ar": "هاتف ذكي بشاشة 6.78 بوصة، رام 8 جيجا ومساحة تخزين 256 جيجا، بطارية 5000 مللي أمبير وكاميرا رئيسية 50 ميجابكسل. يدعم شبكات الجيل الرابع 4G ويعمل بنظام Android. اللون: أسود. الضمان 12 شهر.",
+  "price_egp": 6799.0,
+  "old_price_egp": null,
+  "stock_qty": 22,
+  "warranty_months": 12,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 8,
+   "storage_gb": 256,
+   "screen_inch": 6.78,
+   "battery_mah": 5000,
+   "camera_mp": 50,
+   "os": "android",
+   "network": "4g",
+   "color_ar": "أسود"
+  },
+  "created_at": "2026-07-24T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/MOB-REA-N6-8-256-1.svg",
+    "alt_ar": "ريلمي N6 هاتف ذكي رام 8 جيجا تخزين 256 جيجا - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/MOB-REA-N6-8-256-2.svg",
+    "alt_ar": "ريلمي N6 هاتف ذكي رام 8 جيجا تخزين 256 جيجا - صورة 2",
+    "sort_order": 1
+   }
+  ]
+ },
+ {
+  "sku": "MOB-REA-P9-8-128",
+  "seller_email": "seller2@example.com",
+  "category_slug": "mobiles",
+  "brand_slug": "realme",
+  "title_ar": "ريلمي P9 هاتف ذكي رام 8 جيجا تخزين 128 جيجا",
+  "description_ar": "هاتف ذكي بشاشة 6.67 بوصة، رام 8 جيجا ومساحة تخزين 128 جيجا، بطارية 5000 مللي أمبير وكاميرا رئيسية 50 ميجابكسل. يدعم شبكات الجيل الخامس 5G ويعمل بنظام Android. اللون: أخضر. الضمان 12 شهر.",
+  "price_egp": 8999.0,
+  "old_price_egp": 9499.0,
+  "stock_qty": 17,
+  "warranty_months": 12,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 8,
+   "storage_gb": 128,
+   "screen_inch": 6.67,
+   "battery_mah": 5000,
+   "camera_mp": 50,
+   "os": "android",
+   "network": "5g",
+   "color_ar": "أخضر"
+  },
+  "created_at": "2026-07-16T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/MOB-REA-P9-8-128-1.svg",
+    "alt_ar": "ريلمي P9 هاتف ذكي رام 8 جيجا تخزين 128 جيجا - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/MOB-REA-P9-8-128-2.svg",
+    "alt_ar": "ريلمي P9 هاتف ذكي رام 8 جيجا تخزين 128 جيجا - صورة 2",
+    "sort_order": 1
+   }
+  ]
+ },
+ {
+  "sku": "MOB-SAM-D50-4-64",
+  "seller_email": "seller4@example.com",
+  "category_slug": "mobiles",
+  "brand_slug": "samsung",
+  "title_ar": "سامسونج D50 هاتف ذكي رام 4 جيجا تخزين 64 جيجا",
+  "description_ar": "هاتف ذكي بشاشة 6.7 بوصة، رام 4 جيجا ومساحة تخزين 64 جيجا، بطارية 5000 مللي أمبير وكاميرا رئيسية 50 ميجابكسل. يدعم شبكات الجيل الرابع 4G ويعمل بنظام Android. اللون: أسود. الضمان 12 شهر.",
+  "price_egp": 3799.0,
+  "old_price_egp": null,
+  "stock_qty": 3,
+  "warranty_months": 12,
+  "is_returnable": true,
+  "is_active": false,
+  "specs": {
+   "ram_gb": 4,
+   "storage_gb": 64,
+   "screen_inch": 6.7,
+   "battery_mah": 5000,
+   "camera_mp": 50,
+   "os": "android",
+   "network": "4g",
+   "color_ar": "أسود"
+  },
+  "created_at": "2026-06-30T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/MOB-SAM-D50-4-64-1.svg",
+    "alt_ar": "سامسونج D50 هاتف ذكي رام 4 جيجا تخزين 64 جيجا - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/MOB-SAM-D50-4-64-2.svg",
+    "alt_ar": "سامسونج D50 هاتف ذكي رام 4 جيجا تخزين 64 جيجا - صورة 2",
+    "sort_order": 1
+   }
+  ]
+ },
+ {
+  "sku": "MOB-XIA-R13-3-32",
+  "seller_email": "seller4@example.com",
+  "category_slug": "mobiles",
+  "brand_slug": "xiaomi",
+  "title_ar": "شاومي R13 هاتف ذكي رام 3 جيجا تخزين 32 جيجا",
+  "description_ar": "هاتف ذكي بشاشة 6.5 بوصة، رام 3 جيجا ومساحة تخزين 32 جيجا، بطارية 5000 مللي أمبير وكاميرا رئيسية 8 ميجابكسل. يدعم شبكات الجيل الرابع 4G ويعمل بنظام Android. اللون: رمادي. الضمان 12 شهر.",
+  "price_egp": 3299.0,
+  "old_price_egp": null,
+  "stock_qty": 11,
+  "warranty_months": 12,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 3,
+   "storage_gb": 32,
+   "screen_inch": 6.5,
+   "battery_mah": 5000,
+   "camera_mp": 8,
+   "os": "android",
+   "network": "4g",
+   "color_ar": "رمادي"
+  },
+  "created_at": "2026-06-28T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/MOB-XIA-R13-3-32-1.svg",
+    "alt_ar": "شاومي R13 هاتف ذكي رام 3 جيجا تخزين 32 جيجا - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/MOB-XIA-R13-3-32-2.svg",
+    "alt_ar": "شاومي R13 هاتف ذكي رام 3 جيجا تخزين 32 جيجا - صورة 2",
+    "sort_order": 1
+   }
+  ]
+ },
+ {
+  "sku": "LAP-LEN-L3-8-256",
+  "seller_email": "seller1@example.com",
+  "category_slug": "laptops",
+  "brand_slug": "lenovo",
+  "title_ar": "لينوفو L3 لابتوب Core i3 الجيل 12 رام 8 جيجا 256 جيجا SSD شاشة 15.6 بوصة",
+  "description_ar": "لابتوب بشاشة 15.6 بوصة ومعالج Core i3 الجيل 12، رام 8 جيجا، تخزين SSD بسعة 256 جيجا، وكارت الشاشة: مدمج. وزنه 1.7 كجم وبطاريته تدوم حتى 7 ساعات تقريبًا. نظام التشغيل: Windows. الضمان 24 شهر.",
+  "price_egp": 17999.0,
+  "old_price_egp": 19499.0,
+  "stock_qty": 14,
+  "warranty_months": 24,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 8,
+   "storage_gb": 256,
+   "storage_type": "ssd",
+   "cpu": "Core i3 الجيل 12",
+   "gpu": "مدمج",
+   "screen_inch": 15.6,
+   "weight_kg": 1.7,
+   "battery_hours": 7,
+   "os": "windows"
+  },
+  "created_at": "2026-05-24T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/LAP-LEN-L3-8-256-1.svg",
+    "alt_ar": "لينوفو L3 لابتوب Core i3 الجيل 12 رام 8 جيجا 256 جيجا SSD شاشة 15.6 بوصة - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/LAP-LEN-L3-8-256-2.svg",
+    "alt_ar": "لينوفو L3 لابتوب Core i3 الجيل 12 رام 8 جيجا 256 جيجا SSD شاشة 15.6 بوصة - صورة 2",
+    "sort_order": 1
+   }
+  ]
+ },
+ {
+  "sku": "LAP-LEN-L5-16-512",
+  "seller_email": "seller1@example.com",
+  "category_slug": "laptops",
+  "brand_slug": "lenovo",
+  "title_ar": "لينوفو L5 لابتوب Core i5 الجيل 13 رام 16 جيجا 512 جيجا SSD شاشة 15.6 بوصة",
+  "description_ar": "لابتوب بشاشة 15.6 بوصة ومعالج Core i5 الجيل 13، رام 16 جيجا، تخزين SSD بسعة 512 جيجا، وكارت الشاشة: مدمج. وزنه 1.6 كجم وبطاريته تدوم حتى 8 ساعات تقريبًا. نظام التشغيل: Windows. الضمان 24 شهر.",
+  "price_egp": 27499.0,
+  "old_price_egp": null,
+  "stock_qty": 18,
+  "warranty_months": 24,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 16,
+   "storage_gb": 512,
+   "storage_type": "ssd",
+   "cpu": "Core i5 الجيل 13",
+   "gpu": "مدمج",
+   "screen_inch": 15.6,
+   "weight_kg": 1.6,
+   "battery_hours": 8,
+   "os": "windows"
+  },
+  "created_at": "2026-07-24T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/LAP-LEN-L5-16-512-1.svg",
+    "alt_ar": "لينوفو L5 لابتوب Core i5 الجيل 13 رام 16 جيجا 512 جيجا SSD شاشة 15.6 بوصة - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/LAP-LEN-L5-16-512-2.svg",
+    "alt_ar": "لينوفو L5 لابتوب Core i5 الجيل 13 رام 16 جيجا 512 جيجا SSD شاشة 15.6 بوصة - صورة 2",
+    "sort_order": 1
+   },
+   {
+    "url": "/static/products/LAP-LEN-L5-16-512-3.svg",
+    "alt_ar": "لينوفو L5 لابتوب Core i5 الجيل 13 رام 16 جيجا 512 جيجا SSD شاشة 15.6 بوصة - صورة 3",
+    "sort_order": 2
+   }
+  ]
+ },
+ {
+  "sku": "LAP-LEN-L5R-8-512",
+  "seller_email": "seller1@example.com",
+  "category_slug": "laptops",
+  "brand_slug": "lenovo",
+  "title_ar": "لينوفو L5R لابتوب Ryzen 5 رام 8 جيجا 512 جيجا SSD شاشة 14.0 بوصة",
+  "description_ar": "لابتوب بشاشة 14.0 بوصة ومعالج Ryzen 5، رام 8 جيجا، تخزين SSD بسعة 512 جيجا، وكارت الشاشة: مدمج. وزنه 1.4 كجم وبطاريته تدوم حتى 9 ساعات تقريبًا. نظام التشغيل: Windows. الضمان 24 شهر.",
+  "price_egp": 23999.0,
+  "old_price_egp": 25499.0,
+  "stock_qty": 10,
+  "warranty_months": 24,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 8,
+   "storage_gb": 512,
+   "storage_type": "ssd",
+   "cpu": "Ryzen 5",
+   "gpu": "مدمج",
+   "screen_inch": 14.0,
+   "weight_kg": 1.4,
+   "battery_hours": 9,
+   "os": "windows"
+  },
+  "created_at": "2026-07-02T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/LAP-LEN-L5R-8-512-1.svg",
+    "alt_ar": "لينوفو L5R لابتوب Ryzen 5 رام 8 جيجا 512 جيجا SSD شاشة 14.0 بوصة - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/LAP-LEN-L5R-8-512-2.svg",
+    "alt_ar": "لينوفو L5R لابتوب Ryzen 5 رام 8 جيجا 512 جيجا SSD شاشة 14.0 بوصة - صورة 2",
+    "sort_order": 1
+   },
+   {
+    "url": "/static/products/LAP-LEN-L5R-8-512-3.svg",
+    "alt_ar": "لينوفو L5R لابتوب Ryzen 5 رام 8 جيجا 512 جيجا SSD شاشة 14.0 بوصة - صورة 3",
+    "sort_order": 2
+   }
+  ]
+ },
+ {
+  "sku": "LAP-HP-H3-8-256",
+  "seller_email": "seller3@example.com",
+  "category_slug": "laptops",
+  "brand_slug": "hp",
+  "title_ar": "إتش بي H3 لابتوب Core i3 الجيل 12 رام 8 جيجا 256 جيجا SSD شاشة 15.6 بوصة",
+  "description_ar": "لابتوب بشاشة 15.6 بوصة ومعالج Core i3 الجيل 12، رام 8 جيجا، تخزين SSD بسعة 256 جيجا، وكارت الشاشة: مدمج. وزنه 1.75 كجم وبطاريته تدوم حتى 6 ساعات تقريبًا. نظام التشغيل: بدون نظام تشغيل (FreeDOS). الضمان 12 شهر.",
+  "price_egp": 15999.0,
+  "old_price_egp": null,
+  "stock_qty": 25,
+  "warranty_months": 12,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 8,
+   "storage_gb": 256,
+   "storage_type": "ssd",
+   "cpu": "Core i3 الجيل 12",
+   "gpu": "مدمج",
+   "screen_inch": 15.6,
+   "weight_kg": 1.75,
+   "battery_hours": 6,
+   "os": "none"
+  },
+  "created_at": "2026-05-19T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/LAP-HP-H3-8-256-1.svg",
+    "alt_ar": "إتش بي H3 لابتوب Core i3 الجيل 12 رام 8 جيجا 256 جيجا SSD شاشة 15.6 بوصة - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/LAP-HP-H3-8-256-2.svg",
+    "alt_ar": "إتش بي H3 لابتوب Core i3 الجيل 12 رام 8 جيجا 256 جيجا SSD شاشة 15.6 بوصة - صورة 2",
+    "sort_order": 1
+   }
+  ]
+ },
+ {
+  "sku": "LAP-HP-H5-16-512",
+  "seller_email": "seller3@example.com",
+  "category_slug": "laptops",
+  "brand_slug": "hp",
+  "title_ar": "إتش بي H5 لابتوب Core i5 الجيل 13 رام 16 جيجا 512 جيجا SSD شاشة 15.6 بوصة",
+  "description_ar": "لابتوب بشاشة 15.6 بوصة ومعالج Core i5 الجيل 13، رام 16 جيجا، تخزين SSD بسعة 512 جيجا، وكارت الشاشة: مدمج. وزنه 1.7 كجم وبطاريته تدوم حتى 8 ساعات تقريبًا. نظام التشغيل: Windows. الضمان 24 شهر.",
+  "price_egp": 28999.0,
+  "old_price_egp": null,
+  "stock_qty": 12,
+  "warranty_months": 24,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 16,
+   "storage_gb": 512,
+   "storage_type": "ssd",
+   "cpu": "Core i5 الجيل 13",
+   "gpu": "مدمج",
+   "screen_inch": 15.6,
+   "weight_kg": 1.7,
+   "battery_hours": 8,
+   "os": "windows"
+  },
+  "created_at": "2026-06-04T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/LAP-HP-H5-16-512-1.svg",
+    "alt_ar": "إتش بي H5 لابتوب Core i5 الجيل 13 رام 16 جيجا 512 جيجا SSD شاشة 15.6 بوصة - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/LAP-HP-H5-16-512-2.svg",
+    "alt_ar": "إتش بي H5 لابتوب Core i5 الجيل 13 رام 16 جيجا 512 جيجا SSD شاشة 15.6 بوصة - صورة 2",
+    "sort_order": 1
+   },
+   {
+    "url": "/static/products/LAP-HP-H5-16-512-3.svg",
+    "alt_ar": "إتش بي H5 لابتوب Core i5 الجيل 13 رام 16 جيجا 512 جيجا SSD شاشة 15.6 بوصة - صورة 3",
+    "sort_order": 2
+   }
+  ]
+ },
+ {
+  "sku": "LAP-HP-H7R-16-1024",
+  "seller_email": "seller3@example.com",
+  "category_slug": "laptops",
+  "brand_slug": "hp",
+  "title_ar": "إتش بي H7R لابتوب Ryzen 7 رام 16 جيجا 1 تيرابايت SSD شاشة 15.6 بوصة",
+  "description_ar": "لابتوب بشاشة 15.6 بوصة ومعالج Ryzen 7، رام 16 جيجا، تخزين SSD بسعة 1 تيرابايت، وكارت الشاشة: مدمج. وزنه 1.8 كجم وبطاريته تدوم حتى 9 ساعات تقريبًا. نظام التشغيل: Windows. الضمان 24 شهر.",
+  "price_egp": 36999.0,
+  "old_price_egp": null,
+  "stock_qty": 8,
+  "warranty_months": 24,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 16,
+   "storage_gb": 1024,
+   "storage_type": "ssd",
+   "cpu": "Ryzen 7",
+   "gpu": "مدمج",
+   "screen_inch": 15.6,
+   "weight_kg": 1.8,
+   "battery_hours": 9,
+   "os": "windows"
+  },
+  "created_at": "2026-06-29T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/LAP-HP-H7R-16-1024-1.svg",
+    "alt_ar": "إتش بي H7R لابتوب Ryzen 7 رام 16 جيجا 1 تيرابايت SSD شاشة 15.6 بوصة - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/LAP-HP-H7R-16-1024-2.svg",
+    "alt_ar": "إتش بي H7R لابتوب Ryzen 7 رام 16 جيجا 1 تيرابايت SSD شاشة 15.6 بوصة - صورة 2",
+    "sort_order": 1
+   },
+   {
+    "url": "/static/products/LAP-HP-H7R-16-1024-3.svg",
+    "alt_ar": "إتش بي H7R لابتوب Ryzen 7 رام 16 جيجا 1 تيرابايت SSD شاشة 15.6 بوصة - صورة 3",
+    "sort_order": 2
+   }
+  ]
+ },
+ {
+  "sku": "LAP-HP-HG5-16-512",
+  "seller_email": "seller3@example.com",
+  "category_slug": "laptops",
+  "brand_slug": "hp",
+  "title_ar": "إتش بي HG5 لابتوب Core i5 الجيل 13 رام 16 جيجا 512 جيجا SSD شاشة 16.1 بوصة",
+  "description_ar": "لابتوب بشاشة 16.1 بوصة ومعالج Core i5 الجيل 13، رام 16 جيجا، تخزين SSD بسعة 512 جيجا، وكارت الشاشة: كارت شاشة مستقل 4 جيجا. وزنه 2.3 كجم وبطاريته تدوم حتى 5 ساعات تقريبًا. نظام التشغيل: Windows. الضمان 24 شهر.",
+  "price_egp": 38499.0,
+  "old_price_egp": 41000.0,
+  "stock_qty": 2,
+  "warranty_months": 24,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 16,
+   "storage_gb": 512,
+   "storage_type": "ssd",
+   "cpu": "Core i5 الجيل 13",
+   "gpu": "كارت شاشة مستقل 4 جيجا",
+   "screen_inch": 16.1,
+   "weight_kg": 2.3,
+   "battery_hours": 5,
+   "os": "windows"
+  },
+  "created_at": "2026-05-31T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/LAP-HP-HG5-16-512-1.svg",
+    "alt_ar": "إتش بي HG5 لابتوب Core i5 الجيل 13 رام 16 جيجا 512 جيجا SSD شاشة 16.1 بوصة - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/LAP-HP-HG5-16-512-2.svg",
+    "alt_ar": "إتش بي HG5 لابتوب Core i5 الجيل 13 رام 16 جيجا 512 جيجا SSD شاشة 16.1 بوصة - صورة 2",
+    "sort_order": 1
+   },
+   {
+    "url": "/static/products/LAP-HP-HG5-16-512-3.svg",
+    "alt_ar": "إتش بي HG5 لابتوب Core i5 الجيل 13 رام 16 جيجا 512 جيجا SSD شاشة 16.1 بوصة - صورة 3",
+    "sort_order": 2
+   }
+  ]
+ },
+ {
+  "sku": "LAP-DEL-DL3-8-256",
+  "seller_email": "seller3@example.com",
+  "category_slug": "laptops",
+  "brand_slug": "dell",
+  "title_ar": "ديل DL3 لابتوب Core i3 الجيل 12 رام 8 جيجا 256 جيجا SSD شاشة 15.6 بوصة",
+  "description_ar": "لابتوب بشاشة 15.6 بوصة ومعالج Core i3 الجيل 12، رام 8 جيجا، تخزين SSD بسعة 256 جيجا، وكارت الشاشة: مدمج. وزنه 1.8 كجم وبطاريته تدوم حتى 6 ساعات تقريبًا. نظام التشغيل: Windows. الضمان 12 شهر.",
+  "price_egp": 16999.0,
+  "old_price_egp": null,
+  "stock_qty": 4,
+  "warranty_months": 12,
+  "is_returnable": true,
+  "is_active": false,
+  "specs": {
+   "ram_gb": 8,
+   "storage_gb": 256,
+   "storage_type": "ssd",
+   "cpu": "Core i3 الجيل 12",
+   "gpu": "مدمج",
+   "screen_inch": 15.6,
+   "weight_kg": 1.8,
+   "battery_hours": 6,
+   "os": "windows"
+  },
+  "created_at": "2026-06-22T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/LAP-DEL-DL3-8-256-1.svg",
+    "alt_ar": "ديل DL3 لابتوب Core i3 الجيل 12 رام 8 جيجا 256 جيجا SSD شاشة 15.6 بوصة - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/LAP-DEL-DL3-8-256-2.svg",
+    "alt_ar": "ديل DL3 لابتوب Core i3 الجيل 12 رام 8 جيجا 256 جيجا SSD شاشة 15.6 بوصة - صورة 2",
+    "sort_order": 1
+   }
+  ]
+ },
+ {
+  "sku": "LAP-DEL-DL5-16-512",
+  "seller_email": "seller1@example.com",
+  "category_slug": "laptops",
+  "brand_slug": "dell",
+  "title_ar": "ديل DL5 لابتوب Core i5 الجيل 13 رام 16 جيجا 512 جيجا SSD شاشة 14.0 بوصة",
+  "description_ar": "لابتوب بشاشة 14.0 بوصة ومعالج Core i5 الجيل 13، رام 16 جيجا، تخزين SSD بسعة 512 جيجا، وكارت الشاشة: مدمج. وزنه 1.5 كجم وبطاريته تدوم حتى 9 ساعات تقريبًا. نظام التشغيل: Windows. الضمان 24 شهر.",
+  "price_egp": 29999.0,
+  "old_price_egp": null,
+  "stock_qty": 16,
+  "warranty_months": 24,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 16,
+   "storage_gb": 512,
+   "storage_type": "ssd",
+   "cpu": "Core i5 الجيل 13",
+   "gpu": "مدمج",
+   "screen_inch": 14.0,
+   "weight_kg": 1.5,
+   "battery_hours": 9,
+   "os": "windows"
+  },
+  "created_at": "2026-07-27T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/LAP-DEL-DL5-16-512-1.svg",
+    "alt_ar": "ديل DL5 لابتوب Core i5 الجيل 13 رام 16 جيجا 512 جيجا SSD شاشة 14.0 بوصة - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/LAP-DEL-DL5-16-512-2.svg",
+    "alt_ar": "ديل DL5 لابتوب Core i5 الجيل 13 رام 16 جيجا 512 جيجا SSD شاشة 14.0 بوصة - صورة 2",
+    "sort_order": 1
+   },
+   {
+    "url": "/static/products/LAP-DEL-DL5-16-512-3.svg",
+    "alt_ar": "ديل DL5 لابتوب Core i5 الجيل 13 رام 16 جيجا 512 جيجا SSD شاشة 14.0 بوصة - صورة 3",
+    "sort_order": 2
+   }
+  ]
+ },
+ {
+  "sku": "LAP-DEL-DL7-16-1024",
+  "seller_email": "seller1@example.com",
+  "category_slug": "laptops",
+  "brand_slug": "dell",
+  "title_ar": "ديل DL7 لابتوب Core i7 الجيل 13 رام 16 جيجا 1 تيرابايت SSD شاشة 15.6 بوصة",
+  "description_ar": "لابتوب بشاشة 15.6 بوصة ومعالج Core i7 الجيل 13، رام 16 جيجا، تخزين SSD بسعة 1 تيرابايت، وكارت الشاشة: مدمج. وزنه 1.7 كجم وبطاريته تدوم حتى 10 ساعات تقريبًا. نظام التشغيل: Windows. الضمان 24 شهر.",
+  "price_egp": 44999.0,
+  "old_price_egp": null,
+  "stock_qty": 6,
+  "warranty_months": 24,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 16,
+   "storage_gb": 1024,
+   "storage_type": "ssd",
+   "cpu": "Core i7 الجيل 13",
+   "gpu": "مدمج",
+   "screen_inch": 15.6,
+   "weight_kg": 1.7,
+   "battery_hours": 10,
+   "os": "windows"
+  },
+  "created_at": "2026-07-07T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/LAP-DEL-DL7-16-1024-1.svg",
+    "alt_ar": "ديل DL7 لابتوب Core i7 الجيل 13 رام 16 جيجا 1 تيرابايت SSD شاشة 15.6 بوصة - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/LAP-DEL-DL7-16-1024-2.svg",
+    "alt_ar": "ديل DL7 لابتوب Core i7 الجيل 13 رام 16 جيجا 1 تيرابايت SSD شاشة 15.6 بوصة - صورة 2",
+    "sort_order": 1
+   },
+   {
+    "url": "/static/products/LAP-DEL-DL7-16-1024-3.svg",
+    "alt_ar": "ديل DL7 لابتوب Core i7 الجيل 13 رام 16 جيجا 1 تيرابايت SSD شاشة 15.6 بوصة - صورة 3",
+    "sort_order": 2
+   }
+  ]
+ },
+ {
+  "sku": "LAP-DEL-DX9-32-1024",
+  "seller_email": "seller3@example.com",
+  "category_slug": "laptops",
+  "brand_slug": "dell",
+  "title_ar": "ديل DX9 لابتوب Core i7 الجيل 13 رام 32 جيجا 1 تيرابايت SSD شاشة 16.0 بوصة",
+  "description_ar": "لابتوب بشاشة 16.0 بوصة ومعالج Core i7 الجيل 13، رام 32 جيجا، تخزين SSD بسعة 1 تيرابايت، وكارت الشاشة: كارت شاشة مستقل 8 جيجا. وزنه 2.0 كجم وبطاريته تدوم حتى 12 ساعات تقريبًا. نظام التشغيل: Windows. الضمان 24 شهر.",
+  "price_egp": 78999.0,
+  "old_price_egp": null,
+  "stock_qty": 3,
+  "warranty_months": 24,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 32,
+   "storage_gb": 1024,
+   "storage_type": "ssd",
+   "cpu": "Core i7 الجيل 13",
+   "gpu": "كارت شاشة مستقل 8 جيجا",
+   "screen_inch": 16.0,
+   "weight_kg": 2.0,
+   "battery_hours": 12,
+   "os": "windows"
+  },
+  "created_at": "2026-06-03T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/LAP-DEL-DX9-32-1024-1.svg",
+    "alt_ar": "ديل DX9 لابتوب Core i7 الجيل 13 رام 32 جيجا 1 تيرابايت SSD شاشة 16.0 بوصة - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/LAP-DEL-DX9-32-1024-2.svg",
+    "alt_ar": "ديل DX9 لابتوب Core i7 الجيل 13 رام 32 جيجا 1 تيرابايت SSD شاشة 16.0 بوصة - صورة 2",
+    "sort_order": 1
+   },
+   {
+    "url": "/static/products/LAP-DEL-DX9-32-1024-3.svg",
+    "alt_ar": "ديل DX9 لابتوب Core i7 الجيل 13 رام 32 جيجا 1 تيرابايت SSD شاشة 16.0 بوصة - صورة 3",
+    "sort_order": 2
+   }
+  ]
+ },
+ {
+  "sku": "LAP-ASU-A3-8-256",
+  "seller_email": "seller1@example.com",
+  "category_slug": "laptops",
+  "brand_slug": "asus",
+  "title_ar": "أسوس A3 لابتوب Core i3 الجيل 12 رام 8 جيجا 256 جيجا SSD شاشة 15.6 بوصة",
+  "description_ar": "لابتوب بشاشة 15.6 بوصة ومعالج Core i3 الجيل 12، رام 8 جيجا، تخزين SSD بسعة 256 جيجا، وكارت الشاشة: مدمج. وزنه 1.6 كجم وبطاريته تدوم حتى 7 ساعات تقريبًا. نظام التشغيل: بدون نظام تشغيل (FreeDOS). الضمان 12 شهر.",
+  "price_egp": 14999.0,
+  "old_price_egp": null,
+  "stock_qty": 20,
+  "warranty_months": 12,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 8,
+   "storage_gb": 256,
+   "storage_type": "ssd",
+   "cpu": "Core i3 الجيل 12",
+   "gpu": "مدمج",
+   "screen_inch": 15.6,
+   "weight_kg": 1.6,
+   "battery_hours": 7,
+   "os": "none"
+  },
+  "created_at": "2026-06-14T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/LAP-ASU-A3-8-256-1.svg",
+    "alt_ar": "أسوس A3 لابتوب Core i3 الجيل 12 رام 8 جيجا 256 جيجا SSD شاشة 15.6 بوصة - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/LAP-ASU-A3-8-256-2.svg",
+    "alt_ar": "أسوس A3 لابتوب Core i3 الجيل 12 رام 8 جيجا 256 جيجا SSD شاشة 15.6 بوصة - صورة 2",
+    "sort_order": 1
+   }
+  ]
+ },
+ {
+  "sku": "LAP-ASU-A5R-16-512",
+  "seller_email": "seller3@example.com",
+  "category_slug": "laptops",
+  "brand_slug": "asus",
+  "title_ar": "أسوس A5R لابتوب Ryzen 5 رام 16 جيجا 512 جيجا SSD شاشة 15.6 بوصة",
+  "description_ar": "لابتوب بشاشة 15.6 بوصة ومعالج Ryzen 5، رام 16 جيجا، تخزين SSD بسعة 512 جيجا، وكارت الشاشة: مدمج. وزنه 1.7 كجم وبطاريته تدوم حتى 8 ساعات تقريبًا. نظام التشغيل: Windows. الضمان 24 شهر.",
+  "price_egp": 25999.0,
+  "old_price_egp": 27999.0,
+  "stock_qty": 13,
+  "warranty_months": 24,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 16,
+   "storage_gb": 512,
+   "storage_type": "ssd",
+   "cpu": "Ryzen 5",
+   "gpu": "مدمج",
+   "screen_inch": 15.6,
+   "weight_kg": 1.7,
+   "battery_hours": 8,
+   "os": "windows"
+  },
+  "created_at": "2026-06-22T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/LAP-ASU-A5R-16-512-1.svg",
+    "alt_ar": "أسوس A5R لابتوب Ryzen 5 رام 16 جيجا 512 جيجا SSD شاشة 15.6 بوصة - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/LAP-ASU-A5R-16-512-2.svg",
+    "alt_ar": "أسوس A5R لابتوب Ryzen 5 رام 16 جيجا 512 جيجا SSD شاشة 15.6 بوصة - صورة 2",
+    "sort_order": 1
+   },
+   {
+    "url": "/static/products/LAP-ASU-A5R-16-512-3.svg",
+    "alt_ar": "أسوس A5R لابتوب Ryzen 5 رام 16 جيجا 512 جيجا SSD شاشة 15.6 بوصة - صورة 3",
+    "sort_order": 2
+   }
+  ]
+ },
+ {
+  "sku": "LAP-ASU-AG7-16-1024",
+  "seller_email": "seller3@example.com",
+  "category_slug": "laptops",
+  "brand_slug": "asus",
+  "title_ar": "أسوس AG7 لابتوب Ryzen 7 رام 16 جيجا 1 تيرابايت SSD شاشة 15.6 بوصة",
+  "description_ar": "لابتوب بشاشة 15.6 بوصة ومعالج Ryzen 7، رام 16 جيجا، تخزين SSD بسعة 1 تيرابايت، وكارت الشاشة: كارت شاشة مستقل 6 جيجا. وزنه 2.2 كجم وبطاريته تدوم حتى 6 ساعات تقريبًا. نظام التشغيل: Windows. الضمان 24 شهر.",
+  "price_egp": 52999.0,
+  "old_price_egp": null,
+  "stock_qty": 5,
+  "warranty_months": 24,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 16,
+   "storage_gb": 1024,
+   "storage_type": "ssd",
+   "cpu": "Ryzen 7",
+   "gpu": "كارت شاشة مستقل 6 جيجا",
+   "screen_inch": 15.6,
+   "weight_kg": 2.2,
+   "battery_hours": 6,
+   "os": "windows"
+  },
+  "created_at": "2026-07-08T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/LAP-ASU-AG7-16-1024-1.svg",
+    "alt_ar": "أسوس AG7 لابتوب Ryzen 7 رام 16 جيجا 1 تيرابايت SSD شاشة 15.6 بوصة - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/LAP-ASU-AG7-16-1024-2.svg",
+    "alt_ar": "أسوس AG7 لابتوب Ryzen 7 رام 16 جيجا 1 تيرابايت SSD شاشة 15.6 بوصة - صورة 2",
+    "sort_order": 1
+   },
+   {
+    "url": "/static/products/LAP-ASU-AG7-16-1024-3.svg",
+    "alt_ar": "أسوس AG7 لابتوب Ryzen 7 رام 16 جيجا 1 تيرابايت SSD شاشة 15.6 بوصة - صورة 3",
+    "sort_order": 2
+   }
+  ]
+ },
+ {
+  "sku": "LAP-ASU-AU7-16-512",
+  "seller_email": "seller1@example.com",
+  "category_slug": "laptops",
+  "brand_slug": "asus",
+  "title_ar": "أسوس AU7 لابتوب Core i7 الجيل 13 رام 16 جيجا 512 جيجا SSD شاشة 14.0 بوصة",
+  "description_ar": "لابتوب بشاشة 14.0 بوصة ومعالج Core i7 الجيل 13، رام 16 جيجا، تخزين SSD بسعة 512 جيجا، وكارت الشاشة: مدمج. وزنه 1.1 كجم وبطاريته تدوم حتى 14 ساعات تقريبًا. نظام التشغيل: Windows. الضمان 24 شهر.",
+  "price_egp": 46999.0,
+  "old_price_egp": null,
+  "stock_qty": 7,
+  "warranty_months": 24,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "ram_gb": 16,
+   "storage_gb": 512,
+   "storage_type": "ssd",
+   "cpu": "Core i7 الجيل 13",
+   "gpu": "مدمج",
+   "screen_inch": 14.0,
+   "weight_kg": 1.1,
+   "battery_hours": 14,
+   "os": "windows"
+  },
+  "created_at": "2026-06-30T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/LAP-ASU-AU7-16-512-1.svg",
+    "alt_ar": "أسوس AU7 لابتوب Core i7 الجيل 13 رام 16 جيجا 512 جيجا SSD شاشة 14.0 بوصة - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/LAP-ASU-AU7-16-512-2.svg",
+    "alt_ar": "أسوس AU7 لابتوب Core i7 الجيل 13 رام 16 جيجا 512 جيجا SSD شاشة 14.0 بوصة - صورة 2",
+    "sort_order": 1
+   },
+   {
+    "url": "/static/products/LAP-ASU-AU7-16-512-3.svg",
+    "alt_ar": "أسوس AU7 لابتوب Core i7 الجيل 13 رام 16 جيجا 512 جيجا SSD شاشة 14.0 بوصة - صورة 3",
+    "sort_order": 2
+   }
+  ]
+ },
+ {
+  "sku": "AUD-JBL-E5",
+  "seller_email": "seller4@example.com",
+  "category_slug": "audio",
+  "brand_slug": "jbl",
+  "title_ar": "جي بي إل E5 سماعات أذن لاسلكية",
+  "description_ar": "سماعات أذن لاسلكية من جي بي إل، تتصل بالبلوتوث، وتعمل حتى 24 ساعة تقريبًا بالشحنة، من غير عزل ضوضاء نشط. الضمان 12 شهر.",
+  "price_egp": 1899.0,
+  "old_price_egp": 2199.0,
+  "stock_qty": 40,
+  "warranty_months": 12,
+  "is_returnable": false,
+  "is_active": true,
+  "specs": {
+   "type": "earbuds",
+   "wireless": true,
+   "connector": "bluetooth",
+   "battery_hours": 24,
+   "noise_cancelling": false
+  },
+  "created_at": "2026-06-14T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/AUD-JBL-E5-1.svg",
+    "alt_ar": "جي بي إل E5 سماعات أذن لاسلكية - صورة 1",
+    "sort_order": 0
+   }
+  ]
+ },
+ {
+  "sku": "AUD-JBL-E7",
+  "seller_email": "seller4@example.com",
+  "category_slug": "audio",
+  "brand_slug": "jbl",
+  "title_ar": "جي بي إل E7 سماعات أذن لاسلكية عزل ضوضاء",
+  "description_ar": "سماعات أذن لاسلكية من جي بي إل، تتصل بالبلوتوث، وتعمل حتى 30 ساعة تقريبًا بالشحنة، وتدعم عزل الضوضاء. الضمان 12 شهر.",
+  "price_egp": 3499.0,
+  "old_price_egp": null,
+  "stock_qty": 18,
+  "warranty_months": 12,
+  "is_returnable": false,
+  "is_active": true,
+  "specs": {
+   "type": "earbuds",
+   "wireless": true,
+   "connector": "bluetooth",
+   "battery_hours": 30,
+   "noise_cancelling": true
+  },
+  "created_at": "2026-07-14T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/AUD-JBL-E7-1.svg",
+    "alt_ar": "جي بي إل E7 سماعات أذن لاسلكية عزل ضوضاء - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/AUD-JBL-E7-2.svg",
+    "alt_ar": "جي بي إل E7 سماعات أذن لاسلكية عزل ضوضاء - صورة 2",
+    "sort_order": 1
+   }
+  ]
+ },
+ {
+  "sku": "AUD-JBL-H4",
+  "seller_email": "seller4@example.com",
+  "category_slug": "audio",
+  "brand_slug": "jbl",
+  "title_ar": "جي بي إل H4 سماعة رأس",
+  "description_ar": "سماعة رأس من جي بي إل، تتصل بالبلوتوث، وتعمل حتى 35 ساعة تقريبًا بالشحنة، من غير عزل ضوضاء نشط. الضمان 12 شهر.",
+  "price_egp": 2299.0,
+  "old_price_egp": null,
+  "stock_qty": 26,
+  "warranty_months": 12,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "type": "headphones",
+   "wireless": true,
+   "connector": "bluetooth",
+   "battery_hours": 35,
+   "noise_cancelling": false
+  },
+  "created_at": "2026-07-16T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/AUD-JBL-H4-1.svg",
+    "alt_ar": "جي بي إل H4 سماعة رأس - صورة 1",
+    "sort_order": 0
+   }
+  ]
+ },
+ {
+  "sku": "AUD-JBL-S2",
+  "seller_email": "seller3@example.com",
+  "category_slug": "audio",
+  "brand_slug": "jbl",
+  "title_ar": "جي بي إل S2 مكبر صوت بلوتوث",
+  "description_ar": "مكبر صوت بلوتوث من جي بي إل، تتصل بالبلوتوث، وتعمل حتى 12 ساعة تقريبًا بالشحنة، من غير عزل ضوضاء نشط. الضمان 12 شهر.",
+  "price_egp": 2999.0,
+  "old_price_egp": null,
+  "stock_qty": 19,
+  "warranty_months": 12,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "type": "speaker",
+   "wireless": true,
+   "connector": "bluetooth",
+   "battery_hours": 12
+  },
+  "created_at": "2026-06-09T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/AUD-JBL-S2-1.svg",
+    "alt_ar": "جي بي إل S2 مكبر صوت بلوتوث - صورة 1",
+    "sort_order": 0
+   }
+  ]
+ },
+ {
+  "sku": "AUD-JBL-S9",
+  "seller_email": "seller3@example.com",
+  "category_slug": "audio",
+  "brand_slug": "jbl",
+  "title_ar": "جي بي إل S9 مكبر صوت بلوتوث",
+  "description_ar": "مكبر صوت بلوتوث من جي بي إل، تتصل بالبلوتوث، وتعمل حتى 20 ساعة تقريبًا بالشحنة، من غير عزل ضوضاء نشط. الضمان 12 شهر.",
+  "price_egp": 6499.0,
+  "old_price_egp": 7200.0,
+  "stock_qty": 6,
+  "warranty_months": 12,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "type": "speaker",
+   "wireless": true,
+   "connector": "bluetooth",
+   "battery_hours": 20
+  },
+  "created_at": "2026-07-15T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/AUD-JBL-S9-1.svg",
+    "alt_ar": "جي بي إل S9 مكبر صوت بلوتوث - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/AUD-JBL-S9-2.svg",
+    "alt_ar": "جي بي إل S9 مكبر صوت بلوتوث - صورة 2",
+    "sort_order": 1
+   }
+  ]
+ },
+ {
+  "sku": "AUD-BAS-B9",
+  "seller_email": "seller2@example.com",
+  "category_slug": "audio",
+  "brand_slug": "baseus",
+  "title_ar": "بيسوس B9 سماعات أذن لاسلكية عزل ضوضاء",
+  "description_ar": "سماعات أذن لاسلكية من بيسوس، تتصل بالبلوتوث، وتعمل حتى 10 ساعة تقريبًا بالشحنة، وتدعم عزل الضوضاء. الضمان 12 شهر.",
+  "price_egp": 2499.0,
+  "old_price_egp": null,
+  "stock_qty": 9,
+  "warranty_months": 12,
+  "is_returnable": false,
+  "is_active": true,
+  "specs": {
+   "type": "earbuds",
+   "wireless": true,
+   "connector": "bluetooth",
+   "battery_hours": 10,
+   "noise_cancelling": true
+  },
+  "created_at": "2026-06-12T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/AUD-BAS-B9-1.svg",
+    "alt_ar": "بيسوس B9 سماعات أذن لاسلكية عزل ضوضاء - صورة 1",
+    "sort_order": 0
+   }
+  ]
+ },
+ {
+  "sku": "AUD-BAS-H9",
+  "seller_email": "seller2@example.com",
+  "category_slug": "audio",
+  "brand_slug": "baseus",
+  "title_ar": "بيسوس H9 سماعة رأس عزل ضوضاء",
+  "description_ar": "سماعة رأس من بيسوس، تتصل بالبلوتوث، وتعمل حتى 40 ساعة تقريبًا بالشحنة، وتدعم عزل الضوضاء. الضمان 12 شهر.",
+  "price_egp": 3299.0,
+  "old_price_egp": null,
+  "stock_qty": 5,
+  "warranty_months": 12,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "type": "headphones",
+   "wireless": true,
+   "connector": "bluetooth",
+   "battery_hours": 40,
+   "noise_cancelling": true
+  },
+  "created_at": "2026-06-13T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/AUD-BAS-H9-1.svg",
+    "alt_ar": "بيسوس H9 سماعة رأس عزل ضوضاء - صورة 1",
+    "sort_order": 0
+   },
+   {
+    "url": "/static/products/AUD-BAS-H9-2.svg",
+    "alt_ar": "بيسوس H9 سماعة رأس عزل ضوضاء - صورة 2",
+    "sort_order": 1
+   }
+  ]
+ },
+ {
+  "sku": "AUD-BAS-W3",
+  "seller_email": "seller4@example.com",
+  "category_slug": "audio",
+  "brand_slug": "baseus",
+  "title_ar": "بيسوس W3 سماعة رأس سلكية",
+  "description_ar": "سماعة رأس سلكية من بيسوس، توصيل سلكي عبر مدخل 3.5 مم، من غير عزل ضوضاء نشط. الضمان 12 شهر.",
+  "price_egp": 649.0,
+  "old_price_egp": null,
+  "stock_qty": 7,
+  "warranty_months": 12,
+  "is_returnable": true,
+  "is_active": false,
+  "specs": {
+   "type": "headphones",
+   "wireless": false,
+   "connector": "3.5mm",
+   "noise_cancelling": false
+  },
+  "created_at": "2026-06-24T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/AUD-BAS-W3-1.svg",
+    "alt_ar": "بيسوس W3 سماعة رأس سلكية - صورة 1",
+    "sort_order": 0
+   }
+  ]
+ },
+ {
+  "sku": "AUD-ANK-S3",
+  "seller_email": "seller4@example.com",
+  "category_slug": "audio",
+  "brand_slug": "anker",
+  "title_ar": "أنكر S3 سماعات أذن لاسلكية عزل ضوضاء",
+  "description_ar": "سماعات أذن لاسلكية من أنكر، تتصل بالبلوتوث، وتعمل حتى 9 ساعة تقريبًا بالشحنة، وتدعم عزل الضوضاء. الضمان 18 شهر.",
+  "price_egp": 2199.0,
+  "old_price_egp": null,
+  "stock_qty": 33,
+  "warranty_months": 18,
+  "is_returnable": false,
+  "is_active": true,
+  "specs": {
+   "type": "earbuds",
+   "wireless": true,
+   "connector": "bluetooth",
+   "battery_hours": 9,
+   "noise_cancelling": true
+  },
+  "created_at": "2026-07-22T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/AUD-ANK-S3-1.svg",
+    "alt_ar": "أنكر S3 سماعات أذن لاسلكية عزل ضوضاء - صورة 1",
+    "sort_order": 0
+   }
+  ]
+ },
+ {
+  "sku": "AUD-ANK-S1",
+  "seller_email": "seller4@example.com",
+  "category_slug": "audio",
+  "brand_slug": "anker",
+  "title_ar": "أنكر S1 سماعات أذن لاسلكية",
+  "description_ar": "سماعات أذن لاسلكية من أنكر، تتصل بالبلوتوث، وتعمل حتى 6 ساعة تقريبًا بالشحنة، من غير عزل ضوضاء نشط. الضمان 18 شهر.",
+  "price_egp": 899.0,
+  "old_price_egp": null,
+  "stock_qty": 0,
+  "warranty_months": 18,
+  "is_returnable": false,
+  "is_active": true,
+  "specs": {
+   "type": "earbuds",
+   "wireless": true,
+   "connector": "bluetooth",
+   "battery_hours": 6,
+   "noise_cancelling": false
+  },
+  "created_at": "2026-05-30T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/AUD-ANK-S1-1.svg",
+    "alt_ar": "أنكر S1 سماعات أذن لاسلكية - صورة 1",
+    "sort_order": 0
+   }
+  ]
+ },
+ {
+  "sku": "AUD-ANK-C20",
+  "seller_email": "seller1@example.com",
+  "category_slug": "audio",
+  "brand_slug": "anker",
+  "title_ar": "أنكر C20 شاحن حائط 20 وات",
+  "description_ar": "شاحن حائط 20 وات بمخرج USB-C من أنكر. الضمان 18 شهر.",
+  "price_egp": 450.0,
+  "old_price_egp": null,
+  "stock_qty": 80,
+  "warranty_months": 18,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "type": "charger",
+   "wireless": false,
+   "connector": "usb_c"
+  },
+  "created_at": "2026-05-20T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/AUD-ANK-C20-1.svg",
+    "alt_ar": "أنكر C20 شاحن حائط 20 وات - صورة 1",
+    "sort_order": 0
+   }
+  ]
+ },
+ {
+  "sku": "AUD-ANK-C65",
+  "seller_email": "seller1@example.com",
+  "category_slug": "audio",
+  "brand_slug": "anker",
+  "title_ar": "أنكر C65 شاحن 65 وات GaN",
+  "description_ar": "شاحن 65 وات GaN بمخرج USB-C من أنكر. الضمان 18 شهر.",
+  "price_egp": 1250.0,
+  "old_price_egp": null,
+  "stock_qty": 35,
+  "warranty_months": 18,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "type": "charger",
+   "wireless": false,
+   "connector": "usb_c"
+  },
+  "created_at": "2026-07-12T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/AUD-ANK-C65-1.svg",
+    "alt_ar": "أنكر C65 شاحن 65 وات GaN - صورة 1",
+    "sort_order": 0
+   }
+  ]
+ },
+ {
+  "sku": "AUD-ANK-P10",
+  "seller_email": "seller2@example.com",
+  "category_slug": "audio",
+  "brand_slug": "anker",
+  "title_ar": "أنكر P10 باور بانك 10000 مللي أمبير",
+  "description_ar": "باور بانك 10000 مللي أمبير بمخرج USB-C من أنكر. الضمان 18 شهر.",
+  "price_egp": 1150.0,
+  "old_price_egp": null,
+  "stock_qty": 48,
+  "warranty_months": 18,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "type": "power_bank",
+   "wireless": false,
+   "connector": "usb_c"
+  },
+  "created_at": "2026-06-09T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/AUD-ANK-P10-1.svg",
+    "alt_ar": "أنكر P10 باور بانك 10000 مللي أمبير - صورة 1",
+    "sort_order": 0
+   }
+  ]
+ },
+ {
+  "sku": "AUD-ANK-P20",
+  "seller_email": "seller3@example.com",
+  "category_slug": "audio",
+  "brand_slug": "anker",
+  "title_ar": "أنكر P20 باور بانك 20000 مللي أمبير",
+  "description_ar": "باور بانك 20000 مللي أمبير بمخرج USB-C من أنكر. الضمان 18 شهر.",
+  "price_egp": 1990.0,
+  "old_price_egp": 2290.0,
+  "stock_qty": 27,
+  "warranty_months": 18,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "type": "power_bank",
+   "wireless": false,
+   "connector": "usb_c"
+  },
+  "created_at": "2026-07-17T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/AUD-ANK-P20-1.svg",
+    "alt_ar": "أنكر P20 باور بانك 20000 مللي أمبير - صورة 1",
+    "sort_order": 0
+   }
+  ]
+ },
+ {
+  "sku": "AUD-ANK-U1",
+  "seller_email": "seller4@example.com",
+  "category_slug": "audio",
+  "brand_slug": "anker",
+  "title_ar": "أنكر U1 كابل USB-C طول 1.8 متر",
+  "description_ar": "كابل USB-C طول 1.8 متر من أنكر. الضمان 6 شهر.",
+  "price_egp": 280.0,
+  "old_price_egp": null,
+  "stock_qty": 120,
+  "warranty_months": 6,
+  "is_returnable": true,
+  "is_active": true,
+  "specs": {
+   "type": "cable",
+   "wireless": false,
+   "connector": "usb_c"
+  },
+  "created_at": "2026-05-18T12:00:00+00:00",
+  "images": [
+   {
+    "url": "/static/products/AUD-ANK-U1-1.svg",
+    "alt_ar": "أنكر U1 كابل USB-C طول 1.8 متر - صورة 1",
+    "sort_order": 0
+   }
+  ]
+ }
+]
