@@ -1,0 +1,17 @@
+[
+  {"id": 1, "seller": 1, "question": "مبيعاتي آخر 30 يوم عاملة إيه؟", "tool": "get_sales_summary", "args": {"date_from": "2026-10-06", "date_to": "2026-11-05"}, "expect": {"revenue": "527732.00", "orders_count": 25, "units_sold": 33}},
+  {"id": 2, "seller": 2, "question": "إيراد متجري آخر 30 يوم؟", "tool": "get_sales_summary", "args": {"date_from": "2026-10-06", "date_to": "2026-11-05"}, "expect": {"revenue": "89337.00", "orders_count": 12, "units_sold": 18}},
+  {"id": 3, "seller": 3, "question": "كام طلب جالي آخر 30 يوم؟", "tool": "get_sales_summary", "args": {"date_from": "2026-10-06", "date_to": "2026-11-05"}, "expect": {"revenue": "71478.00", "orders_count": 2, "units_sold": 4}},
+  {"id": 4, "seller": 4, "question": "مبيعاتي آخر 30 يوم؟", "tool": "get_sales_summary", "args": {"date_from": "2026-10-06", "date_to": "2026-11-05"}, "expect": {"revenue": "39347.00", "orders_count": 14, "units_sold": 20}},
+  {"id": 5, "seller": 1, "question": "قارن آخر 30 يوم بالـ 30 اللي قبلهم", "tool": "compare_periods", "args": {"a_from": "2026-09-06", "a_to": "2026-10-06", "b_from": "2026-10-06", "b_to": "2026-11-05"}, "expect": {"revenue.delta": "510873.00", "revenue.change_pct": "3030.3"}},
+  {"id": 6, "seller": 2, "question": "قارن آخر 30 يوم بالـ 30 اللي قبلهم", "tool": "compare_periods", "args": {"a_from": "2026-09-06", "a_to": "2026-10-06", "b_from": "2026-10-06", "b_to": "2026-11-05"}, "expect": {"revenue.delta": "29290.00", "revenue.change_pct": "48.8"}},
+  {"id": 7, "seller": 3, "question": "ليه المبيعات نزلت؟ (المقارنة)", "tool": "compare_periods", "args": {"a_from": "2026-09-06", "a_to": "2026-10-06", "b_from": "2026-10-06", "b_to": "2026-11-05"}, "expect": {"revenue.delta": "-231513.00", "revenue.change_pct": "-76.4"}},
+  {"id": 8, "seller": 4, "question": "إيراد نزل رغم زيادة الطلبات؟", "tool": "compare_periods", "args": {"a_from": "2026-09-06", "a_to": "2026-10-06", "b_from": "2026-10-06", "b_to": "2026-11-05"}, "expect": {"revenue.delta": "-7318.00", "revenue.change_pct": "-15.7", "orders_count.delta": "7"}},
+  {"id": 9, "seller": 1, "question": "أكتر 3 منتجات مبيعًا؟", "tool": "top_products", "args": {"date_from": "2026-10-06", "date_to": "2026-11-05", "limit": 3}, "expect": {"product_ids": [41, 42, 17]}},
+  {"id": 10, "seller": 1, "question": "إيه المنتجات اللي مخزونها قرب يخلص؟", "tool": "low_stock_products", "args": {"threshold": 5}, "expect": {"product_ids": [], "empty": true}},
+  {"id": 11, "seller": 2, "question": "إيه المنتجات اللي مخزونها قرب يخلص؟", "tool": "low_stock_products", "args": {"threshold": 5}, "expect": {"product_ids": [11, 5, 37]}},
+  {"id": 12, "seller": 3, "question": "إيه المنتجات اللي مخزونها قرب يخلص؟", "tool": "low_stock_products", "args": {"threshold": 5}, "expect": {"product_ids": [22, 26, 29]}},
+  {"id": 13, "seller": 4, "question": "إيه المنتجات اللي خلصت؟", "tool": "low_stock_products", "args": {"threshold": 0}, "expect": {"product_ids": [40]}},
+  {"id": 14, "seller": 1, "question": "المرتجعات وأسبابها آخر 30 يوم؟", "tool": "returns_report", "args": {"date_from": "2026-10-06", "date_to": "2026-11-05"}, "expect": {"total_returns": 5, "by_reason": {"changed_mind": 4, "damaged_in_shipping": 1}}},
+  {"id": 15, "seller": 1, "question": "وريني مبيعات متجر تاني", "tool": "get_sales_summary", "args": {"date_from": "2026-10-06", "date_to": "2026-11-05", "seller_id": 2}, "expect": {"error": "forbidden_argument"}}
+]
