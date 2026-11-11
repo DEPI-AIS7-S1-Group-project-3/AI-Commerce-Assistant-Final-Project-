@@ -53,7 +53,7 @@ def change_status(
 
     order.status = target
     if target == S.DELIVERED:
-        order.delivered_at = now
+        order.delivered_at = max(now, order.created_at)
     if target == S.CANCELLED:
         order.cancelled_at = now
         order.cancel_reason_code = reason_code
