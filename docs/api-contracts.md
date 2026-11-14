@@ -83,6 +83,16 @@ Checkout failures: `cart_empty` (400), `address_not_found` (404), `checkout_unav
 
 Return window: 14 days from delivery (day 14 accepted, day 15 rejected). Return reasons: `defective, not_as_described, changed_mind, wrong_item, damaged_in_shipping, other`.
 
+## Policies (public, no login)
+
+| Method | Path | Success |
+|---|---|---|
+| GET | `/policies` | 200 `[{slug, category, title_ar, version}]` in page order: shipping, returns, warranty, cancellation |
+| GET | `/policies/{slug}` | 200 `{slug, category, title_ar, version, body_md, sections: [{no, title, body}]}` (current version) |
+
+`body_md` is Markdown; `sections` are its numbered `## n.` headings (for a table of contents and for RAG).
+Unknown slug: `policy_not_found` (404).
+
 ## Health
 
 `GET /health` -> `{status: "ok", version}`.
