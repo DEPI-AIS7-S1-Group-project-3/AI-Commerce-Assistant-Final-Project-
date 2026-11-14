@@ -18,6 +18,7 @@ from ai_commerce_marketplace.schemas.order import (
 def _items_out(items: list[OrderItem]) -> list[OrderItemOut]:
     return [
         OrderItemOut(
+            id=i.id,
             product_id=i.product_id,
             title=i.product_title_snapshot,
             qty=i.qty,
@@ -40,6 +41,7 @@ def _order_fields(order: Order, items: list[OrderItem]) -> dict:
         shipping_fee_egp=order.shipping_fee_egp,
         total_egp=order.total_egp,
         expected_delivery_at=order.expected_delivery_at,
+        delivered_at=order.delivered_at,
         created_at=order.created_at,
         items=_items_out(items),
     )

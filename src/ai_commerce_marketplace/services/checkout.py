@@ -58,6 +58,7 @@ def _to_out(order: Order, items: list[OrderItem]) -> OrderOut:
         created_at=order.created_at,
         items=[
             OrderItemOut(
+                id=i.id,
                 product_id=i.product_id,
                 title=i.product_title_snapshot,
                 qty=i.qty,

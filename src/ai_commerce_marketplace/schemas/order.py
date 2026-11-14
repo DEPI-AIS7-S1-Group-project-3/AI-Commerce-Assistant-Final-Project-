@@ -13,6 +13,7 @@ class CheckoutIn(BaseModel):
 
 
 class OrderItemOut(BaseModel):
+    id: int  # order_item_id, needed to request a return
     product_id: int
     title: str
     qty: int
@@ -31,6 +32,7 @@ class OrderOut(BaseModel):
     shipping_fee_egp: Decimal
     total_egp: Decimal
     expected_delivery_at: datetime
+    delivered_at: datetime | None = None  # start of the 14-day return window
     created_at: datetime
     items: list[OrderItemOut]
 
