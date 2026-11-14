@@ -83,6 +83,21 @@ Checkout failures: `cart_empty` (400), `address_not_found` (404), `checkout_unav
 
 Return window: 14 days from delivery (day 14 accepted, day 15 rejected). Return reasons: `defective, not_as_described, changed_mind, wrong_item, damaged_in_shipping, other`.
 
+## Reviews
+
+| Method | Path | Auth | Notes |
+|---|---|---|---|
+| GET | `/products/{id}/reviews?limit=10&offset=0` | public | `{product_id, rating_avg, rating_count, distribution: {"1".."5": n}, total, reviews: [ReviewOut]}`, newest first, `limit` 1..50 |
+| POST | `/reviews` | customer | body `{order_item_id, rating: 1..5, body?: max 2000}` -> 201 `ReviewOut` |
+| GET | `/reviews/mine` | customer | the customer's reviews |
+| GET | `/reviews/reviewable` | customer | delivered items not reviewed yet: `[{order_id, order_item_id, product_id, title, delivered_at}]` |
+
+`ReviewOut`: `{id, product_id, order_item_id, rating, body, author_name (first name only), is_verified_purchase, created_at}`.
+Only the buyer can review, only after delivery (returned items too), once per order item. Writing a
+review updates `products.rating_avg/rating_count` and `sellers.rating`.
+Errors: `order_item_not_found` (404, also for someone else's item), `not_delivered` (409),
+`review_exists` (409), `product_not_found` (404), sellers get `forbidden` (403).
+
 ## Policies (public, no login)
 
 | Method | Path | Success |
