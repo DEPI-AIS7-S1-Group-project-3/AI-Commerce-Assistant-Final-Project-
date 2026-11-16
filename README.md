@@ -39,7 +39,7 @@ make setup                       # install dependencies
 uv run pre-commit install        # one time per machine
 make up                          # start PostgreSQL 16
 make migrate                     # create all tables
-make seed                        # load demo data
+make seed                        # load demo data (see docs/demo-data.md for logins)
 ```
 
 Check that the tables exist:
@@ -130,7 +130,9 @@ src/ai_commerce_marketplace/
   nlp/           Arabic text normalization for search
 migrations/      Alembic environment and versions
 tests/           pytest suite (real PostgreSQL)
-docs/            architecture.md, api-contracts.md, development-guide.md
+docs/            architecture.md, api-contracts.md, development-guide.md, demo-data.md
+data/raw/        seed data (JSON); scripts/seed_generator/ regenerates part of it
+static/products/ placeholder product images
 .github/         CI workflow (ruff, mypy, pytest)
 docker-compose.yml
 ```

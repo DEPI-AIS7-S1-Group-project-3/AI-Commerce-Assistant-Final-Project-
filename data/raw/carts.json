@@ -1,0 +1,116 @@
+[
+ {
+  "customer_email": "customer01@example.com",
+  "updated_at": "2026-10-30T19:47:14+00:00",
+  "items": [
+   {
+    "product_sku": "LAP-LEN-L5R-8-512",
+    "qty": 2,
+    "added_at": "2026-11-03T04:38:27+00:00"
+   },
+   {
+    "product_sku": "AUD-ANK-U1",
+    "qty": 1,
+    "added_at": "2026-11-01T03:25:32+00:00"
+   }
+  ]
+ },
+ {
+  "customer_email": "customer02@example.com",
+  "updated_at": "2026-11-02T03:41:53+00:00",
+  "items": []
+ },
+ {
+  "customer_email": "customer03@example.com",
+  "updated_at": "2026-11-01T06:02:06+00:00",
+  "items": []
+ },
+ {
+  "customer_email": "customer04@example.com",
+  "updated_at": "2026-11-02T06:43:43+00:00",
+  "items": []
+ },
+ {
+  "customer_email": "customer05@example.com",
+  "updated_at": "2026-11-02T20:33:46+00:00",
+  "items": []
+ },
+ {
+  "customer_email": "customer06@example.com",
+  "updated_at": "2026-11-04T03:07:36+00:00",
+  "items": [
+   {
+    "product_sku": "AUD-BAS-B9",
+    "qty": 2,
+    "added_at": "2026-11-01T15:07:12+00:00"
+   },
+   {
+    "product_sku": "AUD-JBL-S2",
+    "qty": 1,
+    "added_at": "2026-10-30T00:07:50+00:00"
+   },
+   {
+    "product_sku": "MOB-XIA-D14Plus-8-256",
+    "qty": 1,
+    "added_at": "2026-11-02T13:17:24+00:00"
+   }
+  ]
+ },
+ {
+  "customer_email": "customer07@example.com",
+  "updated_at": "2026-10-30T07:14:44+00:00",
+  "items": []
+ },
+ {
+  "customer_email": "customer08@example.com",
+  "updated_at": "2026-11-02T10:53:27+00:00",
+  "items": [
+   {
+    "product_sku": "MOB-OPP-A60-6-128",
+    "qty": 2,
+    "added_at": "2026-10-29T21:14:17+00:00"
+   },
+   {
+    "product_sku": "MOB-SAM-D350-8-256",
+    "qty": 2,
+    "added_at": "2026-10-31T03:38:46+00:00"
+   },
+   {
+    "product_sku": "LAP-HP-H3-8-256",
+    "qty": 1,
+    "added_at": "2026-11-03T12:01:06+00:00"
+   }
+  ]
+ },
+ {
+  "customer_email": "customer09@example.com",
+  "updated_at": "2026-11-02T03:48:52+00:00",
+  "items": []
+ },
+ {
+  "customer_email": "customer10@example.com",
+  "updated_at": "2026-10-30T11:35:45+00:00",
+  "items": []
+ },
+ {
+  "customer_email": "customer11@example.com",
+  "updated_at": "2026-10-31T14:44:09+00:00",
+  "items": [
+   {
+    "product_sku": "AUD-ANK-C65",
+    "qty": 1,
+    "added_at": "2026-10-30T21:30:29+00:00"
+   },
+   {
+    "product_sku": "LAP-DEL-DX9-32-1024",
+    "qty": 1,
+    "added_at": "2026-10-29T16:44:32+00:00"
+   }
+  ]
+ },
+ {
+  "customer_email": "customer12@example.com",
+  "updated_at": "2026-11-01T12:07:53+00:00",
+  "items": []
+ }
+]
