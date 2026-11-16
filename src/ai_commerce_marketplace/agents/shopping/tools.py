@@ -12,6 +12,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from ai_commerce_marketplace.core.exceptions import AppError
+from ai_commerce_marketplace.services import catalog_details
 
 MAX_LIMIT = 20
 
@@ -57,9 +58,56 @@ def _safe(fn: Callable[[], Any]) -> dict[str, Any]:
         return {"ok": False, "error": e.code, "message": e.message}
 
 
+def _product_id(value: Any) -> int:
+    """Accept 12 or "12"; reject bools, floats, text and non-positive numbers."""
+    if isinstance(value, str) and value.strip().isdigit():
+        value = int(value.strip())
+    if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+        raise ToolInputError("invalid_product_id", f"Not a valid product id: {value!r}")
+    return value
+
+
+def _product_ids(values: Any) -> list[int]:
+    if not isinstance(values, list | tuple):
+        raise ToolInputError("invalid_product_ids", "product_ids must be a list of product ids")
+    return [_product_id(v) for v in values]
+
+
+# ---- tools (Person B) ----
+def product_get(ctx: ToolContext, product_id: Any) -> dict[str, Any]:
+    def run() -> dict[str, Any]:
+        return {"product": catalog_details.get_product(ctx.session, _product_id(product_id))}
+
+    return _safe(run)
+
+
+def products_compare(ctx: ToolContext, product_ids: Any) -> dict[str, Any]:
+    def run() -> dict[str, Any]:
+        return catalog_details.compare_products(ctx.session, _product_ids(product_ids))
+
+    return _safe(run)
+
+
 # What the LLM may fill in. ctx is never listed here.
 # Each entry: {"fn": callable, "description": str, "params": [names]}
-REGISTRY: dict[str, dict[str, Any]] = {}
+REGISTRY: dict[str, dict[str, Any]] = {
+    "product_get": {
+        "fn": product_get,
+        "description": (
+            "Full details of one product: price, specs, warranty, returnable, stock, rating, "
+            "images. in_stock=false means not available now."
+        ),
+        "params": ["product_id"],
+    },
+    "products_compare": {
+        "fn": products_compare,
+        "description": (
+            "Compare 2 to 4 products from the same category. Returns each product's details, "
+            "the spec_keys to compare on, and missing_ids for ids that do not exist."
+        ),
+        "params": ["product_ids"],
+    },
+}
 
 
 def call_tool(ctx: ToolContext, name: str, args: dict[str, Any]) -> dict[str, Any]:

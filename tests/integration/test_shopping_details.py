@@ -2,6 +2,7 @@ from decimal import Decimal
 
 import pytest
 
+from ai_commerce_marketplace.agents.shopping.tools import REGISTRY, ToolContext, call_tool
 from ai_commerce_marketplace.core.exceptions import AppError, NotFoundError
 from ai_commerce_marketplace.database.models import ProductImage
 from ai_commerce_marketplace.services.catalog_details import compare_products, get_product
@@ -152,3 +153,75 @@ def test_compare_rejects_mixed_categories(session, mobiles):
     with pytest.raises(AppError) as e:
         compare_products(session, [a.id, b.id])
     assert e.value.code == "mixed_categories"
+
+
+# ---- tools ----
+@pytest.fixture
+def ctx(session):
+    return ToolContext(session=session)
+
+
+def test_product_get_tool(session, ctx):
+    p = f.make_product(session, price_egp=Decimal("9999.00"))
+    r = call_tool(ctx, "product_get", {"product_id": p.id})
+    assert r["ok"] is True
+    assert r["product"]["id"] == p.id
+    assert r["product"]["price_egp"] == "9999.00"  # JSON-safe, exact
+
+
+def test_product_get_accepts_id_as_text(session, ctx):
+    p = f.make_product(session)
+    r = call_tool(ctx, "product_get", {"product_id": f" {p.id} "})
+    assert r["ok"] is True
+    assert r["product"]["id"] == p.id
+
+
+@pytest.mark.parametrize("bad", ["abc", "12.5", 12.5, True, 0, -3, None])
+def test_product_get_rejects_bad_ids(ctx, bad):
+    r = call_tool(ctx, "product_get", {"product_id": bad})
+    assert r == {"ok": False, "error": "invalid_product_id", "message": r["message"]}
+
+
+def test_product_get_missing_product(ctx):
+    r = call_tool(ctx, "product_get", {"product_id": 999_999})
+    assert r["ok"] is False
+    assert r["error"] == "product_not_found"
+
+
+def test_products_compare_tool(session, ctx, mobiles):
+    a = f.make_product(session, category_id=mobiles.id)
+    b = f.make_product(session, category_id=mobiles.id)
+    r = call_tool(ctx, "products_compare", {"product_ids": [a.id, str(b.id), 999_999]})
+    assert r["ok"] is True
+    assert [p["id"] for p in r["products"]] == [a.id, b.id]
+    assert r["spec_keys"] == MOBILE_KEYS
+    assert r["missing_ids"] == [999_999]
+
+
+def test_products_compare_needs_a_list(ctx):
+    r = call_tool(ctx, "products_compare", {"product_ids": "1,2"})
+    assert r["error"] == "invalid_product_ids"
+
+
+def test_products_compare_service_error_is_returned(session, ctx, mobiles):
+    a = f.make_product(session, category_id=mobiles.id)
+    r = call_tool(ctx, "products_compare", {"product_ids": [a.id, 999_999]})
+    assert r["ok"] is False
+    assert r["error"] == "not_enough_products"
+    assert "999999" in r["message"]
+
+
+@pytest.mark.parametrize("tool", ["product_get", "products_compare"])
+def test_llm_cannot_pass_customer_id(ctx, tool):
+    args = {"product_id": 1} if tool == "product_get" else {"product_ids": [1, 2]}
+    r = call_tool(ctx, tool, {**args, "customer_id": 7})
+    assert r["error"] == "forbidden_argument"
+
+
+def test_missing_args_do_not_raise(ctx):
+    assert call_tool(ctx, "product_get", {})["error"] == "bad_arguments"
+
+
+def test_registry_never_exposes_identity():
+    for spec in REGISTRY.values():
+        assert not {"customer_id", "ctx", "session"} & set(spec["params"])
