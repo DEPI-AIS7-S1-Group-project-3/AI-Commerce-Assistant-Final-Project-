@@ -33,16 +33,16 @@ export default function RecommendationTable({ products, reasons = defaultReasons
         const reason = reasons[i]?.[lang] ?? defaultReasons[i % defaultReasons.length][lang];
         return (
           <li key={p.id} className="grid gap-3 py-4 sm:grid-cols-[2rem_1fr_auto] sm:items-center">
-            <span className="font-display text-2xl text-neon">{i + 1}</span>
+            <span className="font-display text-2xl text-accent">{i + 1}</span>
             <div className="space-y-1">
-              <Link to={`/products/${p.id}`} className="font-semibold hover:text-neon">
+              <Link to={`/products/${p.id}`} className="font-semibold hover:text-accent">
                 {productTitle(p, lang)}
               </Link>
               <p className="text-xs text-ink-soft">
                 {brandName(p.brand, lang)} · {t("as.sellerlabel")}: {sellerName(p.seller, lang)}
               </p>
               <p className="text-sm text-ink-soft">{reason}</p>
-              <p className={`text-xs font-medium ${low ? "text-warn" : "text-neon"}`}>
+              <p className={`text-xs font-medium ${low ? "text-warn" : "text-accent"}`}>
                 {low ? (lang === "ar" ? `يتبقى ${p.stock_qty} قطع` : `Only ${p.stock_qty} left`) : t("stock.in")}
               </p>
             </div>

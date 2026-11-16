@@ -14,7 +14,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+/lib/
 lib64/
 parts/
 sdist/
@@ -218,3 +218,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+SHOPPING_AGENT_HANDOFF.md 
+HANDOFF.md
+
+frontend/tsconfig.tsbuildinfo

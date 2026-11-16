@@ -4,7 +4,7 @@ export default function TracePanel({ steps }: { steps: { name: string; ms: numbe
   const { t } = useI18n();
   const total = steps.reduce((sum, s) => sum + s.ms, 0);
   return (
-    <div dir="ltr" className="mt-3 rounded-ctl border border-line bg-black p-4 font-mono text-xs text-neon">
+    <div dir="ltr" data-theme="dark" className="mt-3 rounded-ctl border border-line bg-black p-4 font-mono text-xs text-neon">
       <p className="mb-2 text-ink-soft">{t("as.trace.note")}</p>
       <ul className="space-y-1">
         {steps.map((s) => (

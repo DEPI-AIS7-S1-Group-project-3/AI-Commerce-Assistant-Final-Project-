@@ -27,8 +27,8 @@ export default function HomePage() {
     <div className="space-y-16">
       <section className="grid items-end gap-8 border-b border-line pb-12 md:grid-cols-[1.4fr_1fr]">
         <div className="space-y-5">
-          <p className="text-sm font-semibold text-neon">{t("tagline")}</p>
-          <h1 className="text-4xl leading-tight sm:text-6xl">
+          <p className="text-sm font-semibold text-accent">{t("tagline")}</p>
+          <h1 className="text-4xl leading-[1.4] sm:text-6xl sm:leading-[1.4]">
             {t("home.title1")}
             <br />
             {t("home.title2")}
@@ -63,13 +63,13 @@ export default function HomePage() {
             <Link
               key={slug}
               to={`/products?category=${slug}`}
-              className="card group flex items-start justify-between gap-4 p-6 transition-colors hover:border-neon"
+              className="card group flex items-start justify-between gap-4 p-6 transition-colors hover:border-accent"
             >
               <div className="space-y-1">
                 <h3 className="text-xl">{t(label)}</h3>
                 <p className="text-sm text-ink-soft">{t(hint)}</p>
               </div>
-              <Icon className="h-7 w-7 shrink-0 text-neon" aria-hidden />
+              <Icon className="h-7 w-7 shrink-0 text-accent" aria-hidden />
             </Link>
           ))}
         </div>
@@ -80,7 +80,7 @@ export default function HomePage() {
           <h2 id="top" className="text-2xl">
             {t("home.top")}
           </h2>
-          <Link to="/products?sort=rating" className="inline-flex items-center gap-1 text-sm font-semibold text-neon hover:text-neon-deep">
+          <Link to="/products?sort=rating" className="inline-flex items-center gap-1 text-sm font-semibold text-accent hover:text-accent-deep">
             {t("home.viewall")}
             <Arrow className="h-4 w-4" aria-hidden />
           </Link>

@@ -65,7 +65,7 @@ export default function AssistantPage() {
                   type="button"
                   onClick={() => setActiveId(c.id)}
                   className={`flex-1 truncate rounded-ctl px-3 py-2 text-start text-sm ${
-                    c.id === activeId ? "bg-surface text-neon" : "text-ink-soft hover:bg-surface"
+                    c.id === activeId ? "bg-surface text-accent" : "text-ink-soft hover:bg-surface"
                   }`}
                 >
                   {c.title}
@@ -82,7 +82,7 @@ export default function AssistantPage() {
       <section className="flex min-w-0 flex-col gap-6">
         <header className="space-y-2 border-b border-line pb-5">
           <h1 className="flex items-center gap-3 text-4xl">
-            <Sparkles className="h-8 w-8 text-neon" aria-hidden />
+            <Sparkles className="h-8 w-8 text-accent" aria-hidden />
             {t("assistant.title")}
           </h1>
           <p className="text-ink-soft">{t("as.sub")}</p>
@@ -103,7 +103,7 @@ export default function AssistantPage() {
               .filter((p): p is NonNullable<typeof p> => Boolean(p));
             const isLast = idx === messages.length - 1;
             return (
-              <div key={m.id} className="border-s-2 border-neon ps-4">
+              <div key={m.id} className="border-s-2 border-accent ps-4">
                 <span className="text-xs text-ink-soft">{t("as.name")}</span>
                 <p className="mt-1">{m.reply.text[lang]}</p>
                 {recs.length > 0 && <RecommendationTable products={recs} reasons={m.reply.reasons} />}
@@ -125,7 +125,7 @@ export default function AssistantPage() {
               </div>
             );
           })}
-          {pending && <p className="border-s-2 border-neon ps-4 text-sm text-ink-soft">{t("as.checking")}...</p>}
+          {pending && <p className="border-s-2 border-accent ps-4 text-sm text-ink-soft">{t("as.checking")}...</p>}
           <div ref={endRef} />
         </div>
 
@@ -151,7 +151,7 @@ export default function AssistantPage() {
 
         {lastAssistant && lastAssistant.role === "assistant" && (
           <div>
-            <button type="button" className="inline-flex items-center gap-1 text-sm text-ink-soft hover:text-neon" onClick={() => setShowTrace((v) => !v)}>
+            <button type="button" className="inline-flex items-center gap-1 text-sm text-ink-soft hover:text-accent" onClick={() => setShowTrace((v) => !v)}>
               <ChevronDown className={`h-4 w-4 transition-transform ${showTrace ? "rotate-180" : ""}`} aria-hidden />
               {t("as.trace")}
             </button>
