@@ -10,7 +10,15 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from ai_commerce_marketplace.api.routes import addresses, auth, cart, health, orders, products
+from ai_commerce_marketplace.api.routes import (
+    addresses,
+    auth,
+    cart,
+    catalog,
+    health,
+    orders,
+    products,
+)
 from ai_commerce_marketplace.core.config import settings
 from ai_commerce_marketplace.core.exceptions import AppError
 
@@ -81,6 +89,7 @@ def create_app() -> FastAPI:
     app.include_router(cart.router)
     app.include_router(orders.router)
     app.include_router(products.router)
+    app.include_router(catalog.router)
     app.mount("/static", StaticFiles(directory=STATIC_DIR, check_dir=False), name="static")
     return app
 
