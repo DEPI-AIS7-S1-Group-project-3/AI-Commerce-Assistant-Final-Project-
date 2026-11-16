@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { SlidersHorizontal, X } from "lucide-react";
 import { useBrands, useCategories, useProducts } from "@/hooks/useProducts";
 import { useI18n, type TKey } from "@/lib/i18n";
+import { fill } from "@/lib/format";
 import { categoryName } from "@/lib/productText";
 import type { ProductQuery, ProductSort } from "@/types";
 import FilterPanel, { type FilterValues } from "@/components/FilterPanel";
@@ -82,7 +83,7 @@ export default function ProductsPage() {
             {q ? `${t("products.search")} ${q}` : activeCat ? categoryName(activeCat, lang) : t("products.all")}
           </h1>
           <p className="text-sm text-ink-soft" aria-live="polite">
-            {isLoading ? t("products.loading") : lang === "ar" ? `${count} منتج` : `${count} products`}
+            {isLoading ? t("products.loading") : fill(t("products.count"), { n: count })}
           </p>
         </div>
 
