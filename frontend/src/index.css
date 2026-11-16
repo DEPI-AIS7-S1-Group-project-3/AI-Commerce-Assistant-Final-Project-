@@ -1,0 +1,124 @@
+/* Headings: Kufam for Arabic letters, Changa for Latin letters and digits.
+   Each import holds ONE script only, so the browser picks the right font per character. */
+@import "@fontsource/kufam/arabic-500.css";
+@import "@fontsource/kufam/arabic-700.css";
+@import "@fontsource/changa/latin-500.css";
+@import "@fontsource/changa/latin-700.css";
+@import "@fontsource/readex-pro/arabic-400.css";
+@import "@fontsource/readex-pro/arabic-500.css";
+@import "@fontsource/readex-pro/arabic-600.css";
+@import "@fontsource/readex-pro/latin-400.css";
+@import "@fontsource/readex-pro/latin-500.css";
+@import "@fontsource/readex-pro/latin-600.css";
+@import "@fontsource/ibm-plex-mono/latin-400.css";
+@import "@fontsource/ibm-plex-mono/latin-500.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-display: "Kufam", "Changa";
+    --font-body: "Readex Pro";
+  }
+
+  /* Colour tokens as "R G B" so Tailwind opacity modifiers work (bg-paper/95).
+     Dark is the default. data-theme="dark" on any element forces dark inside it (trace panel). */
+  :root,
+  [data-theme="dark"] {
+    color-scheme: dark;
+    --c-paper: 3 4 7;
+    --c-surface: 13 20 36;
+    --c-sand: 7 11 21;
+    --c-ink: 244 246 238;
+    --c-ink-soft: 169 180 204;
+    --c-line: 30 58 120;
+    --c-neon: 212 255 36;
+    --c-neon-deep: 184 224 0;
+    --c-on-neon: 3 4 7;
+    --c-accent: 212 255 36;
+    --c-accent-deep: 184 224 0;
+    --c-blue: 21 88 201;
+    --c-blue-deep: 15 68 156;
+    --c-blue-tint: 15 35 80;
+    --c-danger: 255 107 127;
+    --c-warn: 255 184 77;
+  }
+
+  /* Light mode: lime stays as a fill only; text accents switch to blue (lime on white is unreadable). */
+  [data-theme="light"] {
+    color-scheme: light;
+    --c-paper: 244 246 238;
+    --c-surface: 255 255 255;
+    --c-sand: 234 237 227;
+    --c-ink: 10 15 28;
+    --c-ink-soft: 74 84 104;
+    --c-line: 203 211 225;
+    --c-on-neon: 10 15 28;
+    --c-accent: 21 88 201;
+    --c-accent-deep: 15 68 156;
+    --c-blue-tint: 227 236 251;
+    --c-danger: 198 40 57;
+    --c-warn: 166 95 0;
+  }
+
+  html {
+    font-size: 18px;
+    background: rgb(var(--c-paper));
+    color: rgb(var(--c-ink));
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Arabic letters join: never add tracking. */
+  body {
+    @apply font-body bg-paper text-ink;
+    letter-spacing: 0;
+    line-height: 1.75;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-bold;
+    letter-spacing: 0;
+    line-height: 1.3;
+  }
+
+  button {
+    font: inherit;
+  }
+
+  :focus-visible {
+    outline: 3px solid rgb(var(--c-accent));
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-ctl border-2 border-line px-5 py-3 text-sm font-semibold transition-all disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn border-neon bg-neon text-on-neon shadow-pop hover:-translate-y-0.5 hover:bg-neon-deep hover:border-neon-deep;
+  }
+  .btn-dark {
+    @apply btn border-green bg-green text-white hover:bg-green-deep hover:border-green-deep;
+  }
+  .btn-ghost {
+    @apply btn bg-transparent text-ink hover:border-accent hover:text-accent;
+  }
+  .input {
+    @apply w-full rounded-ctl border-2 border-line bg-sand px-3 py-3 text-sm text-ink placeholder:text-ink-soft/70 focus:border-accent;
+  }
+  .chip {
+    @apply inline-flex items-center rounded-ctl border border-line bg-sand px-2 py-0.5 text-xs font-medium text-ink-soft;
+  }
+  .chip-neon {
+    @apply inline-flex items-center rounded-ctl border border-neon bg-neon px-2 py-0.5 text-xs font-semibold text-on-neon;
+  }
+  .card {
+    @apply rounded-card border-2 border-line bg-surface;
+  }
+}
