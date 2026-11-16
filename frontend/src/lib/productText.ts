@@ -1,7 +1,9 @@
 import type { Brand, Category, Product, SellerSummary } from "@/types";
 import type { Lang } from "@/lib/i18n";
+import { USE_MOCK } from "@/api/config";
 
-// English names for mock products (keyed by product id). Falls back to Arabic if missing.
+// English names for MOCK products only (keyed by mock id). Real products have Arabic titles only
+// for now, so English mode falls back to Arabic. (Real English titles: planned title_en column.)
 const titlesEn: Record<number, string> = {
   101: "Samsung Galaxy A55 256GB",
   102: "Apple iPhone 15 128GB",
@@ -23,11 +25,12 @@ const sellersEn: Record<number, string> = {
 };
 
 export const productTitle = (p: Product, lang: Lang) =>
-  lang === "en" ? (titlesEn[p.id] ?? p.title_ar) : p.title_ar;
+  lang === "en" && USE_MOCK ? (titlesEn[p.id] ?? p.title_ar) : p.title_ar;
 
 export const sellerName = (s: SellerSummary, lang: Lang) =>
-  lang === "en" ? (sellersEn[s.id] ?? s.store_name) : s.store_name;
+  lang === "en" && USE_MOCK ? (sellersEn[s.id] ?? s.store_name) : s.store_name;
 
-export const brandName = (b: Brand, lang: Lang) => (lang === "en" ? b.name : (b.name_ar ?? b.name));
+// Brands are always shown in English (Samsung, Dell, ...) in both languages, incl. the filters.
+export const brandName = (b: Brand, _lang?: Lang) => b.name;
 
 export const categoryName = (c: Category, lang: Lang) => (lang === "en" ? c.name_en : c.name_ar);

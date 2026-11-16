@@ -98,9 +98,9 @@ export default function CartPage() {
                   <div className="flex items-start justify-between gap-3">
                     <div className="space-y-0.5">
                       <Link to={`/products/${product.id}`} className="font-semibold hover:text-accent">
-                        {productTitle(product, lang)}
+                        <bdi>{productTitle(product, lang)}</bdi>
                       </Link>
-                      <p className="text-xs text-ink-soft">{sellerName(product.seller, lang)}</p>
+                      <p className="text-xs text-ink-soft"><bdi>{sellerName(product.seller, lang)}</bdi></p>
                     </div>
                     <span className="font-display text-lg">{price(product.price_egp)}</span>
                   </div>

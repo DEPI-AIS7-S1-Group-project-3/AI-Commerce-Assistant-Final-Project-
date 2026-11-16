@@ -42,7 +42,7 @@ export default function ProductCard({ product }: { product: Product }) {
           {/* Body font on purpose: display font is too decorative for long titles mixed with Latin model names. */}
           <h3 className="line-clamp-2 min-h-[3.2rem] font-body text-[15px] font-semibold leading-snug">
             <Link to={`/products/${product.id}`} className="hover:text-accent">
-              {title}
+              <bdi>{title}</bdi>
             </Link>
           </h3>
         </div>
@@ -64,7 +64,7 @@ export default function ProductCard({ product }: { product: Product }) {
           </div>
           <p className={`text-xs font-medium ${toneClass[stock.tone]}`}>{stock.label}</p>
           <p className="text-xs text-ink-soft">
-            {t("card.seller")}: {sellerName(product.seller, lang)}
+            {t("card.seller")}: <bdi>{sellerName(product.seller, lang)}</bdi>
           </p>
         </div>
 

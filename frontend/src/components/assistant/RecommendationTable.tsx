@@ -36,10 +36,10 @@ export default function RecommendationTable({ products, reasons = defaultReasons
             <span className="font-display text-2xl text-accent">{i + 1}</span>
             <div className="space-y-1">
               <Link to={`/products/${p.id}`} className="font-semibold hover:text-accent">
-                {productTitle(p, lang)}
+                <bdi>{productTitle(p, lang)}</bdi>
               </Link>
               <p className="text-xs text-ink-soft">
-                {brandName(p.brand, lang)} · {t("as.sellerlabel")}: {sellerName(p.seller, lang)}
+                {brandName(p.brand, lang)} · {t("as.sellerlabel")}: <bdi>{sellerName(p.seller, lang)}</bdi>
               </p>
               <p className="text-sm text-ink-soft">{reason}</p>
               <p className={`text-xs font-medium ${stock.tone === "ok" ? "text-accent" : stock.tone === "low" ? "text-warn" : "text-danger"}`}>
