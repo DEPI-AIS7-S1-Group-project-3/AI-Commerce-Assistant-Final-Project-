@@ -1,4 +1,5 @@
 import uuid
+from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, Request
@@ -6,11 +7,15 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from ai_commerce_marketplace.api.routes import addresses, auth, cart, health, orders
+from ai_commerce_marketplace.api.routes import addresses, auth, cart, health, orders, products
 from ai_commerce_marketplace.core.config import settings
 from ai_commerce_marketplace.core.exceptions import AppError
+
+# Repo-root static/ folder: seeded product images live at /static/products/<sku>-<n>.svg
+STATIC_DIR = Path(__file__).resolve().parents[3] / "static"
 
 
 def _error(
@@ -75,6 +80,8 @@ def create_app() -> FastAPI:
     app.include_router(addresses.router)
     app.include_router(cart.router)
     app.include_router(orders.router)
+    app.include_router(products.router)
+    app.mount("/static", StaticFiles(directory=STATIC_DIR, check_dir=False), name="static")
     return app
 
 
