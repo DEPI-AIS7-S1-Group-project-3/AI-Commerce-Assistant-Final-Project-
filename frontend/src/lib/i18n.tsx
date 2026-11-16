@@ -157,6 +157,35 @@ const dict = {
   "cart.checkout": { ar: "إتمام الشراء", en: "Checkout" },
   "cart.checkout.login": { ar: "سجّل الدخول للمتابعة", en: "Log in to continue" },
   "cart.checkout.soon": { ar: "صفحة الدفع قيد البناء.", en: "The checkout page is being built." },
+  // stock + prices (used by lib/format.ts; {n} is filled in by fill())
+  "stock.out": { ar: "غير متوفر", en: "Out of stock" },
+  "stock.left.one": { ar: "يتبقى قطعة واحدة", en: "Only 1 left" },
+  "stock.left.many": { ar: "يتبقى {n} قطع", en: "Only {n} left" },
+  "card.discount": { ar: "خصم {n}%", en: "{n}% off" },
+  "products.count": { ar: "{n} منتج", en: "{n} products" },
+  "cart.freeHint": {
+    ar: "أضف {amount} من هذا البائع للحصول على شحن مجاني.",
+    en: "Add {amount} from this seller for free shipping.",
+  },
+  // filters
+  "filter.category": { ar: "الفئة", en: "Category" },
+  "filter.all": { ar: "الكل", en: "All" },
+  "filter.brand": { ar: "العلامة التجارية", en: "Brand" },
+  "filter.price": { ar: "السعر (ج.م)", en: "Price (EGP)" },
+  "filter.from": { ar: "من", en: "From" },
+  "filter.to": { ar: "إلى", en: "To" },
+  "filter.min": { ar: "أقل سعر", en: "Minimum price" },
+  "filter.max": { ar: "أعلى سعر", en: "Maximum price" },
+  "filter.inStock": { ar: "المتوفر في المخزون فقط", en: "In stock only" },
+  "filter.clear": { ar: "مسح الفلاتر", en: "Clear filters" },
+  // 404
+  "notfound.title": { ar: "الصفحة غير موجودة", en: "Page not found" },
+  "notfound.body": {
+    ar: "قد يكون الرابط غير صحيح أو أن الصفحة لم تُنشأ بعد.",
+    en: "The link may be wrong, or the page does not exist yet.",
+  },
+  "notfound.home": { ar: "العودة إلى الرئيسية", en: "Back to home" },
+  "logo.home": { ar: "دكان تك - الصفحة الرئيسية", en: "Dokkan Tech - Home" },
 } as const;
 
 export type TKey = keyof typeof dict;

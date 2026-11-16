@@ -3,7 +3,7 @@ import type { Product } from "@/types";
 import { useCart } from "@/hooks/useCart";
 import { useI18n, type Lang } from "@/lib/i18n";
 import { brandName, productTitle, sellerName } from "@/lib/productText";
-import { formatPrice } from "@/lib/format";
+import { formatPrice, stockState } from "@/lib/format";
 
 type Bi = Record<Lang, string>;
 
@@ -24,12 +24,12 @@ export default function RecommendationTable({ products, reasons = defaultReasons
 
   if (!products.length) return null;
 
-  const price = (n: number) => (lang === "ar" ? formatPrice(n) : `EGP ${n.toLocaleString("en-US")}`);
+  const price = (n: number) => formatPrice(n, lang);
 
   return (
     <ol className="mt-4 divide-y divide-line border-y border-line">
       {products.map((p, i) => {
-        const low = p.stock_qty <= 5;
+        const stock = stockState(p.stock_qty, t);
         const reason = reasons[i]?.[lang] ?? defaultReasons[i % defaultReasons.length][lang];
         return (
           <li key={p.id} className="grid gap-3 py-4 sm:grid-cols-[2rem_1fr_auto] sm:items-center">
@@ -42,8 +42,8 @@ export default function RecommendationTable({ products, reasons = defaultReasons
                 {brandName(p.brand, lang)} · {t("as.sellerlabel")}: {sellerName(p.seller, lang)}
               </p>
               <p className="text-sm text-ink-soft">{reason}</p>
-              <p className={`text-xs font-medium ${low ? "text-warn" : "text-accent"}`}>
-                {low ? (lang === "ar" ? `يتبقى ${p.stock_qty} قطع` : `Only ${p.stock_qty} left`) : t("stock.in")}
+              <p className={`text-xs font-medium ${stock.tone === "ok" ? "text-accent" : stock.tone === "low" ? "text-warn" : "text-danger"}`}>
+                {stock.label}
               </p>
             </div>
             <div className="flex items-center gap-3 sm:flex-col sm:items-end">
