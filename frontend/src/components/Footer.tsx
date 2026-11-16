@@ -23,7 +23,7 @@ export default function Footer() {
           <ul className="grid grid-cols-2 gap-2 text-sm">
             {policies.map((p) => (
               <li key={p.to}>
-                <Link to={p.to} className="text-ink-soft hover:text-neon">
+                <Link to={p.to} className="text-ink-soft hover:text-accent">
                   {t(p.label)}
                 </Link>
               </li>

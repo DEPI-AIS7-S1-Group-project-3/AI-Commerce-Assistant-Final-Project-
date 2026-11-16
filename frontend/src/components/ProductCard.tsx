@@ -8,7 +8,7 @@ import { discountPercent, formatPrice, stockState } from "@/lib/format";
 import ProductImage from "./ProductImage";
 
 const toneClass = {
-  ok: "text-neon",
+  ok: "text-accent",
   low: "text-warn",
   out: "text-danger",
 } as const;
@@ -32,12 +32,12 @@ export default function ProductCard({ product }: { product: Product }) {
         : t("stock.in");
 
   return (
-    <article className="card flex flex-col overflow-hidden transition-colors hover:border-neon">
+    <article className="card flex flex-col overflow-hidden transition-colors hover:border-accent">
       <Link to={`/products/${product.id}`} className="block bg-sand" aria-label={title}>
         <div className="relative aspect-square">
           <ProductImage product={product} className="h-full w-full" />
           {discount && (
-            <span className="absolute start-3 top-3 rounded-ctl bg-neon px-2 py-0.5 text-xs font-semibold text-paper">
+            <span className="absolute start-3 top-3 rounded-ctl bg-neon px-2 py-0.5 text-xs font-semibold text-on-neon">
               {lang === "ar" ? `خصم ${discount}%` : `${discount}% off`}
             </span>
           )}
@@ -49,14 +49,14 @@ export default function ProductCard({ product }: { product: Product }) {
           <p className="text-xs font-medium text-ink-soft">{brandName(product.brand, lang)}</p>
           {/* Body font on purpose: display font is too decorative for long titles mixed with Latin model names. */}
           <h3 className="line-clamp-2 min-h-[3.2rem] font-body text-[15px] font-semibold leading-snug">
-            <Link to={`/products/${product.id}`} className="hover:text-neon">
+            <Link to={`/products/${product.id}`} className="hover:text-accent">
               {title}
             </Link>
           </h3>
         </div>
 
         <div className="flex items-center gap-2 text-xs text-ink-soft">
-          <Star className="h-3.5 w-3.5 fill-neon text-neon" aria-hidden />
+          <Star className="h-3.5 w-3.5 fill-accent text-accent" aria-hidden />
           <span className="font-semibold text-ink">{product.rating_avg?.toFixed(1) ?? "-"}</span>
           <span>
             ({product.rating_count} {t("card.reviews")})

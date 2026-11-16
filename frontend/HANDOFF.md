@@ -153,3 +153,21 @@ npm run build            # type-check + production build (run before claiming do
 6. No automated tests. Verification so far = manual checks + `npm run build` from batch 1; the later batches were checked by Esraa in the browser only, `npm run build` NOT re-run since batch 1. Run it first.
 7. Colour contrast of blue text on dark not audited; some components may still use `text-green` (blue) for text.
 8. Assistant intent logic is keyword-based and limited (3 categories, brands in catalog, one budget number).
+
+### 2026-11-04 (night), Noura: rename + light mode (NOT yet build-verified)
+- Brand renamed to **Dokkan Tech / دكان تك**, tagline AR "تكنولوجيا أقرب ليك." / EN "Your neighborhood tech shop, only smarter." (index.html, Logo, i18n tagline + footer.desc, README, AGENTS, this file).
+- **Light mode added.** Colours are now CSS variables in `src/index.css` (`:root` = dark default, `[data-theme="light"]` = light); `tailwind.config.js` reads them as `rgb(var(--c-*) / <alpha-value>)`.
+  - New tokens: `accent` (text/links/icons/accent borders: lime in dark, blue in light) and `on-neon` (text on lime fills, always dark). **Rule: never use `text-neon` for text, use `text-accent`. Lime (`bg-neon`) is for fills only.**
+  - Light palette: paper #F4F6EE, surface #FFFFFF, sand #EAEDE3, ink #0A0F1C, ink-soft #4A5468, line #CBD3E1, accent #1558C9, blue-tint #E3ECFB, danger #C62839, warn #A65F00 (all >= 4.5:1 contrast).
+  - Toggle: `ThemeSwitch` (sun/moon) in the Navbar, `hooks/useTheme.ts`. Initial theme is set by an inline script in `index.html`: saved choice (`localStorage "dokkan.theme"`), otherwise system preference.
+  - The trace panel keeps dark colours in both modes via `data-theme="dark"` on its root.
+  - Logo Latin name now uses `text-accent` (lime in dark, blue in light) instead of `text-green`.
+- Next: `npm ci` + `npm run build`, then check both themes visually.
+- Reminder: root `.gitignore` line 17 (`lib/`) still ignores `frontend/src/lib/`. Fix before committing.
+
+### 2026-11-04 (late night), Noura: fonts + first verified build
+- **Heading fonts: Kufam (Arabic) + Changa (Latin/digits)**, replacing Lalezar. Only `@fontsource/kufam/arabic-*` and `@fontsource/changa/latin-*` are imported (weights 500, 700), and `font-display` = `"Kufam", "Changa"`, so the browser picks per character (mixed headings like "سامسونج Galaxy A55" work). Headings are now weight 700. Body stays Readex Pro, mono stays IBM Plex Mono.
+- `npm ci` + `npm install @fontsource/kufam @fontsource/changa` done. `@fontsource/lalezar` and `@fontsource/reem-kufi` are still in package.json but unused: remove in a cleanup change.
+- **`npm run build` PASSES** (tsc + vite) with rename + light mode + fonts. Home page screenshot-checked in dark/light x AR/EN at 1280px.
+- Fixed: home h1 line spacing. `sm:text-6xl` resets line-height to 1 in Tailwind, so it now has `leading-[1.4] sm:leading-[1.4]`. Kufam needs ~1.4 on big headings; check other large headings for the same issue.
+- Other pages (products, cart, assistant, login) not yet visually checked in light mode.

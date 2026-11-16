@@ -97,7 +97,7 @@ export default function CartPage() {
                 <div className="flex flex-1 flex-col gap-2">
                   <div className="flex items-start justify-between gap-3">
                     <div className="space-y-0.5">
-                      <Link to={`/products/${product.id}`} className="font-semibold hover:text-neon">
+                      <Link to={`/products/${product.id}`} className="font-semibold hover:text-accent">
                         {productTitle(product, lang)}
                       </Link>
                       <p className="text-xs text-ink-soft">{sellerName(product.seller, lang)}</p>
@@ -148,7 +148,7 @@ export default function CartPage() {
                   <dt className="text-ink-soft">
                     {t("cart.shipping")} ({g.name})
                   </dt>
-                  <dd className={g.fee === 0 ? "text-neon" : ""}>{g.fee === 0 ? t("cart.shipping.free") : price(g.fee)}</dd>
+                  <dd className={g.fee === 0 ? "text-accent" : ""}>{g.fee === 0 ? t("cart.shipping.free") : price(g.fee)}</dd>
                 </div>
                 {g.missing > 0 && (
                   <p className="text-xs text-ink-soft">

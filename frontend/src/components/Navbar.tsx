@@ -5,10 +5,11 @@ import { useCart } from "@/hooks/useCart";
 import { useI18n } from "@/lib/i18n";
 import Logo from "./Logo";
 import LanguageSwitch from "./LanguageSwitch";
+import ThemeSwitch from "./ThemeSwitch";
 import { useAuth } from "@/hooks/useAuth";
 
 const linkClass = ({ isActive }: { isActive: boolean }) =>
-  `text-sm font-medium transition-colors ${isActive ? "text-neon" : "text-ink-soft hover:text-ink"}`;
+  `text-sm font-medium transition-colors ${isActive ? "text-accent" : "text-ink-soft hover:text-ink"}`;
 
 export default function Navbar() {
   const { count } = useCart();
@@ -51,12 +52,13 @@ export default function Navbar() {
         </form>
 
         <div className="ms-auto flex items-center gap-2 lg:ms-0">
+          <ThemeSwitch />
           <LanguageSwitch />
           <Link to="/cart" className="btn-ghost relative !px-3 !py-2" aria-label={`${t("nav.cart")} (${count})`}>
             <ShoppingBag className="h-4 w-4" aria-hidden />
             <span className="hidden sm:inline">{t("nav.cart")}</span>
             {count > 0 && (
-              <span className="inline-flex min-w-5 items-center justify-center rounded-ctl bg-neon px-1 text-xs font-semibold leading-5 text-paper">
+              <span className="inline-flex min-w-5 items-center justify-center rounded-ctl bg-neon px-1 text-xs font-semibold leading-5 text-on-neon">
                 {count}
               </span>
             )}

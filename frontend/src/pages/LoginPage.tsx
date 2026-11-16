@@ -55,7 +55,7 @@ export default function LoginPage() {
       </form>
       <p className="text-sm text-ink-soft">
         {t("auth.noaccount")}{" "}
-        <Link to="/register" className="font-semibold text-neon hover:underline">
+        <Link to="/register" className="font-semibold text-accent hover:underline">
           {t("auth.register")}
         </Link>
       </p>
