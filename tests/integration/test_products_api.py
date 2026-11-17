@@ -85,3 +85,15 @@ def test_missing_static_file_uses_unified_404(client):
     r = client.get("/static/products/nope.svg")
     assert r.status_code == 404
     assert r.json()["code"] == "not_found"
+
+
+def test_title_en_is_returned_and_optional(session, client):
+    with_en = f.make_product(session, title_en="Samsung D140 Smartphone")
+    without = f.make_product(session)
+    assert client.get(f"/products/{with_en.id}").json()["title_en"] == "Samsung D140 Smartphone"
+    assert client.get(f"/products/{without.id}").json()["title_en"] is None
+
+
+def test_blank_title_en_is_rejected(session, rejected):
+    with rejected():
+        f.make_product(session, title_en="   ")

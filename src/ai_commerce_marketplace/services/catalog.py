@@ -68,6 +68,7 @@ def _to_out(
         id=p.id,
         sku=p.sku,
         title_ar=p.title_ar,
+        title_en=p.title_en,
         description_ar=p.description_ar,
         price_egp=p.price_egp,
         old_price_egp=p.old_price_egp,

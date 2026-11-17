@@ -35,6 +35,7 @@ export interface Product {
   id: number;
   sku: string;
   title_ar: string;
+  title_en?: string | null; // optional English title from the backend; null/missing = use title_ar
   description_ar: string;
   price_egp: number;
   old_price_egp: number | null;

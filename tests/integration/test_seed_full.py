@@ -112,6 +112,15 @@ def test_every_product_spec_is_valid_and_seller_is_multi_category(seeded):
             assert n >= 2
 
 
+def test_every_product_has_an_english_title_that_is_searchable(seeded):
+    with SessionLocal() as s:
+        rows = s.execute(select(Product.title_en, Product.search_text)).all()
+    assert rows
+    for title_en, search_text in rows:
+        assert title_en and title_en.strip()
+        assert normalize_ar(title_en) in search_text  # "power bank" finds the power bank
+
+
 def test_product_search_text_is_normalized_arabic(seeded):
     with SessionLocal() as s:
         for p in s.scalars(select(Product)):

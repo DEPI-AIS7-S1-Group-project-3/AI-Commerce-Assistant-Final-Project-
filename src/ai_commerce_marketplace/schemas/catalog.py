@@ -44,6 +44,7 @@ class ProductOut(BaseModel):
     id: int
     sku: str
     title_ar: str
+    title_en: str | None  # NULL = show title_ar
     description_ar: str
     price_egp: Decimal
     old_price_egp: Decimal | None

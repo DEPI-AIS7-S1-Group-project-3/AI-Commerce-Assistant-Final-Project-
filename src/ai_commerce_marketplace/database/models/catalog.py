@@ -57,6 +57,7 @@ class Product(Base):
     brand_id: Mapped[int] = mapped_column(ForeignKey("brands.id", ondelete="RESTRICT"))
     sku: Mapped[str] = mapped_column(Text, unique=True)
     title_ar: Mapped[str] = mapped_column(Text)
+    title_en: Mapped[str | None] = mapped_column(Text)  # optional; NULL = use title_ar
     description_ar: Mapped[str] = mapped_column(Text, server_default=text("''"))
     price_egp: Mapped[Decimal] = mapped_column(Numeric(12, 2))
     old_price_egp: Mapped[Decimal | None] = mapped_column(Numeric(12, 2))
@@ -77,6 +78,9 @@ class Product(Base):
 
     __table_args__ = (
         CheckConstraint("length(btrim(title_ar)) > 0", name="title_not_blank"),
+        CheckConstraint(
+            "title_en IS NULL OR length(btrim(title_en)) > 0", name="title_en_not_blank"
+        ),
         CheckConstraint("price_egp > 0", name="price_positive"),
         CheckConstraint("old_price_egp IS NULL OR old_price_egp > price_egp", name="old_price"),
         CheckConstraint("stock_qty >= 0", name="stock_non_negative"),

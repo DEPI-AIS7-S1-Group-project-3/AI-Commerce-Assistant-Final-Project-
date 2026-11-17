@@ -666,6 +666,33 @@ def storage_text(gb):
     )
 
 
+# ───────── English titles (products.title_en) ─────────
+def storage_en(gb):
+    return (
+        "1TB" if gb == 1024 else (f"{gb // 1024}TB" if gb % 1024 == 0 and gb > 1024 else f"{gb}GB")
+    )
+
+
+CPU_EN = {
+    "Core i3 الجيل 12": "Core i3 12th Gen",
+    "Core i5 الجيل 13": "Core i5 13th Gen",
+    "Core i7 الجيل 13": "Core i7 13th Gen",
+}
+SUFFIX_EN = {
+    "عزل ضوضاء": "Noise Cancelling",
+    "باور بانك 10000 مللي أمبير": "10000mAh Power Bank",
+    "باور بانك 20000 مللي أمبير": "20000mAh Power Bank",
+    "شاحن حائط 20 وات": "20W Wall Charger",
+    "شاحن 65 وات GaN": "65W GaN Charger",
+    "كابل USB-C طول 1.8 متر": "USB-C Cable, 1.8m",
+}
+TYPE_EN = {
+    "earbuds": "Wireless Earbuds",
+    "headphones": "Wireless Headphones",
+    "speaker": "Bluetooth Speaker",
+}
+
+
 def _specs_mobile(m):
     brand, model, ram, st, scr, bat, cam, os_, net, *_, color, wty, seller, stock, active = m
     return dict(
@@ -705,6 +732,7 @@ def build_products():
         ) = m
         pid += 1
         title = f"{BRAND_AR[brand]} {model} هاتف ذكي رام {ram} جيجا تخزين {storage_text(st)}"
+        title_en = f"{brand} {model} Smartphone, {ram}GB RAM, {storage_en(st)} Storage"
         net_txt = "الجيل الخامس 5G" if net == "5g" else "الجيل الرابع 4G"
         os_txt = "iOS" if os_ == "ios" else "Android"
         desc = (
@@ -720,6 +748,7 @@ def build_products():
                 brand_slug=BRAND_SLUG[brand],
                 sku=f"MOB-{brand[:3].upper()}-{model.replace(' ', '')}-{ram}-{st}",
                 title_ar=title,
+                title_en=title_en,
                 description_ar=desc,
                 price_egp=price,
                 old_price_egp=old,
@@ -754,6 +783,10 @@ def build_products():
         ) = l
         pid += 1
         title = f"{BRAND_AR[brand]} {model} لابتوب {cpu} رام {ram} جيجا {storage_text(st)} {st_type.upper()} شاشة {scr} بوصة"
+        title_en = (
+            f"{brand} {model} Laptop, {CPU_EN.get(cpu, cpu)}, {ram}GB RAM, "
+            f'{storage_en(st)} {st_type.upper()}, {scr}" Screen'
+        )
         os_txt = {"windows": "Windows", "macos": "macOS", "none": "بدون نظام تشغيل (FreeDOS)"}[os_]
         desc = (
             f"لابتوب بشاشة {scr} بوصة ومعالج {cpu}، رام {ram} جيجا، تخزين {st_type.upper()} بسعة {storage_text(st)}، "
@@ -768,6 +801,7 @@ def build_products():
                 brand_slug=BRAND_SLUG[brand],
                 sku=f"LAP-{brand[:3].upper()}-{model}-{ram}-{st}",
                 title_ar=title,
+                title_en=title_en,
                 description_ar=desc,
                 price_egp=price,
                 old_price_egp=old,
@@ -819,7 +853,11 @@ def build_products():
         pid += 1
         if typ in ("charger", "power_bank", "cable"):
             title = f"{BRAND_AR[brand]} {model} {suffix}"
+            title_en = f"{brand} {model} {SUFFIX_EN[suffix]}"
         else:
+            base_en = TYPE_EN[typ] if wireless or typ == "speaker" else "Wired Headphones"
+            nc_en = f"{SUFFIX_EN[suffix]} " if suffix == "عزل ضوضاء" else ""
+            title_en = f"{brand} {model} {nc_en}{base_en}"
             base = type_ar[typ] if wireless or typ == "speaker" else "سماعة رأس سلكية"
             title = f"{BRAND_AR[brand]} {model} {base}" + (
                 f" {suffix}" if suffix and suffix != "سلكية" else ""
@@ -853,6 +891,7 @@ def build_products():
                 brand_slug=BRAND_SLUG[brand],
                 sku=f"AUD-{brand[:3].upper()}-{model}",
                 title_ar=title,
+                title_en=title_en,
                 description_ar=desc,
                 price_egp=price,
                 old_price_egp=old,

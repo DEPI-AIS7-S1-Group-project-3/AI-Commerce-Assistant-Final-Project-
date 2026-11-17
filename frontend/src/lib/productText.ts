@@ -2,8 +2,8 @@ import type { Brand, Category, Product, SellerSummary } from "@/types";
 import type { Lang } from "@/lib/i18n";
 import { USE_MOCK } from "@/api/config";
 
-// English names for MOCK products only (keyed by mock id). Real products have Arabic titles only
-// for now, so English mode falls back to Arabic. (Real English titles: planned title_en column.)
+// English mode: the product's title_en from the backend, else (mock mode only) the hand-written
+// mock names below, else the Arabic title.
 const titlesEn: Record<number, string> = {
   101: "Samsung Galaxy A55 256GB",
   102: "Apple iPhone 15 128GB",
@@ -25,7 +25,7 @@ const sellersEn: Record<number, string> = {
 };
 
 export const productTitle = (p: Product, lang: Lang) =>
-  lang === "en" && USE_MOCK ? (titlesEn[p.id] ?? p.title_ar) : p.title_ar;
+  lang === "en" ? (p.title_en ?? (USE_MOCK ? titlesEn[p.id] : undefined) ?? p.title_ar) : p.title_ar;
 
 export const sellerName = (s: SellerSummary, lang: Lang) =>
   lang === "en" && USE_MOCK ? (sellersEn[s.id] ?? s.store_name) : s.store_name;
