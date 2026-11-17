@@ -2,8 +2,8 @@
 
 An Egyptian electronics marketplace (mobiles, laptops, audio & accessories), built as the DEPI AIS7 final project (Group 3).
 
-- **Phase 1 (current):** a complete store with no AI: customers, sellers, catalog, cart, orders, cancellations, returns, reviews and policies, with a web frontend (Arabic/English).
-- **Phase 2 (planned):** AI agents (Shopping, Support, Seller, Order Actions) that call the same services and the same database.
+- **Phase 1 (done):** a complete store with no AI: customers, sellers, catalog, cart, orders, cancellations, returns, reviews and policies, with a web frontend (Arabic/English).
+- **Phase 2 (in progress):** AI agents that call the same services and the same database. The Seller and Shopping agents already have their tools, prompts and tests; connecting them to an LLM (the agent runtime) is next. The Support and Order Actions agents are planned.
 
 > All data in this project is synthetic and for demo purposes only.
 
