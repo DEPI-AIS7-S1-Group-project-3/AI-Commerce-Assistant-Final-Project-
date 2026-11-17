@@ -187,3 +187,34 @@ export interface Policy extends PolicySummary {
   body_md: string;
   sections: PolicySection[];
 }
+
+// /seller/* (backend schemas/seller.py). Money fields converted to numbers in api/seller.ts.
+export interface SellerDashboard {
+  store_name: string;
+  days: number;
+  kpis: { revenue: number; units_sold: number; orders_count: number; aov: number };
+  change: { revenue_pct: number | null; units_sold_pct: number | null; orders_count_pct: number | null; aov_pct: number | null };
+  daily: { day: string; revenue: number; orders: number }[];
+  top_products: { product_id: number; title: string; units_sold: number; revenue: number }[];
+  low_stock: { product_id: number; title: string; stock_qty: number }[];
+  orders_by_status: Partial<Record<OrderStatus, number>>;
+  pending_actions: number;
+}
+export type SellerMove = "confirmed" | "shipped" | "out_for_delivery" | "delivered";
+export interface SellerOrder {
+  id: number;
+  created_at: string;
+  status: OrderStatus;
+  next_status: SellerMove | null;
+  payment_method: PaymentMethod;
+  payment_status: "pending" | "paid" | "failed" | "refunded";
+  customer_name: string;
+  governorate: string | null;
+  city: string | null;
+  subtotal_egp: number;
+  shipping_fee_egp: number;
+  total_egp: number;
+  expected_delivery_at: string;
+  delivered_at: string | null;
+  items: { product_id: number; title: string; qty: number; line_total_egp: number }[];
+}

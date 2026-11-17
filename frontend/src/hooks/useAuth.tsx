@@ -4,7 +4,7 @@ import * as api from "@/api/auth";
 type Ctx = {
   user: api.User | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<api.User>;
   register: (d: { full_name: string; email: string; phone: string; password: string }) => Promise<void>;
   logout: () => void;
 };
@@ -60,6 +60,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     write(TOKEN_KEY, token);
     if (api.USE_MOCK) write(USER_KEY, JSON.stringify(user));
     setUser(user);
+    return user;
   }, []);
 
   const register = useCallback(

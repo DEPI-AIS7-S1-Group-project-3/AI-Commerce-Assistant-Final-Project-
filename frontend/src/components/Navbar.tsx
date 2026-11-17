@@ -1,6 +1,6 @@
 import { type FormEvent, useEffect, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { LogIn, LogOut, MapPin, Menu, Package, Search, ShoppingBag, Sparkles, Store, X } from "lucide-react";
+import { LayoutDashboard, LogIn, LogOut, MapPin, Menu, Package, Search, ShoppingBag, Sparkles, Store, X } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
 import { useI18n } from "@/lib/i18n";
@@ -78,9 +78,15 @@ export default function Navbar() {
           {cartButton}
           {user ? (
             <div className="inline-flex items-center gap-2">
-              <Link to="/orders" className="text-sm font-medium text-ink-soft hover:text-accent">
-                {t("nav.orders")}
-              </Link>
+              {user.role === "seller" ? (
+                <Link to="/seller" className="text-sm font-medium text-ink-soft hover:text-accent">
+                  {t("nav.seller")}
+                </Link>
+              ) : (
+                <Link to="/orders" className="text-sm font-medium text-ink-soft hover:text-accent">
+                  {t("nav.orders")}
+                </Link>
+              )}
               <Link to="/addresses" className="max-w-[120px] truncate text-sm font-medium text-ink hover:text-accent" title={t("nav.addresses")}>
                 {user.full_name.split(" ")[0]}
               </Link>
@@ -125,8 +131,10 @@ export default function Navbar() {
           <ul className="divide-y divide-line">
             <MenuItem to="/assistant" icon={Sparkles} label={t("nav.assistant")} />
             <MenuItem to="/products" icon={Store} label={t("nav.shop")} />
-            {user && <MenuItem to="/orders" icon={Package} label={t("nav.orders")} />}
-            {user && <MenuItem to="/addresses" icon={MapPin} label={t("nav.addresses")} />}
+            {user?.role === "seller" && <MenuItem to="/seller" icon={LayoutDashboard} label={t("nav.seller")} />}
+            {user?.role === "seller" && <MenuItem to="/seller/orders" icon={Package} label={t("sel.orders.nav")} />}
+            {user && user.role !== "seller" && <MenuItem to="/orders" icon={Package} label={t("nav.orders")} />}
+            {user && user.role !== "seller" && <MenuItem to="/addresses" icon={MapPin} label={t("nav.addresses")} />}
             {user ? (
               <li>
                 <button type="button" onClick={logout} className="flex w-full items-center gap-3 py-3 text-sm font-medium text-ink-soft hover:text-danger">

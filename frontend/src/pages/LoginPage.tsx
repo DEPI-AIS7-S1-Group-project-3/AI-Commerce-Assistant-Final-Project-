@@ -8,7 +8,7 @@ export default function LoginPage() {
   const { t } = useI18n();
   const { login } = useAuth();
   const navigate = useNavigate();
-  const from = (useLocation().state as { from?: string } | null)?.from ?? "/";
+  const from = (useLocation().state as { from?: string } | null)?.from;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<TKey | null>(null);
@@ -20,8 +20,9 @@ export default function LoginPage() {
     setBusy(true);
     setError(null);
     try {
-      await login(email.trim(), password);
-      navigate(from, { replace: true });
+      const user = await login(email.trim(), password);
+      // Sellers land on their dashboard unless they were sent here from a specific page.
+      navigate(from ?? (user.role === "seller" ? "/seller" : "/"), { replace: true });
     } catch (err) {
       const code = err instanceof ApiError ? err.code : "generic";
       const key = `auth.err.${code}` as TKey;
