@@ -6,7 +6,7 @@ export const useProducts = (query: ProductQuery) =>
   useQuery({ queryKey: ["products", query], queryFn: () => listProducts(query) });
 
 export const useProduct = (id: number) =>
-  useQuery({ queryKey: ["product", id], queryFn: () => getProduct(id) });
+  useQuery({ queryKey: ["product", id], queryFn: () => getProduct(id), enabled: id > 0 });
 
 export const useCategories = () =>
   useQuery({ queryKey: ["categories"], queryFn: listCategories, staleTime: Infinity });

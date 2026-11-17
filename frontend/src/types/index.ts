@@ -83,3 +83,22 @@ export type OrderStatus =
   | "returned";
 
 export type PaymentMethod = "cod" | "wallet" | "card";
+
+// GET /products/{id}/reviews (backend reviews API, public)
+export interface Review {
+  id: number;
+  rating: number;
+  body: string;
+  author_name: string; // first name only
+  is_verified_purchase: boolean;
+  created_at: string;
+}
+
+export interface ProductReviews {
+  product_id: number;
+  rating_avg: number | null;
+  rating_count: number;
+  distribution: Record<"1" | "2" | "3" | "4" | "5", number>;
+  total: number;
+  reviews: Review[];
+}
