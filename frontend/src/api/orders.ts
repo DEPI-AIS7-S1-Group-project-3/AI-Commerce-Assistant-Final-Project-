@@ -1,0 +1,31 @@
+import type { CheckoutResult, Order, PaymentMethod } from "@/types";
+import { getToken } from "@/hooks/useAuth";
+import { http } from "./config";
+
+const auth = () => ({ Authorization: `Bearer ${getToken() ?? ""}` });
+
+type Dec = string | number;
+type ApiOrder = Omit<Order, "subtotal_egp" | "shipping_fee_egp" | "total_egp" | "items"> & {
+  subtotal_egp: Dec;
+  shipping_fee_egp: Dec;
+  total_egp: Dec;
+  items: (Omit<Order["items"][number], "unit_price_egp" | "line_total_egp"> & { unit_price_egp: Dec; line_total_egp: Dec })[];
+};
+
+export const fromApiOrder = (o: ApiOrder): Order => ({
+  ...o,
+  subtotal_egp: Number(o.subtotal_egp),
+  shipping_fee_egp: Number(o.shipping_fee_egp),
+  total_egp: Number(o.total_egp),
+  items: o.items.map((i) => ({ ...i, unit_price_egp: Number(i.unit_price_egp), line_total_egp: Number(i.line_total_egp) })),
+});
+
+/** POST /orders: checks out the whole server cart, one order per seller. Clears the cart. */
+export async function checkout(address_id: number, payment_method: PaymentMethod): Promise<CheckoutResult> {
+  const r = await http<{ checkout_group_id: string; orders: ApiOrder[] }>("/orders", {
+    method: "POST",
+    headers: auth(),
+    body: JSON.stringify({ address_id, payment_method }),
+  });
+  return { checkout_group_id: r.checkout_group_id, orders: r.orders.map(fromApiOrder) };
+}

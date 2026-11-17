@@ -65,9 +65,9 @@ export default function Navbar() {
           </Link>
           {user ? (
             <div className="hidden items-center gap-2 sm:inline-flex">
-              <span className="max-w-[120px] truncate text-sm font-medium text-ink">
+              <Link to="/addresses" className="max-w-[120px] truncate text-sm font-medium text-ink hover:text-accent" title={t("nav.addresses")}>
                 {user.full_name.split(" ")[0]}
-              </span>
+              </Link>
               <button
                 type="button"
                 onClick={logout}

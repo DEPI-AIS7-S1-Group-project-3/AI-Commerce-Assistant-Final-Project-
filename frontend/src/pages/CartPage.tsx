@@ -9,10 +9,8 @@ import { useI18n } from "@/lib/i18n";
 import { fill, formatPrice } from "@/lib/format";
 import { productTitle, sellerName } from "@/lib/productText";
 import ProductImage from "@/components/ProductImage";
+import { FREE_FROM, SHIPPING_FEE } from "@/lib/shipping";
 
-// Business rule (HANDOFF section 4): flat 60 EGP per seller order, free when that seller's subtotal >= 5000.
-const SHIPPING_FEE = 60;
-const FREE_FROM = 5000;
 
 export default function CartPage() {
   const { t, lang } = useI18n();
@@ -154,21 +152,18 @@ export default function CartPage() {
               <dt className="text-ink-soft">{t("cart.subtotal")}</dt>
               <dd>{price(subtotal)}</dd>
             </div>
-            {groups.map((g) => (
-              <div key={g.id} className="space-y-0.5">
-                <div className="flex justify-between">
-                  <dt className="text-ink-soft">
-                    {t("cart.shipping")} ({g.name})
-                  </dt>
-                  <dd className={g.fee === 0 ? "text-accent" : ""}>{g.fee === 0 ? t("cart.shipping.free") : price(g.fee)}</dd>
-                </div>
-                {g.missing > 0 && (
-                  <p className="text-xs text-ink-soft">
-                    {fill(t("cart.freeHint"), { amount: price(g.missing) })}
-                  </p>
-                )}
-              </div>
-            ))}
+            <div className="flex justify-between">
+              <dt className="text-ink-soft">{t("cart.shipping")}</dt>
+              <dd className={shipping === 0 ? "text-accent" : ""}>{shipping === 0 ? t("cart.shipping.free") : price(shipping)}</dd>
+            </div>
+            {/* Shipping is charged per seller; only explain it when a seller is under the free threshold. */}
+            {groups
+              .filter((g) => g.fee > 0 && g.missing > 0)
+              .map((g) => (
+                <p key={g.id} className="text-xs text-ink-soft">
+                  {fill(t("cart.freeHint"), { amount: price(g.missing), seller: `\u2068${g.name}\u2069` })}
+                </p>
+              ))}
             <div className="flex justify-between border-t border-line pt-3 text-base font-semibold">
               <dt>{t("cart.total")}</dt>
               <dd className="font-display text-xl">{price(total)}</dd>
@@ -180,13 +175,9 @@ export default function CartPage() {
               {t("cart.checkout")}
             </button>
           ) : user ? (
-            <>
-              {/* Checkout page is roadmap step 5. Button stays disabled until /checkout exists. */}
-              <button type="button" className="btn-primary w-full" disabled>
-                {t("cart.checkout")}
-              </button>
-              <p className="text-xs text-ink-soft">{t("cart.checkout.soon")}</p>
-            </>
+            <Link to="/checkout" className="btn-primary w-full">
+              {t("cart.checkout")}
+            </Link>
           ) : (
             <Link to="/login" state={{ from: "/cart" }} className="btn-primary w-full">
               {t("cart.checkout.login")}

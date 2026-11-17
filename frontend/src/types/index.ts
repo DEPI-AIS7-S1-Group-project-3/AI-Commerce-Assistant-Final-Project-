@@ -102,3 +102,49 @@ export interface ProductReviews {
   total: number;
   reviews: Review[];
 }
+
+// /addresses (VERIFIED against backend schemas/address.py)
+export interface Address {
+  id: number;
+  label: string | null;
+  recipient_name: string;
+  phone: string;
+  governorate: string; // stored in Arabic, e.g. "القاهرة"
+  city: string;
+  street_address: string;
+  is_default: boolean;
+}
+export type AddressInput = Omit<Address, "id">;
+
+// POST /orders (VERIFIED against backend schemas/order.py). Decimals come as strings.
+export interface OrderItem {
+  product_id: number;
+  title: string;
+  qty: number;
+  unit_price_egp: number;
+  line_total_egp: number;
+}
+export interface Order {
+  id: number;
+  seller_id: number;
+  status: OrderStatus;
+  payment_method: PaymentMethod;
+  payment_status: "pending" | "paid" | "failed" | "refunded";
+  shipping_address: Partial<Address>;
+  subtotal_egp: number;
+  shipping_fee_egp: number;
+  total_egp: number;
+  expected_delivery_at: string;
+  created_at: string;
+  items: OrderItem[];
+}
+export interface CheckoutResult {
+  checkout_group_id: string;
+  orders: Order[];
+}
+// 409 checkout_unavailable details: one entry per problem line
+export interface CheckoutProblem {
+  product_id: number;
+  reason: "unavailable" | "insufficient_stock";
+  available?: number;
+}

@@ -21,6 +21,8 @@ type Ctx = {
   setQty: (productId: number, qty: number) => void;
   remove: (productId: number) => void;
   clear: () => void;
+  /** Re-read the server cart (e.g. after checkout emptied it). */
+  refresh: () => Promise<void>;
 };
 
 const CartContext = createContext<Ctx | null>(null);
@@ -177,12 +179,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
     else setLocal([]);
   }, [serverMode, run]);
 
+  const refresh = useCallback(async () => {
+    if (serverMode) await run((tk) => api.getCart(tk));
+  }, [serverMode, run]);
+
   const clearError = useCallback(() => setError(null), []);
   const lines = serverMode ? server : local;
   const count = useMemo(() => lines.reduce((sum, l) => sum + l.qty, 0), [lines]);
   const value = useMemo(
-    () => ({ lines, count, error, clearError, add, setQty, remove, clear }),
-    [lines, count, error, clearError, add, setQty, remove, clear],
+    () => ({ lines, count, error, clearError, add, setQty, remove, clear, refresh }),
+    [lines, count, error, clearError, add, setQty, remove, clear, refresh],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
