@@ -158,12 +158,12 @@ function ProductView({ product }: { product: Product }) {
           </p>
 
           <ul className="grid gap-2 sm:grid-cols-2">
-            <Badge icon={ShieldCheck}>
+            <Badge icon={ShieldCheck} to="/policies/warranty">
               {product.warranty_months > 0 ? fill(t("pd.warranty"), { n: product.warranty_months }) : t("pd.warranty.none")}
             </Badge>
-            <Badge icon={RotateCcw}>{product.is_returnable ? t("pd.returnable") : t("pd.notReturnable")}</Badge>
-            <Badge icon={Truck}>{t("pd.delivery")}</Badge>
-            <Badge icon={BadgeCheck}>{t("pd.freeShipping")}</Badge>
+            <Badge icon={RotateCcw} to="/policies/returns">{product.is_returnable ? t("pd.returnable") : t("pd.notReturnable")}</Badge>
+            <Badge icon={Truck} to="/policies/shipping">{t("pd.delivery")}</Badge>
+            <Badge icon={BadgeCheck} to="/policies/shipping">{t("pd.freeShipping")}</Badge>
           </ul>
         </div>
       </div>
@@ -198,11 +198,13 @@ function ProductView({ product }: { product: Product }) {
   );
 }
 
-function Badge({ icon: Icon, children }: { icon: typeof Truck; children: ReactNode }) {
+function Badge({ icon: Icon, children, to }: { icon: typeof Truck; children: ReactNode; to: string }) {
   return (
-    <li className="flex items-center gap-2 rounded-ctl border border-line bg-sand px-3 py-2 text-sm">
-      <Icon className="h-4 w-4 shrink-0 text-accent" aria-hidden />
-      {children}
+    <li>
+      <Link to={to} className="flex items-center gap-2 rounded-ctl border border-line bg-sand px-3 py-2 text-sm hover:border-accent">
+        <Icon className="h-4 w-4 shrink-0 text-accent" aria-hidden />
+        {children}
+      </Link>
     </li>
   );
 }

@@ -8,6 +8,7 @@ import LoginPage from "@/pages/LoginPage";
 import RegisterPage from "@/pages/RegisterPage";
 import CartPage from "@/pages/CartPage";
 import ProductPage from "@/pages/ProductPage";
+import PolicyPage, { PoliciesIndex } from "@/pages/PolicyPage";
 import CheckoutPage from "@/pages/CheckoutPage";
 import AddressesPage from "@/pages/AddressesPage";
 import OrderConfirmationPage from "@/pages/OrderConfirmationPage";
@@ -23,8 +24,10 @@ export default function App() {
         <Route index element={<HomePage />} />
         <Route path="products" element={<ProductsPage />} />
         <Route path="products/:id" element={<ProductPage />} />
+        <Route path="policies" element={<PoliciesIndex />} />
+        <Route path="policies/:slug" element={<PolicyPage />} />
         <Route path="assistant" element={<AssistantPage />} />
-        {/* Next (see HANDOFF.md roadmap): policy pages, seller dashboard */}
+        {/* Next (see HANDOFF.md roadmap): seller dashboard */}
         <Route path="*" element={<NotFoundPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />

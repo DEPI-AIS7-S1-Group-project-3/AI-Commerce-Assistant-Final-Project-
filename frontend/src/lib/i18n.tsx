@@ -359,6 +359,13 @@ const dict = {
   "oc.viewOrders": { ar: "عرض طلباتي", en: "View my orders" },
   "nav.menu": { ar: "القائمة", en: "Menu" },
   "nav.close": { ar: "إغلاق القائمة", en: "Close menu" },
+  // policies
+  "pol.title": { ar: "السياسات", en: "Policies" },
+  "pol.contents": { ar: "المحتويات", en: "Contents" },
+  "pol.version": { ar: "الإصدار {v}", en: "Version {v}" },
+  "pol.arabicOnly": { ar: "هذه السياسة متاحة بالعربية فقط.", en: "This policy is available in Arabic only." },
+  "pol.notfound": { ar: "هذه السياسة غير موجودة.", en: "This policy does not exist." },
+  "pol.loadErr": { ar: "تعذر تحميل السياسة.", en: "Could not load the policy." },
 } as const;
 
 export type TKey = keyof typeof dict;

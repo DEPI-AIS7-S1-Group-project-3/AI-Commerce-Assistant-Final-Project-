@@ -170,3 +170,20 @@ export interface CheckoutProblem {
   reason: "unavailable" | "insufficient_stock";
   available?: number;
 }
+
+// /policies (backend schemas/policy.py). Arabic only for now.
+export interface PolicySummary {
+  slug: string;
+  category: string;
+  title_ar: string;
+  version: string;
+}
+export interface PolicySection {
+  no: number;
+  title: string;
+  body: string;
+}
+export interface Policy extends PolicySummary {
+  body_md: string;
+  sections: PolicySection[];
+}
