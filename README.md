@@ -2,7 +2,7 @@
 
 An Egyptian electronics marketplace (mobiles, laptops, audio & accessories), built as the DEPI AIS7 final project (Group 3).
 
-- **Phase 1 (current):** a complete store with no AI: customers, sellers, catalog, cart, orders, cancellations, returns, reviews and policies.
+- **Phase 1 (current):** a complete store with no AI: customers, sellers, catalog, cart, orders, cancellations, returns, reviews and policies, with a web frontend (Arabic/English).
 - **Phase 2 (planned):** AI agents (Shopping, Support, Seller, Order Actions) that call the same services and the same database.
 
 > All data in this project is synthetic and for demo purposes only.
@@ -18,6 +18,7 @@ An Egyptian electronics marketplace (mobiles, laptops, audio & accessories), bui
 | API | FastAPI, Uvicorn |
 | Auth | JWT (PyJWT), argon2 password hashing |
 | Tooling | uv, pytest, ruff, mypy, pre-commit, GitHub Actions |
+| Frontend | Vite, React 18, TypeScript, Tailwind CSS, TanStack Query (see [frontend/README.md](frontend/README.md)) |
 
 ## Getting started
 
@@ -74,6 +75,17 @@ uv run uvicorn ai_commerce_marketplace.api.main:app --reload
 ```
 
 Interactive docs (OpenAPI): http://localhost:8000/docs
+
+## Running the frontend
+
+```bash
+cd frontend
+npm install
+cp .env.example .env     # set VITE_USE_MOCK=false to use the API above
+npm run dev              # http://localhost:5173
+```
+
+Details, pages and conventions: [frontend/README.md](frontend/README.md).
 Full endpoint reference: [docs/api-contracts.md](docs/api-contracts.md)
 
 ## Backend core (M1)
@@ -95,7 +107,11 @@ routes  ->  services  ->  repositories / models
 | Addresses | CRUD + set default, one default per customer |
 | Cart | add / update / remove / clear, stock checked, subtotal computed on the server |
 | Checkout | `POST /orders`: one transaction, row locking, stock deduction, one order per seller |
-| Orders | list, detail with status timeline, cancel, return |
+| Orders | list, detail with status timeline, cancel, return; each order carries `can_cancel` and per-item `can_return` flags |
+| Catalog (public) | `GET /products` (search, filters, sort, paging), `GET /products/{id}`, `GET /categories`, `GET /brands`, `/static` images |
+| Reviews | `GET /products/{id}/reviews` (public), `POST /reviews` (verified purchase), `GET /reviews/mine`, `GET /reviews/reviewable` |
+| Policies (public) | `GET /policies`, `GET /policies/{slug}` (current version, numbered sections) |
+| Seller | `GET /seller/dashboard`, `GET /seller/orders`, `POST /seller/orders/{id}/status`, `GET /seller/products`, `PATCH /seller/products/{id}` |
 
 Key design decisions:
 
@@ -105,7 +121,13 @@ Key design decisions:
 - **Eligibility rules are pure functions** (`services/order_rules.py`): cancel only before shipping; return within 14 days of delivery (day 14 accepted, day 15 rejected). The Order Actions Agent will call these instead of deciding by itself.
 - **Role is read from the database,** not trusted from the token.
 
-Shipping: 60 EGP per order, free from 5000 EGP. Payment: `cod` is pending, `wallet`/`card` are simulated as paid.
+Shipping: 60 EGP per order, free from 5000 EGP. Payment: `cod` is pending until delivery, `wallet`/`card` are simulated as paid.
+
+More rules:
+
+- **Catalog listing never shows inactive products;** a product page still opens them (flagged) so old links and carts keep working. Search uses normalized Arabic text plus `pg_trgm` for small typos.
+- **Sellers move their orders one step forward only** (confirmed > shipped > out for delivery > delivered); cancelling stays a customer action. Sellers manage price, sale price, stock and visibility; products are never deleted.
+- **Seller numbers** reuse `services/seller_analytics.py` ([docs/seller-metrics.md](docs/seller-metrics.md)).
 
 ## Quality
 
@@ -125,14 +147,17 @@ src/ai_commerce_marketplace/
   api/           main.py (app factory), dependencies.py, routes/
   core/          config.py, security.py, exceptions.py, enums.py
   database/      base.py, session.py, models/
-  schemas/       request/response models (auth, address, cart, order, specs)
-  services/      auth, addresses, cart, checkout, orders, order_state, order_rules, order_actions
+  schemas/       request/response models (auth, address, cart, catalog, order, policy, review, seller, specs)
+  services/      auth, addresses, cart, catalog, checkout, orders, order_state, order_rules, order_actions,
+                 reviews, policies, seller_analytics, seller_dashboard, seller_products, catalog_details
+  agents/        seller/ (tools, prompts, eval), shopping/ (tools, prompts); each has a README
   nlp/           Arabic text normalization for search
 migrations/      Alembic environment and versions
 tests/           pytest suite (real PostgreSQL)
 docs/            architecture.md, api-contracts.md, development-guide.md, demo-data.md
 data/raw/        seed data (JSON); scripts/seed_generator/ regenerates part of it
 static/products/ placeholder product images
+frontend/        React web app (see frontend/README.md)
 .github/         CI workflow (ruff, mypy, pytest)
 docker-compose.yml
 ```
@@ -159,6 +184,7 @@ Key design decisions:
 - One order belongs to one seller; a checkout with several sellers becomes several orders sharing a `checkout_group_id`.
 - Purchase price and shipping address are snapshotted on the order.
 - Products are soft-deleted (`is_active = false`).
+- Product titles are Arabic (`title_ar`) with an optional English `title_en` (migration `c4f2a9e1b7d3`).
 
 ## Git workflow
 

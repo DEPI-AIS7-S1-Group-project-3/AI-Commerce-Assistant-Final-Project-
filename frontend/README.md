@@ -1,53 +1,73 @@
 # Dokkan Tech (دكان تك) - Frontend
 
-Frontend for the Egyptian AI Commerce Marketplace (DEPI graduation project).
-Arabic/English, RTL/LTR, electronics marketplace with an AI shopping assistant UI.
-
-> Work in progress. Not final. Read `HANDOFF.md` first for the full state, decisions and next steps.
+Web app for the Egyptian AI Commerce Marketplace (DEPI graduation project): an Arabic/English
+electronics shop for customers and sellers, with an AI shopping assistant screen.
 
 ## Stack
 
 - Vite, React 18, TypeScript (strict)
-- Tailwind CSS v3
-- React Router v6, TanStack Query v5
-- lucide-react icons
-- Fonts via `@fontsource` (Lalezar, Readex Pro, IBM Plex Mono), self-hosted
+- Tailwind CSS v3 (design tokens in `src/index.css`, dark default + light theme)
+- React Router v6, TanStack Query v5, lucide-react icons
+- Self-hosted fonts via `@fontsource`: Kufam (Arabic display), Changa (Latin display),
+  Readex Pro (body), IBM Plex Mono (assistant trace)
 
 ## Run locally
 
+Start the backend first (see the root `README.md`), then:
+
 ```bash
 npm install
-cp .env.example .env     # optional, defaults work
+cp .env.example .env     # then set VITE_USE_MOCK=false to use the real backend
 npm run dev              # http://localhost:5173
-npm run build            # type-check + production build
+npm run build            # type-check + production build (run before every PR)
 ```
-
-## Environment
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `VITE_USE_MOCK` | `true` | Use mock data (products, auth) instead of the backend |
-| `VITE_API_URL` | `http://localhost:8000` | FastAPI backend base URL |
+| `VITE_USE_MOCK` | `true` | `true`: built-in mock catalog and login, no backend needed. `false`: real FastAPI backend |
+| `VITE_API_URL` | `http://localhost:8000` | Backend base URL |
 
-## What works now
+Cart sync, checkout, addresses, orders, policies and the seller pages need the real backend.
 
-- Home, product listing (search, filters, sort), AR/EN switch with RTL/LTR
-- AI assistant (`/assistant`): scripted replies over the mock catalog, real product recommendations, saved chat history (localStorage), suggested prompts
-- Login and register (mock mode, or real `/auth/*` when `VITE_USE_MOCK=false`)
-- Local cart (context + localStorage)
+Demo logins (password `Demo@12345`, from the seed): customers `customer01..12@example.com`,
+sellers `seller1..4@example.com`. Sellers land on `/seller` after logging in.
 
-## Not built yet
+## Pages
 
-Cart page, product detail, checkout, orders, policy pages, seller dashboard, Support/Seller/Order Actions chats. See the roadmap in `HANDOFF.md`.
+| Route | What it does |
+|---|---|
+| `/` | Home |
+| `/products` | Search, filters (category, brand, price, in stock), sort |
+| `/products/:id` | Gallery, specs table, policy badges, reviews, similar products, add to cart |
+| `/cart` | Server cart when logged in (guest cart is merged on login), one shipping line + free-shipping hints |
+| `/checkout` | Wizard: address > payment (COD / simulated wallet or card) > review, one package per seller |
+| `/orders`, `/orders/:id` | Purchases grouped by checkout, status timeline, cancel per package, return requests |
+| `/addresses` | Address book (27 governorates) |
+| `/policies/:slug` | Shipping, returns, warranty, cancellation (Arabic text, tabs + contents) |
+| `/assistant` | Chat-app layout; scripted replies over the real catalog until an agent runtime exists |
+| `/seller`, `/seller/orders`, `/seller/products` | Seller dashboard (KPIs, daily revenue chart), order status updates, inventory (regular/sale price, stock, hide/show) |
 
-## Backend
+Login-only pages use `RequireAuth` (seller pages also check the role).
 
-FastAPI + PostgreSQL (separate repo/branch). Implemented endpoints: auth, addresses, cart, orders. Products, reviews, policies and seller endpoints do not exist yet, so the frontend mocks them behind `src/api/*`. Mock response shapes are proposals and must be agreed with the backend owner.
+## Structure
+
+```
+src/
+  api/          the only place that calls the backend; converts money strings to numbers
+  hooks/        TanStack Query hooks + auth and cart contexts
+  pages/        one file per route
+  components/   shared UI (Navbar, Logo, ProductCard, AddressForm, MiniMarkdown, seller/, assistant/)
+  lib/          i18n, formatting, shipping rule, specs labels, orders helpers, governorates
+  types/        shared TypeScript types (match the backend schemas)
+```
 
 ## Conventions
 
-- All visible text goes through `t()` from `src/lib/i18n.tsx` (never hardcode Arabic or English in components)
-- Server access only via `src/api/*` and hooks in `src/hooks/`
-- Logical Tailwind classes only (`ms-`, `ps-`, `start-`), never `ml-`/`mr-`/`left-`/`right-`
-- Files with JSX must be `.tsx`
-- No emojis in the UI
+- All visible text goes through `t()` from `src/lib/i18n.tsx`; never hardcode Arabic or English.
+  Numbers inside text use `fill(t("key"), { n })`.
+- Arabic product titles and seller names inside English text are wrapped in `<bdi>`.
+- Logical Tailwind classes only (`ms-`, `ps-`, `start-`), never `ml-`/`mr-`/`left-`/`right-`.
+- Server access only via `src/api/*` and hooks in `src/hooks/`. Components never call `fetch`.
+- Brand names are always shown in English; product titles use `title_en` in English mode, else Arabic.
+- Files with JSX must be `.tsx`. No emojis in the UI.
+- The colour token named `green` is actually blue (legacy name).
