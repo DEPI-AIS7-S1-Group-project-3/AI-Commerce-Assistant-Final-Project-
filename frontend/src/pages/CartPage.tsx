@@ -3,7 +3,8 @@ import { Minus, Plus, Trash2 } from "lucide-react";
 import type { Product } from "@/types";
 import { useAuth } from "@/hooks/useAuth";
 import { useCart } from "@/hooks/useCart";
-import { useProducts } from "@/hooks/useProducts";
+import { useQueries } from "@tanstack/react-query";
+import { getProduct } from "@/api/products";
 import { useI18n } from "@/lib/i18n";
 import { fill, formatPrice } from "@/lib/format";
 import { productTitle, sellerName } from "@/lib/productText";
@@ -16,8 +17,13 @@ const FREE_FROM = 5000;
 export default function CartPage() {
   const { t, lang } = useI18n();
   const { user } = useAuth();
-  const { lines, setQty, remove, clear } = useCart();
-  const { data, isLoading } = useProducts({});
+  const { lines, setQty, remove, clear, error } = useCart();
+  // Load each cart product by id (not the listing): the listing hides inactive products
+  // and is paged, but the cart must still show items that became unavailable.
+  const results = useQueries({
+    queries: lines.map((l) => ({ queryKey: ["product", l.product_id], queryFn: () => getProduct(l.product_id) })),
+  });
+  const isLoading = results.some((r) => r.isLoading);
 
   const price = (n: number) => formatPrice(n, lang);
 
@@ -33,9 +39,9 @@ export default function CartPage() {
     );
   }
 
-  if (isLoading || !data) return <p className="text-ink-soft">{t("cart.loading")}...</p>;
+  if (isLoading) return <p className="text-ink-soft">{t("cart.loading")}...</p>;
 
-  const rows = lines.map((line) => ({ line, product: data.find((p) => p.id === line.product_id) }));
+  const rows = lines.map((line, i) => ({ line, product: results[i]?.data ?? undefined }));
   const isAvailable = (p?: Product): p is Product => Boolean(p && p.is_active && p.stock_qty > 0);
 
   // Quantity is capped by stock; unavailable lines are excluded from every total.
@@ -72,6 +78,12 @@ export default function CartPage() {
           {t("cart.clear")}
         </button>
       </header>
+
+      {error && (
+        <p className="rounded-ctl border border-danger px-4 py-3 text-sm text-danger" role="alert">
+          {t(`cart.err.${error}`)}
+        </p>
+      )}
 
       <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
         <ul className="space-y-4">

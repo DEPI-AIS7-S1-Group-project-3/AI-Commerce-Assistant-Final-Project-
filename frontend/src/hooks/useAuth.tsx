@@ -29,6 +29,9 @@ const write = (k: string, v: string | null) => {
   }
 };
 
+/** Current JWT (or null). Used by API calls that need login, e.g. the server cart. */
+export const getToken = () => read(TOKEN_KEY);
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<api.User | null>(null);
   const [loading, setLoading] = useState(true);

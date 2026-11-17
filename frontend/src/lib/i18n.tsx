@@ -243,6 +243,10 @@ const dict = {
   "unit.mp": { ar: "{n} ميجابكسل", en: "{n} MP" },
   "unit.hours": { ar: "{n} ساعة", en: "{n} hours" },
   "unit.kg": { ar: "{n} كجم", en: "{n} kg" },
+  // cart errors (server cart)
+  "cart.err.stock": { ar: "الكمية المطلوبة أكبر من المتوفر.", en: "Not enough stock for that quantity." },
+  "cart.err.unavailable": { ar: "هذا المنتج لم يعد متاحًا.", en: "This product is no longer available." },
+  "cart.err.network": { ar: "تعذر تحديث السلة. حاول مرة أخرى.", en: "Could not update the cart. Try again." },
 } as const;
 
 export type TKey = keyof typeof dict;

@@ -49,7 +49,7 @@ export default function ProductPage() {
 
 function ProductView({ product }: { product: Product }) {
   const { t, lang } = useI18n();
-  const { add } = useCart();
+  const { add, error, clearError } = useCart();
   const [imageIdx, setImageIdx] = useState(0);
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
@@ -63,10 +63,12 @@ function ProductView({ product }: { product: Product }) {
   const image = product.images[imageIdx];
   const specs = specRows(product.specs, product.category.spec_kind, t);
 
-  const addToCart = () => {
-    add(product.id, qty);
-    setAdded(true);
-    window.setTimeout(() => setAdded(false), 2000);
+  const addToCart = async () => {
+    clearError();
+    if (await add(product.id, qty)) {
+      setAdded(true);
+      window.setTimeout(() => setAdded(false), 2000);
+    }
   };
 
   return (
@@ -147,8 +149,8 @@ function ProductView({ product }: { product: Product }) {
               </button>
             </div>
           )}
-          <p className="min-h-5 text-sm text-accent" aria-live="polite">
-            {added ? t("pd.added") : ""}
+          <p className={`min-h-5 text-sm ${error ? "text-danger" : "text-accent"}`} aria-live="polite">
+            {error ? t(`cart.err.${error}`) : added ? t("pd.added") : ""}
           </p>
 
           <p className="text-sm text-ink-soft">
