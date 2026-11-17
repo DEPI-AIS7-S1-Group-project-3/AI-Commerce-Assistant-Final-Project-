@@ -16,8 +16,9 @@ from sqlalchemy.orm import Session
 from ai_commerce_marketplace.agents.shopping.schemas import ProductDetail
 from ai_commerce_marketplace.core.enums import SpecKind
 from ai_commerce_marketplace.core.exceptions import AppError, NotFoundError
-from ai_commerce_marketplace.database.models import Brand, Category, Product, ProductImage
+from ai_commerce_marketplace.database.models import Brand, Category, Product, ProductImage, Review
 from ai_commerce_marketplace.schemas.specs import SPEC_MODELS
+from ai_commerce_marketplace.services import reviews as reviews_svc
 
 MIN_COMPARE = 2
 MAX_COMPARE = 4
@@ -109,4 +110,47 @@ def compare_products(session: Session, product_ids: list[int]) -> dict[str, Any]
         "products": [_to_detail(session, *row) for row in rows],
         "spec_keys": _spec_keys(rows[0][2]),
         "missing_ids": missing,
+    }
+
+
+# ---- reviews summary (for reviews_summary_get) ----
+EXCERPTS_PER_SIDE = 5
+EXCERPT_CHARS = 300
+
+
+def _excerpts(session: Session, product_id: int, ratings: tuple[int, ...]) -> list[dict[str, Any]]:
+    """Newest non-empty reviews with these star ratings, trimmed for the LLM."""
+    stmt = (
+        select(Review)
+        .where(Review.product_id == product_id, Review.rating.in_(ratings), Review.body != "")
+        .order_by(Review.created_at.desc(), Review.id.desc())
+        .limit(EXCERPTS_PER_SIDE)
+    )
+    return [
+        {
+            "rating": r.rating,
+            "text": r.body[:EXCERPT_CHARS],
+            "verified": r.is_verified_purchase,
+            "date": r.created_at.date().isoformat(),
+        }
+        for r in session.scalars(stmt)
+    ]
+
+
+def reviews_summary(session: Session, product_id: int) -> dict[str, Any]:
+    """Average, count and 1-5 distribution (from the reviews service) plus real excerpts:
+    up to 5 recent positive (4-5 stars) and 5 recent negative (1-2 stars) reviews.
+    The agent summarizes praise and complaints from these texts only.
+    Raises NotFoundError(product_not_found) for an unknown product.
+    """
+    stats = reviews_svc.product_reviews(session, product_id, limit=1)
+    return {
+        "product_id": product_id,
+        # string like "4.50", same as rating_avg in ProductDetail (JSON-safe, exact)
+        "rating_avg": None if stats.rating_avg is None else str(stats.rating_avg),
+        "rating_count": stats.rating_count,
+        "distribution": stats.distribution,
+        "positive": _excerpts(session, product_id, (4, 5)),
+        "negative": _excerpts(session, product_id, (1, 2)),
+        "empty": stats.total == 0,
     }

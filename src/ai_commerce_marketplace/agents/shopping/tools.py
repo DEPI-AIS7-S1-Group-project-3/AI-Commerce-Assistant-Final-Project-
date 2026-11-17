@@ -88,6 +88,13 @@ def products_compare(ctx: ToolContext, product_ids: Any) -> dict[str, Any]:
     return _safe(run)
 
 
+def reviews_summary_get(ctx: ToolContext, product_id: Any) -> dict[str, Any]:
+    def run() -> dict[str, Any]:
+        return catalog_details.reviews_summary(ctx.session, _product_id(product_id))
+
+    return _safe(run)
+
+
 # What the LLM may fill in. ctx is never listed here.
 # Each entry: {"fn": callable, "description": str, "params": [names]}
 REGISTRY: dict[str, dict[str, Any]] = {
@@ -106,6 +113,15 @@ REGISTRY: dict[str, dict[str, Any]] = {
             "the spec_keys to compare on, and missing_ids for ids that do not exist."
         ),
         "params": ["product_ids"],
+    },
+    "reviews_summary_get": {
+        "fn": reviews_summary_get,
+        "description": (
+            "Rating average, count and 1-5 star distribution of one product, plus up to 5 recent "
+            "positive and 5 recent negative review texts. Summarize praise and complaints only "
+            "from these texts. empty=true means no reviews yet."
+        ),
+        "params": ["product_id"],
     },
 }
 

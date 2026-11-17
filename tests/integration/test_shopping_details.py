@@ -225,3 +225,51 @@ def test_missing_args_do_not_raise(ctx):
 def test_registry_never_exposes_identity():
     for spec in REGISTRY.values():
         assert not {"customer_id", "ctx", "session"} & set(spec["params"])
+
+
+# ---- reviews summary ----
+def _review(session, product, rating, body="ممتاز"):
+    item = f.make_order_item(session, product=product)
+    return f.make_review(session, item, rating=rating, body=body)
+
+
+def test_reviews_summary_splits_positive_and_negative(session, ctx):
+    p = f.make_product(session)
+    _review(session, p, 5, "البطارية ممتازة")
+    _review(session, p, 4, "كويس جدًا")
+    _review(session, p, 3, "عادي")  # neutral: counted, but not an excerpt
+    _review(session, p, 1, "بيسخن جامد")
+    _review(session, p, 2, "")  # empty text: counted, but not an excerpt
+
+    r = call_tool(ctx, "reviews_summary_get", {"product_id": p.id})
+
+    assert r["ok"] is True and r["empty"] is False
+    assert r["distribution"] == {"1": 1, "2": 1, "3": 1, "4": 1, "5": 1}
+    assert {e["text"] for e in r["positive"]} == {"البطارية ممتازة", "كويس جدًا"}
+    assert [e["text"] for e in r["negative"]] == ["بيسخن جامد"]
+    assert all(e["rating"] >= 4 for e in r["positive"])
+
+
+def test_reviews_summary_caps_excerpts(session, ctx):
+    p = f.make_product(session)
+    for i in range(8):
+        _review(session, p, 5, f"رأي {i}")
+    r = call_tool(ctx, "reviews_summary_get", {"product_id": p.id})
+    assert len(r["positive"]) == 5
+
+
+def test_reviews_summary_no_reviews_is_empty(session, ctx):
+    p = f.make_product(session)
+    r = call_tool(ctx, "reviews_summary_get", {"product_id": p.id})
+    assert r["ok"] is True and r["empty"] is True
+    assert r["positive"] == [] and r["negative"] == []
+
+
+def test_reviews_summary_unknown_product(ctx):
+    r = call_tool(ctx, "reviews_summary_get", {"product_id": 999_999})
+    assert r["ok"] is False and r["error"] == "product_not_found"
+
+
+def test_reviews_summary_rejects_customer_id(ctx):
+    r = call_tool(ctx, "reviews_summary_get", {"product_id": 1, "customer_id": 7})
+    assert r["error"] == "forbidden_argument"
