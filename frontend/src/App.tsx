@@ -11,6 +11,8 @@ import ProductPage from "@/pages/ProductPage";
 import CheckoutPage from "@/pages/CheckoutPage";
 import AddressesPage from "@/pages/AddressesPage";
 import OrderConfirmationPage from "@/pages/OrderConfirmationPage";
+import OrdersPage from "@/pages/OrdersPage";
+import OrderDetailPage from "@/pages/OrderDetailPage";
 import RequireAuth from "@/components/RequireAuth";
 
 
@@ -22,7 +24,7 @@ export default function App() {
         <Route path="products" element={<ProductsPage />} />
         <Route path="products/:id" element={<ProductPage />} />
         <Route path="assistant" element={<AssistantPage />} />
-        {/* Next (see HANDOFF.md roadmap): orders list/detail, seller */}
+        {/* Next (see HANDOFF.md roadmap): policy pages, seller dashboard */}
         <Route path="*" element={<NotFoundPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
@@ -30,6 +32,8 @@ export default function App() {
         <Route path="checkout" element={<RequireAuth><CheckoutPage /></RequireAuth>} />
         <Route path="addresses" element={<RequireAuth><AddressesPage /></RequireAuth>} />
         <Route path="orders/confirmation" element={<RequireAuth><OrderConfirmationPage /></RequireAuth>} />
+        <Route path="orders" element={<RequireAuth><OrdersPage /></RequireAuth>} />
+        <Route path="orders/:id" element={<RequireAuth><OrderDetailPage /></RequireAuth>} />
       </Route>
     </Routes>
   );

@@ -44,9 +44,9 @@ export default function OrderConfirmationPage() {
         <div key={o.id} className="card space-y-3 p-5">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             {n > 1 && <h2 className="font-semibold">{fill(t("co.package"), { i: i + 1, n })}</h2>}
-            <span className="text-xs text-ink-soft" dir="auto">
+            <Link to={`/orders/${o.id}`} className="text-xs text-ink-soft hover:text-accent" dir="auto">
               {fill(t("oc.order"), { id: o.id })}
-            </span>
+            </Link>
           </div>
           <ul className="space-y-1 text-sm">
             {o.items.map((it) => (
@@ -79,7 +79,10 @@ export default function OrderConfirmationPage() {
         </div>
       </div>
 
-      <div className="text-center">
+      <div className="flex flex-wrap justify-center gap-3">
+        <Link to="/orders" className="btn-ghost">
+          {t("oc.viewOrders")}
+        </Link>
         <Link to="/products" className="btn-primary">
           {t("oc.continue")}
         </Link>

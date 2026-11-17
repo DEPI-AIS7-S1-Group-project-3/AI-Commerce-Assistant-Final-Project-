@@ -117,16 +117,26 @@ export interface Address {
 export type AddressInput = Omit<Address, "id">;
 
 // POST /orders (VERIFIED against backend schemas/order.py). Decimals come as strings.
+export type ReturnReason = "defective" | "not_as_described" | "changed_mind" | "wrong_item" | "damaged_in_shipping" | "other";
+export type ReturnStatus = "requested" | "approved" | "rejected" | "received" | "refunded";
+
 export interface OrderItem {
+  id: number; // order item id (for return requests)
   product_id: number;
   title: string;
   qty: number;
   unit_price_egp: number;
   line_total_egp: number;
+  is_returnable: boolean;
+  return_status: ReturnStatus | null;
+  can_return: boolean; // computed by the backend with its own return rules
+  return_block: string | null; // why not: not_delivered, window_expired, ...
 }
 export interface Order {
   id: number;
+  checkout_group_id: string; // same for all packages of one checkout
   seller_id: number;
+  seller_name: string;
   status: OrderStatus;
   payment_method: PaymentMethod;
   payment_status: "pending" | "paid" | "failed" | "refunded";
@@ -135,8 +145,20 @@ export interface Order {
   shipping_fee_egp: number;
   total_egp: number;
   expected_delivery_at: string;
+  delivered_at: string | null;
   created_at: string;
+  can_cancel: boolean; // computed by the backend
+  cancel_block: string | null; // why not: already_shipped, ...
   items: OrderItem[];
+}
+export interface TimelineEntry {
+  from_status: OrderStatus | null;
+  to_status: OrderStatus;
+  actor_type: string;
+  created_at: string;
+}
+export interface OrderDetail extends Order {
+  timeline: TimelineEntry[];
 }
 export interface CheckoutResult {
   checkout_group_id: string;
