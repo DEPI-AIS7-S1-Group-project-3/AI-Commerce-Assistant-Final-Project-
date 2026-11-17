@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useCart } from "@/hooks/useCart";
 import { useProducts } from "@/hooks/useProducts";
 import { useI18n } from "@/lib/i18n";
-import { formatPrice } from "@/lib/format";
+import { fill, formatPrice } from "@/lib/format";
 import { productTitle, sellerName } from "@/lib/productText";
 import ProductImage from "@/components/ProductImage";
 
@@ -19,7 +19,7 @@ export default function CartPage() {
   const { lines, setQty, remove, clear } = useCart();
   const { data, isLoading } = useProducts({});
 
-  const price = (n: number) => (lang === "ar" ? formatPrice(n) : `EGP ${n.toLocaleString("en-US")}`);
+  const price = (n: number) => formatPrice(n, lang);
 
   if (lines.length === 0) {
     return (
@@ -98,9 +98,9 @@ export default function CartPage() {
                   <div className="flex items-start justify-between gap-3">
                     <div className="space-y-0.5">
                       <Link to={`/products/${product.id}`} className="font-semibold hover:text-accent">
-                        {productTitle(product, lang)}
+                        <bdi>{productTitle(product, lang)}</bdi>
                       </Link>
-                      <p className="text-xs text-ink-soft">{sellerName(product.seller, lang)}</p>
+                      <p className="text-xs text-ink-soft"><bdi>{sellerName(product.seller, lang)}</bdi></p>
                     </div>
                     <span className="font-display text-lg">{price(product.price_egp)}</span>
                   </div>
@@ -152,9 +152,7 @@ export default function CartPage() {
                 </div>
                 {g.missing > 0 && (
                   <p className="text-xs text-ink-soft">
-                    {lang === "ar"
-                      ? `أضف ${price(g.missing)} من هذا البائع للحصول على شحن مجاني.`
-                      : `Add ${price(g.missing)} from this seller for free shipping.`}
+                    {fill(t("cart.freeHint"), { amount: price(g.missing) })}
                   </p>
                 )}
               </div>

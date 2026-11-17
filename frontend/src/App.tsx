@@ -7,6 +7,7 @@ import NotFoundPage from "@/pages/NotFoundPage";
 import LoginPage from "@/pages/LoginPage";
 import RegisterPage from "@/pages/RegisterPage";
 import CartPage from "@/pages/CartPage";
+import ProductPage from "@/pages/ProductPage";
 
 
 export default function App() {
@@ -15,8 +16,9 @@ export default function App() {
       <Route element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="products" element={<ProductsPage />} />
+        <Route path="products/:id" element={<ProductPage />} />
         <Route path="assistant" element={<AssistantPage />} />
-        {/* Next (see HANDOFF.md roadmap): products/:id, cart, checkout, auth, orders, seller */}
+        {/* Next (see HANDOFF.md roadmap): checkout, orders, seller */}
         <Route path="*" element={<NotFoundPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />

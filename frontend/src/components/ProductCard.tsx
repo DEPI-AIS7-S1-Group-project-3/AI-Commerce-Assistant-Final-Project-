@@ -4,7 +4,7 @@ import type { Product } from "@/types";
 import { useCart } from "@/hooks/useCart";
 import { useI18n } from "@/lib/i18n";
 import { brandName, productTitle, sellerName } from "@/lib/productText";
-import { discountPercent, formatPrice, stockState } from "@/lib/format";
+import { discountPercent, fill, formatPrice, stockState } from "@/lib/format";
 import ProductImage from "./ProductImage";
 
 const toneClass = {
@@ -16,20 +16,12 @@ const toneClass = {
 export default function ProductCard({ product }: { product: Product }) {
   const { add } = useCart();
   const { t, lang } = useI18n();
-  const stock = stockState(product.stock_qty);
+  const stock = stockState(product.stock_qty, t);
   const discount = discountPercent(product.price_egp, product.old_price_egp);
   const soldOut = product.stock_qty <= 0;
   const title = productTitle(product, lang);
 
-  const price = (n: number) => (lang === "ar" ? formatPrice(n) : `EGP ${n.toLocaleString("en-US")}`);
-  const stockLabel =
-    stock.tone === "out"
-      ? t("stock.out" as never)
-      : stock.tone === "low"
-        ? lang === "ar"
-          ? `يتبقى ${product.stock_qty} قطع`
-          : `Only ${product.stock_qty} left`
-        : t("stock.in");
+  const price = (n: number) => formatPrice(n, lang);
 
   return (
     <article className="card flex flex-col overflow-hidden transition-colors hover:border-accent">
@@ -38,7 +30,7 @@ export default function ProductCard({ product }: { product: Product }) {
           <ProductImage product={product} className="h-full w-full" />
           {discount && (
             <span className="absolute start-3 top-3 rounded-ctl bg-neon px-2 py-0.5 text-xs font-semibold text-on-neon">
-              {lang === "ar" ? `خصم ${discount}%` : `${discount}% off`}
+              {fill(t("card.discount"), { n: discount })}
             </span>
           )}
         </div>
@@ -50,7 +42,7 @@ export default function ProductCard({ product }: { product: Product }) {
           {/* Body font on purpose: display font is too decorative for long titles mixed with Latin model names. */}
           <h3 className="line-clamp-2 min-h-[3.2rem] font-body text-[15px] font-semibold leading-snug">
             <Link to={`/products/${product.id}`} className="hover:text-accent">
-              {title}
+              <bdi>{title}</bdi>
             </Link>
           </h3>
         </div>
@@ -70,9 +62,9 @@ export default function ProductCard({ product }: { product: Product }) {
               <span className="text-xs text-ink-soft line-through">{price(product.old_price_egp)}</span>
             )}
           </div>
-          <p className={`text-xs font-medium ${toneClass[stock.tone]}`}>{stockLabel}</p>
+          <p className={`text-xs font-medium ${toneClass[stock.tone]}`}>{stock.label}</p>
           <p className="text-xs text-ink-soft">
-            {t("card.seller")}: {sellerName(product.seller, lang)}
+            {t("card.seller")}: <bdi>{sellerName(product.seller, lang)}</bdi>
           </p>
         </div>
 
