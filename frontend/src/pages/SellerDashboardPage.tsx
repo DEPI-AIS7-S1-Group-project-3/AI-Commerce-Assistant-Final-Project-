@@ -61,6 +61,15 @@ export default function SellerDashboardPage() {
         </div>
       </header>
 
+      <div className="flex flex-wrap gap-2">
+        <Link to="/seller/orders" className="btn-ghost !py-2">
+          {t("sel.orders.nav")}
+        </Link>
+        <Link to="/seller/products" className="btn-ghost !py-2">
+          {t("sel.manageProducts")}
+        </Link>
+      </div>
+
       {data.pending_actions > 0 && (
         <Link to="/seller/orders" className="card flex items-center gap-3 p-4 hover:border-accent">
           <PackageCheck className="h-5 w-5 text-accent" aria-hidden />
@@ -106,7 +115,12 @@ export default function SellerDashboardPage() {
         </section>
 
         <section className="card space-y-3 p-5">
-          <h2 className="text-lg">{t("sel.lowStock")}</h2>
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="text-lg">{t("sel.lowStock")}</h2>
+            <Link to="/seller/products?filter=low" className="text-xs text-accent hover:underline">
+              {t("sel.manageProducts")}
+            </Link>
+          </div>
           {data.low_stock.length === 0 ? (
             <p className="text-sm text-ink-soft">{t("sel.stockOk")}</p>
           ) : (

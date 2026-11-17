@@ -133,6 +133,7 @@ export default function Navbar() {
             <MenuItem to="/products" icon={Store} label={t("nav.shop")} />
             {user?.role === "seller" && <MenuItem to="/seller" icon={LayoutDashboard} label={t("nav.seller")} />}
             {user?.role === "seller" && <MenuItem to="/seller/orders" icon={Package} label={t("sel.orders.nav")} />}
+            {user?.role === "seller" && <MenuItem to="/seller/products" icon={Store} label={t("sp.nav")} />}
             {user && user.role !== "seller" && <MenuItem to="/orders" icon={Package} label={t("nav.orders")} />}
             {user && user.role !== "seller" && <MenuItem to="/addresses" icon={MapPin} label={t("nav.addresses")} />}
             {user ? (

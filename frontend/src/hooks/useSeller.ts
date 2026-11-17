@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { OrderStatus, SellerMove } from "@/types";
+import type { OrderStatus, SellerMove, SellerProductFilter, SellerProductPatch } from "@/types";
 import * as api from "@/api/seller";
 import { USE_MOCK } from "@/api/config";
 
@@ -14,5 +14,21 @@ export function useAdvanceOrder() {
   return useMutation({
     mutationFn: (v: { id: number; to: SellerMove }) => api.advanceOrder(v.id, v.to),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["seller"] }),
+  });
+}
+
+export const useSellerProducts = (filter: SellerProductFilter, q: string) =>
+  useQuery({ queryKey: ["seller", "products", filter, q], queryFn: () => api.listSellerProducts(filter, q), enabled: !USE_MOCK });
+
+// After a change: refresh the seller lists/dashboard and the public catalog (price/stock/visibility).
+export function useUpdateSellerProduct() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (v: { id: number; patch: SellerProductPatch }) => api.updateSellerProduct(v.id, v.patch),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["seller"] });
+      qc.invalidateQueries({ queryKey: ["products"] });
+      qc.invalidateQueries({ queryKey: ["product"] });
+    },
   });
 }

@@ -17,6 +17,7 @@ import OrderDetailPage from "@/pages/OrderDetailPage";
 import RequireAuth from "@/components/RequireAuth";
 import SellerDashboardPage from "@/pages/SellerDashboardPage";
 import SellerOrdersPage from "@/pages/SellerOrdersPage";
+import SellerProductsPage from "@/pages/SellerProductsPage";
 
 
 export default function App() {
@@ -29,7 +30,7 @@ export default function App() {
         <Route path="policies" element={<PoliciesIndex />} />
         <Route path="policies/:slug" element={<PolicyPage />} />
         <Route path="assistant" element={<AssistantPage />} />
-        {/* Next: seller product & inventory management (stage B) */}
+        {/* Next: seller product creation (stage C) */}
         <Route path="*" element={<NotFoundPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
@@ -41,6 +42,7 @@ export default function App() {
         <Route path="orders/:id" element={<RequireAuth><OrderDetailPage /></RequireAuth>} />
         <Route path="seller" element={<RequireAuth role="seller"><SellerDashboardPage /></RequireAuth>} />
         <Route path="seller/orders" element={<RequireAuth role="seller"><SellerOrdersPage /></RequireAuth>} />
+        <Route path="seller/products" element={<RequireAuth role="seller"><SellerProductsPage /></RequireAuth>} />
       </Route>
     </Routes>
   );

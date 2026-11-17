@@ -4,7 +4,7 @@ from datetime import date, datetime
 from decimal import Decimal
 from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Kpis(BaseModel):
@@ -82,3 +82,29 @@ class SellerOrderOut(BaseModel):
 class StatusIn(BaseModel):
     # forward steps only (see services/seller_dashboard.NEXT); cancel is the customer's action
     to_status: Literal["confirmed", "shipped", "out_for_delivery", "delivered"]
+
+
+# ---- products (stage B: inventory) ----
+class SellerProductOut(BaseModel):
+    id: int
+    sku: str
+    title_ar: str
+    title_en: str | None
+    category_slug: str
+    brand: str
+    price_egp: Decimal
+    old_price_egp: Decimal | None
+    stock_qty: int
+    is_active: bool
+    rating_avg: Decimal | None
+    rating_count: int
+    image_url: str | None
+
+
+class ProductPatchIn(BaseModel):
+    """Only the fields sent are changed. Send old_price_egp: null to remove the old price."""
+
+    price_egp: Decimal | None = Field(default=None, gt=0, max_digits=12, decimal_places=2)
+    old_price_egp: Decimal | None = Field(default=None, gt=0, max_digits=12, decimal_places=2)
+    stock_qty: int | None = Field(default=None, ge=0, le=100_000)
+    is_active: bool | None = None

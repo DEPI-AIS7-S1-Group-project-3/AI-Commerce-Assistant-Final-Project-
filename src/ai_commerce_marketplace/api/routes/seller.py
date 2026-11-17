@@ -7,8 +7,15 @@ from ai_commerce_marketplace.api.dependencies import require_role
 from ai_commerce_marketplace.core.enums import OrderStatus, Role
 from ai_commerce_marketplace.database.models.user import User
 from ai_commerce_marketplace.database.session import get_session
-from ai_commerce_marketplace.schemas.seller import SellerDashboardOut, SellerOrderOut, StatusIn
+from ai_commerce_marketplace.schemas.seller import (
+    ProductPatchIn,
+    SellerDashboardOut,
+    SellerOrderOut,
+    SellerProductOut,
+    StatusIn,
+)
 from ai_commerce_marketplace.services import seller_dashboard as svc
+from ai_commerce_marketplace.services import seller_products as products_svc
 from ai_commerce_marketplace.services.seller_analytics import seller_id_for_user
 
 # Every route: seller login required; the seller id comes from the token, never from the request.
@@ -45,3 +52,24 @@ def advance(
 ):
     sid = seller_id_for_user(session, user.id)
     return svc.advance_order(session, sid, user.id, order_id, data.to_status)
+
+
+@router.get("/products", response_model=list[SellerProductOut])
+def list_products(
+    q: Annotated[str | None, Query(max_length=100)] = None,
+    filter: products_svc.Filter = "all",
+    user: User = Depends(seller_only),
+    session: Session = Depends(get_session),
+):
+    return products_svc.list_products(session, seller_id_for_user(session, user.id), q, filter)
+
+
+@router.patch("/products/{product_id}", response_model=SellerProductOut)
+def update_product(
+    product_id: int,
+    data: ProductPatchIn,
+    user: User = Depends(seller_only),
+    session: Session = Depends(get_session),
+):
+    sid = seller_id_for_user(session, user.id)
+    return products_svc.update_product(session, sid, product_id, data)

@@ -218,3 +218,20 @@ export interface SellerOrder {
   delivered_at: string | null;
   items: { product_id: number; title: string; qty: number; line_total_egp: number }[];
 }
+export interface SellerProduct {
+  id: number;
+  sku: string;
+  title_ar: string;
+  title_en: string | null;
+  category_slug: string;
+  brand: string;
+  price_egp: number;
+  old_price_egp: number | null;
+  stock_qty: number;
+  is_active: boolean;
+  rating_avg: number | null;
+  rating_count: number;
+  image_url: string | null;
+}
+export type SellerProductFilter = "all" | "visible" | "hidden" | "low" | "out";
+export type SellerProductPatch = Partial<Pick<SellerProduct, "price_egp" | "old_price_egp" | "stock_qty" | "is_active">>;
