@@ -357,6 +357,8 @@ const dict = {
   "blk.already_cancelled": { ar: "هذه الشحنة ملغاة.", en: "This package is cancelled." },
   "blk.already_returned": { ar: "هذه الشحنة في مرحلة الإرجاع.", en: "This package is in the return process." },
   "oc.viewOrders": { ar: "عرض طلباتي", en: "View my orders" },
+  "nav.menu": { ar: "القائمة", en: "Menu" },
+  "nav.close": { ar: "إغلاق القائمة", en: "Close menu" },
 } as const;
 
 export type TKey = keyof typeof dict;

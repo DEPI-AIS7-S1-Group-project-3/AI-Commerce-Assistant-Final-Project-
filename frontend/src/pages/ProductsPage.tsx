@@ -87,14 +87,14 @@ export default function ProductsPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <button type="button" className="btn-ghost lg:hidden" onClick={() => setDrawerOpen(true)}>
+        <div className="flex w-full min-w-0 items-center gap-3 sm:w-auto">
+          <button type="button" className="btn-ghost shrink-0 lg:hidden" onClick={() => setDrawerOpen(true)}>
             <SlidersHorizontal className="h-4 w-4" aria-hidden />
             {t("products.filters")}
           </button>
-          <label className="flex items-center gap-2 text-sm">
-            <span className="text-ink-soft">{t("products.sort")}</span>
-            <select className="input !w-auto" value={sort} onChange={(e) => update({ sort: e.target.value })}>
+          <label className="flex min-w-0 flex-1 items-center gap-2 text-sm sm:flex-none">
+            <span className="hidden shrink-0 text-ink-soft sm:inline">{t("products.sort")}</span>
+            <select className="input min-w-0 sm:!w-auto" aria-label={t("products.sort")} value={sort} onChange={(e) => update({ sort: e.target.value })}>
               {sortOptions.map((o) => (
                 <option key={o.value} value={o.value}>
                   {t(o.label)}

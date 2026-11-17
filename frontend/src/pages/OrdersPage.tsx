@@ -56,7 +56,7 @@ export default function OrdersPage() {
                   {packages.map((o, i) => (
                     <li key={o.id}>
                       <Link to={`/orders/${o.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-sand">
-                        <div className="flex-1 space-y-0.5">
+                        <div className="min-w-0 flex-1 space-y-0.5">
                           <p className="text-sm font-medium">
                             {many ? fill(t("co.package"), { i: i + 1, n: packages.length }) : fill(t("oc.order"), { id: o.id })}
                             <span className="ms-2 font-normal text-ink-soft">
@@ -67,8 +67,8 @@ export default function OrdersPage() {
                             <bdi>{o.items.map((it) => it.title).join(lang === "ar" ? "، " : ", ")}</bdi>
                           </p>
                         </div>
-                        <span className={statusClass(o.status)}>{t(statusKey(o.status))}</span>
-                        <Arrow className="h-4 w-4 text-ink-soft" aria-hidden />
+                        <span className={`shrink-0 ${statusClass(o.status)}`}>{t(statusKey(o.status))}</span>
+                        <Arrow className="h-4 w-4 shrink-0 text-ink-soft" aria-hidden />
                       </Link>
                     </li>
                   ))}
