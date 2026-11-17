@@ -17,7 +17,9 @@ from ai_commerce_marketplace.api.routes import (
     catalog,
     health,
     orders,
+    policies,
     products,
+    reviews,
 )
 from ai_commerce_marketplace.core.config import settings
 from ai_commerce_marketplace.core.exceptions import AppError
@@ -90,6 +92,8 @@ def create_app() -> FastAPI:
     app.include_router(orders.router)
     app.include_router(products.router)
     app.include_router(catalog.router)
+    app.include_router(policies.router)
+    app.include_router(reviews.router)
     app.mount("/static", StaticFiles(directory=STATIC_DIR, check_dir=False), name="static")
     return app
 
