@@ -4,8 +4,10 @@ from datetime import UTC, datetime, timedelta
 from decimal import Decimal
 from typing import Any
 
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
+from ai_commerce_marketplace.agents.seller import schemas as sc
 from ai_commerce_marketplace.core.exceptions import AppError
 from ai_commerce_marketplace.services import seller_analytics as sa
 from ai_commerce_marketplace.services.seller_analytics import Period
@@ -55,6 +57,8 @@ def _limit(value: int) -> int:
 
 
 def _jsonable(obj: Any) -> Any:
+    if isinstance(obj, BaseModel):
+        return obj.model_dump(mode="json")
     if isinstance(obj, Decimal):
         return str(obj)
     if isinstance(obj, dict):
@@ -77,8 +81,9 @@ def _safe(fn: Callable[[], Any]) -> dict[str, Any]:
 # ---- tools ----
 def get_sales_summary(ctx: ToolContext, date_from: str, date_to: str) -> dict[str, Any]:
     def run() -> dict[str, Any]:
-        s = sa.sales_summary(ctx.session, ctx.seller_id, _period(date_from, date_to))
-        return {**s, "empty": s["orders_count"] == 0}
+        raw = sa.sales_summary(ctx.session, ctx.seller_id, _period(date_from, date_to))
+        s = sc.SalesSummary(**raw)
+        return {**s.model_dump(mode="json"), "empty": s.orders_count == 0}
 
     return _safe(run)
 
@@ -90,9 +95,9 @@ def compare_periods(
 
     def run() -> dict[str, Any]:
         pa, pb = _period(a_from, a_to, "period_a"), _period(b_from, b_to, "period_b")
-        c = sa.compare_periods(ctx.session, ctx.seller_id, pa, pb)
-        empty = c["orders_count"]["a"] == 0 and c["orders_count"]["b"] == 0
-        return {**c, "empty": empty}
+        c = sc.PeriodComparison(**sa.compare_periods(ctx.session, ctx.seller_id, pa, pb))
+        empty = c.orders_count.a == 0 and c.orders_count.b == 0
+        return {**c.model_dump(mode="json"), "empty": empty}
 
     return _safe(run)
 
@@ -101,9 +106,10 @@ def top_products(
     ctx: ToolContext, date_from: str, date_to: str, limit: int = 5, worst: bool = False
 ) -> dict[str, Any]:
     def run() -> dict[str, Any]:
-        rows = sa.top_products(
+        raw = sa.top_products(
             ctx.session, ctx.seller_id, _period(date_from, date_to), _limit(limit), bool(worst)
         )
+        rows = [sc.TopProduct(**r) for r in raw]
         return {"products": rows, "empty": not rows}
 
     return _safe(run)
@@ -113,7 +119,8 @@ def low_stock_products(ctx: ToolContext, threshold: int = 5) -> dict[str, Any]:
     def run() -> dict[str, Any]:
         if not isinstance(threshold, int) or threshold < 0:
             raise ToolInputError("invalid_threshold", "threshold must be 0 or more")
-        rows = sa.low_stock_products(ctx.session, ctx.seller_id, threshold)
+        raw = sa.low_stock_products(ctx.session, ctx.seller_id, threshold)
+        rows = [sc.LowStockProduct(**r) for r in raw]
         return {"threshold": threshold, "products": rows, "empty": not rows}
 
     return _safe(run)
@@ -129,16 +136,17 @@ def orders_by_status(ctx: ToolContext, date_from: str, date_to: str) -> dict[str
 
 def returns_report(ctx: ToolContext, date_from: str, date_to: str) -> dict[str, Any]:
     def run() -> dict[str, Any]:
-        r = sa.returns_report(ctx.session, ctx.seller_id, _period(date_from, date_to))
-        return {**r, "empty": r["total_returns"] == 0}
+        raw = sa.returns_report(ctx.session, ctx.seller_id, _period(date_from, date_to))
+        r = sc.ReturnsReport(**raw)
+        return {**r.model_dump(mode="json"), "empty": r.total_returns == 0}
 
     return _safe(run)
 
 
 def get_product_reviews(ctx: ToolContext, product_id: int) -> dict[str, Any]:
     def run() -> dict[str, Any]:
-        r = sa.product_reviews(ctx.session, ctx.seller_id, product_id)
-        return {**r, "empty": r["reviews_count"] == 0}
+        r = sc.ProductReviews(**sa.product_reviews(ctx.session, ctx.seller_id, product_id))
+        return {**r.model_dump(mode="json"), "empty": r.reviews_count == 0}
 
     return _safe(run)
 
