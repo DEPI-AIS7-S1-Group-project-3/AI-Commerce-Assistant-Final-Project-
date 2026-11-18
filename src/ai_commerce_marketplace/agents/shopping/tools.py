@@ -6,13 +6,14 @@ categories_brands_list. Person B adds product_get and products_compare.
 
 from collections.abc import Callable
 from dataclasses import dataclass
+from decimal import Decimal, InvalidOperation
 from typing import Any
 
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from ai_commerce_marketplace.core.exceptions import AppError
-from ai_commerce_marketplace.services import catalog_details
+from ai_commerce_marketplace.services import catalog_details, catalog_search
 
 MAX_LIMIT = 20
 
@@ -67,10 +68,74 @@ def _product_id(value: Any) -> int:
     return value
 
 
+SORTS = ("newest", "price_asc", "price_desc", "rating")
+
+
+def _opt_text(value: Any, name: str) -> str | None:
+    if value is None:
+        return None
+    if not isinstance(value, str):
+        raise ToolInputError(f"invalid_{name}", f"{name} must be text")
+    return value.strip() or None
+
+
+def _opt_price(value: Any, name: str) -> Decimal | None:
+    if value is None:
+        return None
+    if isinstance(value, bool) or not isinstance(value, int | float | str):
+        raise ToolInputError("invalid_price", f"{name} must be a number")
+    try:
+        price = Decimal(str(value).strip())
+    except InvalidOperation:
+        raise ToolInputError("invalid_price", f"{name} must be a number") from None
+    if not price.is_finite() or price < 0:
+        raise ToolInputError("invalid_price", f"{name} must be 0 or more")
+    return price
+
+
 def _product_ids(values: Any) -> list[int]:
     if not isinstance(values, list | tuple):
         raise ToolInputError("invalid_product_ids", "product_ids must be a list of product ids")
     return [_product_id(v) for v in values]
+
+
+# ---- tools (Person A) ----
+def search_products(
+    ctx: ToolContext,
+    query: Any = None,
+    category: Any = None,
+    brand: Any = None,
+    min_price: Any = None,
+    max_price: Any = None,
+    in_stock_only: Any = True,
+    sort: Any = "newest",
+    sort_spec: Any = None,
+    specs: Any = None,
+    limit: Any = 5,
+) -> dict[str, Any]:
+    def run() -> dict[str, Any]:
+        if sort not in SORTS:
+            raise ToolInputError("invalid_sort", f"sort must be one of {list(SORTS)}")
+        if not isinstance(in_stock_only, bool):
+            raise ToolInputError("invalid_in_stock_only", "in_stock_only must be true or false")
+        if specs is not None and not isinstance(specs, dict):
+            raise ToolInputError("invalid_specs", "specs must be an object")
+        cards = catalog_search.search_products(
+            ctx.session,
+            query=_opt_text(query, "query"),
+            category=_opt_text(category, "category"),
+            brand=_opt_text(brand, "brand"),
+            min_price=_opt_price(min_price, "min_price"),
+            max_price=_opt_price(max_price, "max_price"),
+            in_stock_only=in_stock_only,
+            sort=sort,
+            specs=specs,
+            sort_spec=_opt_text(sort_spec, "sort_spec"),
+            limit=_limit(limit),
+        )
+        return {"products": cards, "count": len(cards), "empty": not cards}
+
+    return _safe(run)
 
 
 # ---- tools (Person B) ----
@@ -122,6 +187,31 @@ REGISTRY: dict[str, dict[str, Any]] = {
             "from these texts. empty=true means no reviews yet."
         ),
         "params": ["product_id"],
+    },
+    "search_products": {
+        "fn": search_products,
+        "description": (
+            "Search products. query is free text (Arabic or English). category and brand are "
+            "slugs. min_price and max_price are in EGP. in_stock_only defaults to true. "
+            "sort: newest, price_asc, price_desc or rating. specs is an object: use "
+            "<key>_min for 'at least' (ram_gb, storage_gb, battery_mah, battery_hours, "
+            "camera_mp, screen_inch) and exact values for network (4g/5g), os, storage_type, "
+            "type, connector, wireless, noise_cancelling. sort_spec sorts high to low by one "
+            "of the *_min keys without the suffix, e.g. battery_mah. "
+            "empty=true means nothing matched."
+        ),
+        "params": [
+            "query",
+            "category",
+            "brand",
+            "min_price",
+            "max_price",
+            "in_stock_only",
+            "sort",
+            "sort_spec",
+            "specs",
+            "limit",
+        ],
     },
 }
 
