@@ -13,7 +13,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from ai_commerce_marketplace.core.exceptions import AppError
-from ai_commerce_marketplace.services import catalog_details, catalog_search
+from ai_commerce_marketplace.services import catalog, catalog_details, catalog_search
 
 MAX_LIMIT = 20
 
@@ -138,6 +138,26 @@ def search_products(
     return _safe(run)
 
 
+def categories_brands_list(ctx: ToolContext) -> dict[str, Any]:
+    def run() -> dict[str, Any]:
+        categories = [
+            {
+                "slug": c.slug,
+                "name_ar": c.name_ar,
+                "name_en": c.name_en,
+                "spec_kind": c.spec_kind,
+            }
+            for c in catalog.list_categories(ctx.session)
+        ]
+        brands = [
+            {"slug": b.slug, "name": b.name, "name_ar": b.name_ar}
+            for b in catalog.list_brands(ctx.session)
+        ]
+        return {"categories": categories, "brands": brands, "empty": not categories}
+
+    return _safe(run)
+
+
 # ---- tools (Person B) ----
 def product_get(ctx: ToolContext, product_id: Any) -> dict[str, Any]:
     def run() -> dict[str, Any]:
@@ -212,6 +232,15 @@ REGISTRY: dict[str, dict[str, Any]] = {
             "specs",
             "limit",
         ],
+    },
+    "categories_brands_list": {
+        "fn": categories_brands_list,
+        "description": (
+            "All product categories (with spec_kind) and brands, each with the slug to use as "
+            "the category or brand argument of search_products. Call it to turn the "
+            "customer's words, like a brand or a product type, into slugs."
+        ),
+        "params": [],
     },
 }
 

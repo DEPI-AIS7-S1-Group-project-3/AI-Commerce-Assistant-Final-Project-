@@ -102,3 +102,42 @@ def test_customer_id_argument_is_rejected(session):
 
     assert r["ok"] is False
     assert r["error"] == "forbidden_argument"
+
+
+def test_categories_brands_list_returns_slugs(session):
+    f.make_category(session, slug="list-phones", name_ar="موبايلات", name_en="Phones")
+    f.make_brand(session, slug="list-samsung", name="Samsung", name_ar="سامسونج")
+
+    r = call_tool(ToolContext(session=session), "categories_brands_list", {})
+
+    assert r["ok"] is True
+    assert r["empty"] is False
+    cats = {c["slug"]: c for c in r["categories"]}
+    brands = {b["slug"]: b for b in r["brands"]}
+    assert cats["list-phones"] == {
+        "slug": "list-phones",
+        "name_ar": "موبايلات",
+        "name_en": "Phones",
+        "spec_kind": "mobile",
+    }
+    assert brands["list-samsung"] == {
+        "slug": "list-samsung",
+        "name": "Samsung",
+        "name_ar": "سامسونج",
+    }
+
+
+def test_categories_brands_list_hides_internal_ids(session):
+    f.make_category(session, slug="list-ids")
+
+    r = call_tool(ToolContext(session=session), "categories_brands_list", {})
+
+    assert all("id" not in c for c in r["categories"])
+    assert all("id" not in b for b in r["brands"])
+
+
+def test_categories_brands_list_rejects_customer_id(session):
+    r = call_tool(ToolContext(session=session), "categories_brands_list", {"customer_id": 1})
+
+    assert r["ok"] is False
+    assert r["error"] == "forbidden_argument"
