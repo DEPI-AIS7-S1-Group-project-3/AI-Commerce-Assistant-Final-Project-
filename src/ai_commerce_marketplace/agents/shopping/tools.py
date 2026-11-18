@@ -12,7 +12,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from ai_commerce_marketplace.core.exceptions import AppError
-from ai_commerce_marketplace.services import catalog_search
+from ai_commerce_marketplace.services import catalog_details
 
 MAX_LIMIT = 20
 
@@ -58,22 +58,70 @@ def _safe(fn: Callable[[], Any]) -> dict[str, Any]:
         return {"ok": False, "error": e.code, "message": e.message}
 
 
-# What the LLM may fill in. ctx is never listed here.
-# Each entry: {"fn": callable, "description": str, "params": [names]}
-def categories_brands_list(ctx: ToolContext) -> dict[str, Any]:
+def _product_id(value: Any) -> int:
+    """Accept 12 or "12"; reject bools, floats, text and non-positive numbers."""
+    if isinstance(value, str) and value.strip().isdigit():
+        value = int(value.strip())
+    if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+        raise ToolInputError("invalid_product_id", f"Not a valid product id: {value!r}")
+    return value
+
+
+def _product_ids(values: Any) -> list[int]:
+    if not isinstance(values, list | tuple):
+        raise ToolInputError("invalid_product_ids", "product_ids must be a list of product ids")
+    return [_product_id(v) for v in values]
+
+
+# ---- tools (Person B) ----
+def product_get(ctx: ToolContext, product_id: Any) -> dict[str, Any]:
     def run() -> dict[str, Any]:
-        data = catalog_search.list_categories_brands(ctx.session)
-        return {**data, "empty": not data["categories"] and not data["brands"]}
+        return {"product": catalog_details.get_product(ctx.session, _product_id(product_id))}
 
     return _safe(run)
 
 
+def products_compare(ctx: ToolContext, product_ids: Any) -> dict[str, Any]:
+    def run() -> dict[str, Any]:
+        return catalog_details.compare_products(ctx.session, _product_ids(product_ids))
+
+    return _safe(run)
+
+
+def reviews_summary_get(ctx: ToolContext, product_id: Any) -> dict[str, Any]:
+    def run() -> dict[str, Any]:
+        return catalog_details.reviews_summary(ctx.session, _product_id(product_id))
+
+    return _safe(run)
+
+
+# What the LLM may fill in. ctx is never listed here.
+# Each entry: {"fn": callable, "description": str, "params": [names]}
 REGISTRY: dict[str, dict[str, Any]] = {
-    "categories_brands_list": {
-        "fn": categories_brands_list,
-        "description": "All product categories and brands with their slugs, "
-        "used to turn the customer's words into filters.",
-        "params": [],
+    "product_get": {
+        "fn": product_get,
+        "description": (
+            "Full details of one product: price, specs, warranty, returnable, stock, rating, "
+            "images. in_stock=false means not available now."
+        ),
+        "params": ["product_id"],
+    },
+    "products_compare": {
+        "fn": products_compare,
+        "description": (
+            "Compare 2 to 4 products from the same category. Returns each product's details, "
+            "the spec_keys to compare on, and missing_ids for ids that do not exist."
+        ),
+        "params": ["product_ids"],
+    },
+    "reviews_summary_get": {
+        "fn": reviews_summary_get,
+        "description": (
+            "Rating average, count and 1-5 star distribution of one product, plus up to 5 recent "
+            "positive and 5 recent negative review texts. Summarize praise and complaints only "
+            "from these texts. empty=true means no reviews yet."
+        ),
+        "params": ["product_id"],
     },
 }
 

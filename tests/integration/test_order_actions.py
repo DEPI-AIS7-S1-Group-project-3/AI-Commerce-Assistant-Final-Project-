@@ -281,3 +281,62 @@ def test_item_from_another_order_404(client, session):
 
 def test_return_requires_login(client):
     assert client.post("/orders/1/items/1/return", json={"reason_code": "other"}).status_code == 401
+
+
+# ---- what the UI may do: flags on GET /orders ----
+def _get(client, user, order):
+    r = client.get(f"/orders/{order.id}", headers=_h(user))
+    assert r.status_code == 200, r.text
+    return r.json()
+
+
+def test_order_out_has_ids_group_seller_and_flags_for_pending(client, session):
+    user = f.make_user(session)
+    order, item, _ = _order_with_item(session, user)
+
+    body = _get(client, user, order)
+
+    assert body["checkout_group_id"] == str(order.checkout_group_id)
+    assert body["seller_name"]
+    assert body["delivered_at"] is None
+    assert body["can_cancel"] is True and body["cancel_block"] is None
+    it = body["items"][0]
+    assert it["id"] == item.id
+    assert it["can_return"] is False and it["return_block"] == "not_delivered"
+    assert it["return_status"] is None
+
+
+def test_delivered_order_can_return_but_not_cancel(client, session):
+    user = f.make_user(session)
+    order, _, _ = _order_with_item(session, user)
+    _deliver(session, order, days_ago=3)
+
+    body = _get(client, user, order)
+
+    assert body["can_cancel"] is False and body["cancel_block"] == "already_delivered"
+    assert body["items"][0]["can_return"] is True
+    assert body["delivered_at"] is not None
+
+
+def test_flags_after_return_request_and_after_window(client, session):
+    user = f.make_user(session)
+    order, item, _ = _order_with_item(session, user)
+    _deliver(session, order, days_ago=3)
+    assert _return(client, user, order, item).status_code == 201
+
+    it = _get(client, user, order)["items"][0]
+    assert it["return_status"] == "requested"
+    assert it["can_return"] is False
+
+    old, _, _ = _order_with_item(session, user)
+    _deliver(session, old, days_ago=20)
+    assert _get(client, user, old)["items"][0]["return_block"] == "window_expired"
+
+
+def test_list_orders_has_the_same_flags(client, session):
+    user = f.make_user(session)
+    order, _, _ = _order_with_item(session, user)
+    r = client.get("/orders", headers=_h(user))
+    assert r.status_code == 200
+    mine = next(o for o in r.json() if o["id"] == order.id)
+    assert mine["can_cancel"] is True and "items" in mine and "id" in mine["items"][0]
