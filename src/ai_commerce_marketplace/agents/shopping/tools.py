@@ -12,6 +12,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from ai_commerce_marketplace.core.exceptions import AppError
+from ai_commerce_marketplace.services import catalog_search
 
 MAX_LIMIT = 20
 
@@ -59,7 +60,22 @@ def _safe(fn: Callable[[], Any]) -> dict[str, Any]:
 
 # What the LLM may fill in. ctx is never listed here.
 # Each entry: {"fn": callable, "description": str, "params": [names]}
-REGISTRY: dict[str, dict[str, Any]] = {}
+def categories_brands_list(ctx: ToolContext) -> dict[str, Any]:
+    def run() -> dict[str, Any]:
+        data = catalog_search.list_categories_brands(ctx.session)
+        return {**data, "empty": not data["categories"] and not data["brands"]}
+
+    return _safe(run)
+
+
+REGISTRY: dict[str, dict[str, Any]] = {
+    "categories_brands_list": {
+        "fn": categories_brands_list,
+        "description": "All product categories and brands with their slugs, "
+        "used to turn the customer's words into filters.",
+        "params": [],
+    },
+}
 
 
 def call_tool(ctx: ToolContext, name: str, args: dict[str, Any]) -> dict[str, Any]:
