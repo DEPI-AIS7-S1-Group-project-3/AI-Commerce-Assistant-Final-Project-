@@ -1,7 +1,7 @@
 """Tool layer for the Shopping Agent (read-only).
 
-Skeleton: REGISTRY is empty. Person A adds search_products and
-categories_brands_list. Person B adds product_get and products_compare.
+Tools: search_products and categories_brands_list (Person A); product_get, products_compare
+and reviews_summary_get (Person B). The LLM never passes customer_id; call_tool rejects it.
 """
 
 from collections.abc import Callable
