@@ -15,7 +15,7 @@ from typing import Any, Literal
 from sqlalchemy import exists, func, or_, select
 from sqlalchemy.orm import Session, aliased
 
-from ai_commerce_marketplace.core.exceptions import NotFoundError
+from ai_commerce_marketplace.core.exceptions import AppError, NotFoundError
 from ai_commerce_marketplace.database.models import (
     Brand,
     Category,
@@ -35,6 +35,43 @@ from ai_commerce_marketplace.schemas.catalog import (
 ProductSort = Literal["newest", "price_asc", "price_desc", "rating"]
 
 FUZZY_THRESHOLD = 0.5  # pg_trgm word_similarity; 1.0 = exact word match
+# Spec filters the agent may use (keys match schemas/specs.py).
+# "<key>_min" means "at least"; the others are exact matches.
+SPEC_MIN_KEYS = frozenset(
+    {"ram_gb", "storage_gb", "battery_mah", "battery_hours", "camera_mp", "screen_inch"}
+)
+SPEC_TEXT_KEYS = frozenset({"network", "os", "storage_type", "type", "connector"})
+SPEC_BOOL_KEYS = frozenset({"wireless", "noise_cancelling"})
+
+
+def _spec(key: str) -> Any:
+    """products.specs[key] as a JSONB element (typed Any so .as_float() type-checks)."""
+    column: Any = Product.specs
+    return column[key]
+
+
+def _bad_spec(message: str) -> AppError:
+    return AppError(message, code="invalid_spec_filter")
+
+
+def _spec_conditions(specs: dict[str, Any]) -> list[Any]:
+    conditions: list[Any] = []
+    for key, value in specs.items():
+        if key.endswith("_min") and key[:-4] in SPEC_MIN_KEYS:
+            if isinstance(value, bool) or not isinstance(value, int | float):
+                raise _bad_spec(f"{key} must be a number")
+            conditions.append(_spec(key[:-4]).as_float() >= value)
+        elif key in SPEC_TEXT_KEYS:
+            if not isinstance(value, str):
+                raise _bad_spec(f"{key} must be text")
+            conditions.append(_spec(key).as_string() == value)
+        elif key in SPEC_BOOL_KEYS:
+            if not isinstance(value, bool):
+                raise _bad_spec(f"{key} must be true or false")
+            conditions.append(_spec(key).as_boolean() == value)
+        else:
+            raise _bad_spec(f"Unknown spec filter: {key}")
+    return conditions
 
 
 def _base() -> Any:  # select(Product, Brand, Category, Seller) with joins
@@ -107,6 +144,8 @@ def list_products(
     sort: ProductSort = "newest",
     limit: int = 50,
     offset: int = 0,
+    specs: dict[str, Any] | None = None,
+    sort_spec: str | None = None,
 ) -> list[ProductOut]:
     stmt = _base().where(Product.is_active)
 
@@ -123,7 +162,8 @@ def list_products(
         stmt = stmt.where(Product.price_egp <= max_price)
     if in_stock:
         stmt = stmt.where(Product.stock_qty > 0)
-
+    if specs:
+        stmt = stmt.where(*_spec_conditions(specs))
     query = normalize_ar(q)
     if query:
         stmt = stmt.where(
@@ -143,7 +183,13 @@ def list_products(
             Product.id.asc(),
         ),
     }
-    stmt = stmt.order_by(*order[sort]).limit(limit).offset(offset)
+    if sort_spec is not None:
+        if sort_spec not in SPEC_MIN_KEYS:
+            raise _bad_spec(f"Cannot sort by {sort_spec}")
+        ordering: Any = (_spec(sort_spec).as_float().desc().nulls_last(), Product.id.asc())
+    else:
+        ordering = order[sort]
+    stmt = stmt.order_by(*ordering).limit(limit).offset(offset)
 
     rows = session.execute(stmt).all()
     images = _images(session, [p.id for p, *_ in rows])
