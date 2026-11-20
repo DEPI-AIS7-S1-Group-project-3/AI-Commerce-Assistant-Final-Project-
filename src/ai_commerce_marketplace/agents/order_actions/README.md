@@ -64,14 +64,18 @@ it), `execute_confirmed` returns the new refusal and changes nothing.
 ## Try it
 
 ```python
-from ai_commerce_marketplace.agents.order_actions.tools import ToolContext, call_tool, execute_confirmed
+from ai_commerce_marketplace.agents.order_actions.tools import (
+    ToolContext,
+    call_tool,
+    execute_confirmed,
+)
 from ai_commerce_marketplace.database.session import SessionLocal
 
 with SessionLocal() as s:
-    ctx = ToolContext(session=s, customer_id=5)          # customer01
+    ctx = ToolContext(session=s, customer_id=5)  # customer01
     r = call_tool(ctx, "cancel_order", {"order_id": 10002})
     print(r["confirm_question_ar"])
-    print(execute_confirmed(ctx, r["pending_action"]))   # really cancels on the dev DB
+    print(execute_confirmed(ctx, r["pending_action"]))  # really cancels on the dev DB
 ```
 
 ## Tests and eval
