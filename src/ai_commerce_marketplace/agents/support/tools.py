@@ -17,6 +17,7 @@ Rules every tool follows:
 """
 
 from dataclasses import dataclass
+from datetime import UTC, datetime
 from typing import Any
 
 from sqlalchemy.orm import Session
@@ -43,6 +44,7 @@ class ToolContext:
 
     session: Session
     customer_id: int | None = None  # None = visitor (policy questions only)
+    now: datetime | None = None  # only tests/eval set this; production uses the real clock
 
 
 def _customer(ctx: ToolContext) -> int:
@@ -51,11 +53,25 @@ def _customer(ctx: ToolContext) -> int:
     return ctx.customer_id
 
 
+def _now(ctx: ToolContext) -> datetime:
+    return ctx.now or datetime.now(UTC)
+
+
 def _order_id(value: Any) -> int:
     return positive_id(value, code="invalid_order_id", name="order id")
 
 
-def _compact_order(o: Any) -> dict[str, Any]:
+IN_TRANSIT = ("pending", "confirmed", "shipped", "out_for_delivery")
+
+
+def _days_late(o: Any, now: datetime) -> int:
+    """Whole days past the expected delivery date, for orders that have not arrived."""
+    if o.status in IN_TRANSIT and now > o.expected_delivery_at:
+        return (now - o.expected_delivery_at).days
+    return 0
+
+
+def _compact_order(o: Any, now: datetime) -> dict[str, Any]:
     return {
         "order_id": o.id,
         "checkout_group_id": o.checkout_group_id,
@@ -67,6 +83,7 @@ def _compact_order(o: Any) -> dict[str, Any]:
         "created_at": o.created_at,
         "expected_delivery_at": o.expected_delivery_at,
         "delivered_at": o.delivered_at,
+        "days_late": _days_late(o, now),
         "can_cancel": o.can_cancel,
         "cancel_block": o.cancel_block,
         "items": [{"item_id": i.id, "title": i.title, "qty": i.qty} for i in o.items],
@@ -134,11 +151,11 @@ def order_list(ctx: ToolContext, limit: int = 5) -> dict[str, Any]:
     def run() -> dict[str, Any]:
         customer_id = _customer(ctx)
         n = clamp_limit(limit, 10)
-        rows = orders.list_orders(ctx.session, customer_id)
+        rows = orders.list_orders(ctx.session, customer_id, _now(ctx))
         return {
             "empty": not rows,
             "total_orders": len(rows),
-            "orders": [_compact_order(o) for o in rows[:n]],
+            "orders": [_compact_order(o, _now(ctx)) for o in rows[:n]],
         }
 
     return safe(run)
@@ -148,9 +165,9 @@ def order_get(ctx: ToolContext, order_id: int) -> dict[str, Any]:
     """One order of the customer: items, status, expected delivery and the status timeline."""
 
     def run() -> dict[str, Any]:
-        order = orders.get_order(ctx.session, _customer(ctx), _order_id(order_id))
+        order = orders.get_order(ctx.session, _customer(ctx), _order_id(order_id), _now(ctx))
         return {
-            **_compact_order(order),
+            **_compact_order(order, _now(ctx)),
             "subtotal_egp": order.subtotal_egp,
             "shipping_fee_egp": order.shipping_fee_egp,
             "shipping_governorate": order.shipping_address.get("governorate"),
@@ -171,7 +188,7 @@ def order_eligibility(ctx: ToolContext, order_id: int) -> dict[str, Any]:
     """
 
     def run() -> dict[str, Any]:
-        order = orders.get_order(ctx.session, _customer(ctx), _order_id(order_id))
+        order = orders.get_order(ctx.session, _customer(ctx), _order_id(order_id), _now(ctx))
         return {
             "order_id": order.id,
             "status": order.status,
@@ -197,7 +214,9 @@ def warranty_status(ctx: ToolContext, order_id: int) -> dict[str, Any]:
     """Warranty start, end and days left for each item of an order (counted from delivery)."""
 
     def run() -> dict[str, Any]:
-        return order_support.order_warranty(ctx.session, _customer(ctx), _order_id(order_id))
+        return order_support.order_warranty(
+            ctx.session, _customer(ctx), _order_id(order_id), _now(ctx)
+        )
 
     return safe(run)
 
