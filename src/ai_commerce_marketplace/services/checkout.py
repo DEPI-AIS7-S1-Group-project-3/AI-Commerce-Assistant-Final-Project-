@@ -20,7 +20,8 @@ from ai_commerce_marketplace.database.models.order import (
     OrderStatusHistory,
 )
 from ai_commerce_marketplace.database.models.user import Address
-from ai_commerce_marketplace.schemas.order import CheckoutOut, OrderItemOut, OrderOut
+from ai_commerce_marketplace.schemas.order import CheckoutOut, OrderOut
+from ai_commerce_marketplace.services.orders import order_fields
 
 # Shipping rule (documented in docs/): flat fee per order, free above a threshold.
 SHIPPING_FEE_EGP = Decimal("60.00")
@@ -41,33 +42,6 @@ def _address_snapshot(addr: Address) -> dict[str, str | None]:
         "city": addr.city,
         "street_address": addr.street_address,
     }
-
-
-def _to_out(order: Order, items: list[OrderItem]) -> OrderOut:
-    return OrderOut(
-        id=order.id,
-        seller_id=order.seller_id,
-        status=order.status,
-        payment_method=order.payment_method,
-        payment_status=order.payment_status,
-        shipping_address=order.shipping_address,
-        subtotal_egp=order.subtotal_egp,
-        shipping_fee_egp=order.shipping_fee_egp,
-        total_egp=order.total_egp,
-        expected_delivery_at=order.expected_delivery_at,
-        created_at=order.created_at,
-        items=[
-            OrderItemOut(
-                id=i.id,
-                product_id=i.product_id,
-                title=i.product_title_snapshot,
-                qty=i.qty,
-                unit_price_egp=i.unit_price_egp,
-                line_total_egp=i.unit_price_egp * i.qty,
-            )
-            for i in items
-        ],
-    )
 
 
 def checkout(
@@ -191,7 +165,7 @@ def _checkout(
             )
         )
         session.flush()
-        orders_out.append(_to_out(order, items))
+        orders_out.append(OrderOut(**order_fields(session, order, items)))
 
     session.execute(delete(CartItem).where(CartItem.cart_id == cart.id))
     return CheckoutOut(checkout_group_id=str(group_id), orders=orders_out)

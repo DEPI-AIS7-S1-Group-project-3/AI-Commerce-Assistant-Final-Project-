@@ -76,6 +76,7 @@ class Gen:
                     category_slug=p["category_slug"],
                     brand_slug=p["brand_slug"],
                     title_ar=p["title_ar"],
+                    title_en=p["title_en"],
                     description_ar=p["description_ar"],
                     price_egp=money(p["price_egp"]),
                     old_price_egp=money(p["old_price_egp"]) if p["old_price_egp"] else None,

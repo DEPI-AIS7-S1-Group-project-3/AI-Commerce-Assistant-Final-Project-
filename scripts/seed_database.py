@@ -148,6 +148,7 @@ def seed_products(session, ctx: _Ctx) -> None:
             "brand_id": brand.id,
             "sku": p["sku"],
             "title_ar": p["title_ar"],
+            "title_en": p.get("title_en"),
             "description_ar": p["description_ar"],
             "price_egp": _money(p["price_egp"]),
             "old_price_egp": _money(p["old_price_egp"]),
@@ -157,7 +158,7 @@ def seed_products(session, ctx: _Ctx) -> None:
             "is_active": p["is_active"],
             "specs": specs,
             "search_text": build_search_text(
-                p["title_ar"], brand.name_ar, brand.name, p["description_ar"]
+                p["title_ar"], p.get("title_en"), brand.name_ar, brand.name, p["description_ar"]
             ),
             "created_at": created,
             "updated_at": created,
