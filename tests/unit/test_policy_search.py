@@ -57,6 +57,30 @@ def test_specific_section_beats_general_one():
     assert top("اقدر ارجع السماعة الداخلية؟")[0] == ("returns", 3)
 
 
+def test_price_word_means_fee():
+    # "الشحن بكام؟" must reach the shipping fee section, not any section that mentions shipping
+    docs = [
+        doc("cancellation", 1, "الإلغاء قبل الشحن", "تقدر تلغي قبل الشحن بدون رسوم إضافية."),
+        *DOCS,
+    ]
+    hits = rank_sections("الشحن بكام؟", docs)
+    assert (hits[0].doc.slug, hits[0].doc.no) == ("shipping", 3)
+
+
+def test_how_many_days_means_delivery_duration():
+    docs = [
+        doc("shipping", 2, "مدة التوصيل", "خلال يومين من تاريخ إنشاء الطلب."),
+        doc("shipping", 7, "تأخر التوصيل", "لو الطلب اتأخر تواصل مع البائع بخصوص الشحن."),
+        *DOCS,
+    ]
+    assert top_of("الشحن بياخد كام يوم؟", docs) == ("shipping", 2)
+
+
+def top_of(query, docs):
+    hit = rank_sections(query, docs)[0]
+    return hit.doc.slug, hit.doc.no
+
+
 def test_unrelated_question_has_no_hits():
     assert rank_sections("مين رئيس الجمهورية", DOCS) == []
 
