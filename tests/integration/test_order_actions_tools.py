@@ -135,6 +135,9 @@ def test_get_order_with_timeline_and_item_ids(session, ctx, customer):
     assert o["items"][0]["order_item_id"] == item.id
     assert [t["to_status"] for t in o["timeline"]] == ["confirmed"]
     assert o["timeline"][0]["to_status_ar"] == "اتأكد ومستني الشحن"
+    # the website's button flags are hidden: the agent decides only from the check tools
+    assert "can_cancel" not in o and "cancel_block" not in o
+    assert "can_return" not in o["items"][0] and "return_block" not in o["items"][0]
 
 
 def test_other_customers_order_looks_like_missing_order(session, ctx):

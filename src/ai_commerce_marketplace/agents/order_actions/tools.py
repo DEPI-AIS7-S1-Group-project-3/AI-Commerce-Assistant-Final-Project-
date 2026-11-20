@@ -29,6 +29,10 @@ from ai_commerce_marketplace.services.order_rules import RETURN_WINDOW_DAYS
 MAX_LIMIT = 20
 MAX_REASON_TEXT = 500
 
+# Eligibility flags the order API computes for the website buttons; hidden from the agent.
+UI_ORDER_FLAGS = ("can_cancel", "cancel_block")
+UI_ITEM_FLAGS = ("can_return", "return_block")
+
 # Reasons a customer may give for cancelling (the rest are for sellers/system).
 CUSTOMER_CANCEL_REASONS = (
     CancelReason.CUSTOMER_REQUEST,
@@ -172,6 +176,10 @@ def _reason_text(value: Any) -> str | None:
 # ---- output shaping (all numbers come from the database) ----
 def _order_view(order: OrderOut, now: datetime) -> dict[str, Any]:
     d = order.model_dump(mode="json", exclude={"seller_id", "shipping_address"})
+    # The UI flags (can_cancel, can_return, ...) are left out on purpose: the agent decides
+    # only from check_cancel_eligibility / check_return_eligibility, so it never sees two answers.
+    for key in UI_ORDER_FLAGS:
+        d.pop(key, None)
     # the model only needs where it goes, not the phone or street
     addr = order.shipping_address or {}
     d["ship_to"] = {"governorate": addr.get("governorate"), "city": addr.get("city")}
@@ -179,6 +187,8 @@ def _order_view(order: OrderOut, now: datetime) -> dict[str, Any]:
     d["payment_method_ar"] = PAYMENT_AR.get(order.payment_method, order.payment_method)
     for item in d["items"]:
         item["order_item_id"] = item.pop("id")
+        for key in UI_ITEM_FLAGS:
+            item.pop(key, None)
     if order.delivered_at is not None:
         deadline = order.delivered_at + timedelta(days=RETURN_WINDOW_DAYS)
         d["return_deadline"] = deadline.isoformat()
