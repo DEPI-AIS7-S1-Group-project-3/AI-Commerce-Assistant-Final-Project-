@@ -107,19 +107,21 @@ def _items_for(session: Session, order_id: int) -> list[OrderItem]:
     return list(session.scalars(stmt))
 
 
-def list_orders(session: Session, customer_id: int) -> list[OrderOut]:
+def list_orders(session: Session, customer_id: int, now: datetime | None = None) -> list[OrderOut]:
     stmt = (
         select(Order)
         .where(Order.customer_id == customer_id)
         .order_by(Order.created_at.desc(), Order.id.desc())
     )
     return [
-        OrderOut(**order_fields(session, o, _items_for(session, o.id)))
+        OrderOut(**order_fields(session, o, _items_for(session, o.id), now))
         for o in session.scalars(stmt).all()
     ]
 
 
-def get_order(session: Session, customer_id: int, order_id: int) -> OrderDetailOut:
+def get_order(
+    session: Session, customer_id: int, order_id: int, now: datetime | None = None
+) -> OrderDetailOut:
     stmt = select(Order).where(Order.id == order_id, Order.customer_id == customer_id)
     order = session.scalar(stmt)
     if order is None:
@@ -139,5 +141,5 @@ def get_order(session: Session, customer_id: int, order_id: int) -> OrderDetailO
         for h in history
     ]
     return OrderDetailOut(
-        **order_fields(session, order, _items_for(session, order.id)), timeline=timeline
+        **order_fields(session, order, _items_for(session, order.id), now), timeline=timeline
     )

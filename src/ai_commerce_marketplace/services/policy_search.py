@@ -38,6 +38,21 @@ _STOPWORDS = frozenset(
     """.split()
 )
 
+# Colloquial price words stand for what the policies call a fee ("الشحن بكام؟" = "رسوم الشحن").
+_QUERY_SYNONYMS = {
+    "بكام": ("رسوم",),
+    "سعر": ("رسوم",),
+    "تكلفه": ("رسوم",),
+    "تكاليف": ("رسوم",),
+    "مصاريف": ("رسوم",),
+    # "بياخد كام يوم؟" asks for the duration ("مدة التوصيل")
+    "بياخد": ("مدة",),
+    "ياخد": ("مدة",),
+    "بتاخد": ("مدة",),
+    "توصل": ("مدة",),
+    "يوصل": ("مدة",),
+}
+
 _WORD = re.compile(r"\w+")
 _NO_VOWELS = str.maketrans("", "", "اوي")
 _VERB_PREFIXES = frozenset("بتهنسم")
@@ -71,6 +86,12 @@ def _strip_article(word: str) -> str:
 def tokens(text: str) -> list[str]:
     words = _WORD.findall(normalize_ar(text))
     return [_strip_article(w) for w in words if w not in _STOPWORDS and len(w) > 1]
+
+
+def _query_words(query: str) -> list[str]:
+    words = tokens(query)
+    extra = [normalize_ar(syn) for w in words for syn in _QUERY_SYNONYMS.get(w, ())]
+    return list(dict.fromkeys([*words, *extra]))
 
 
 def _roots(word: str) -> set[str]:
@@ -111,7 +132,7 @@ def _best(word: str, candidates: set[str]) -> float:
 
 def rank_sections(query: str, docs: list[SectionDoc]) -> list[PolicyHit]:
     """Sections that match the question, best first. Empty list when nothing matches."""
-    q_words = list(dict.fromkeys(tokens(query)))
+    q_words = _query_words(query)
     if not q_words or not docs:
         return []
 

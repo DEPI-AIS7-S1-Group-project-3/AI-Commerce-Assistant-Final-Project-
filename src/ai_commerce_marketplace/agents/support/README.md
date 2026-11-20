@@ -6,7 +6,7 @@ anything. Those actions belong to the Order Actions agent, after an explicit con
 
 ## Status
 
-Tool layer only (this folder). The system prompt, the evaluation set and the graph come next.
+Tools, system prompt and evaluation set are done. The graph comes with the router.
 
 ## Rules
 
@@ -27,10 +27,12 @@ Tool layer only (this folder). The system prompt, the evaluation set and the gra
 | `policy_search(query, limit)` | Best policy sections for a question, each with slug, version and section number | `services/policy_search.py` |
 | `policy_get(slug, section_no?)` | A whole policy or one numbered section | `services/policies.py` |
 | `order_list(limit)` | The customer's latest orders | `services/orders.py` |
-| `order_get(order_id)` | Status, items, expected delivery, timeline | `services/orders.py` |
+| `order_get(order_id)` | Status, items, expected delivery, `days_late`, timeline | `services/orders.py` |
 | `order_eligibility(order_id)` | Can the order be cancelled; can each item be returned, and why not | `services/order_rules.py` through `orders.get_order` |
 | `warranty_status(order_id)` | Warranty start, end and days left per item | `services/order_support.py` |
 | `return_status(order_id)` | Return requests already made, with status | `services/order_support.py` |
+
+`ToolContext.now` is for tests and eval only (frozen demo date); production uses the real clock.
 
 Entry point: `call_tool(ctx, name, args)`. The shared checks (unknown tool, forbidden
 arguments, bad arguments) live in `agents/common.py`.
@@ -43,6 +45,31 @@ definite article dropped, words that share the same consonants match (`ارجع`
 `بترجع`), rarer words weigh more, and a hit in a title counts extra. The function is pure
 (`rank_sections`), so it is easy to test and easy to replace with embeddings later without
 changing the tool contract.
+
+## Files
+
+| File | Purpose |
+|---|---|
+| `tools.py` | 7 read-only tools, `REGISTRY`, `call_tool()` |
+| `prompts.py` | `build_system_prompt(today)`: Egyptian Arabic rules, status and block-code glossary |
+| `eval/questions.json` | 22 questions with the expected tool result and the expected answer |
+
+The prompt never names a tool and never mentions `customer_id`. Cancel and return are handed to
+the Order Actions agent: Support explains eligibility and offers to continue there.
+
+## Eval
+
+```bash
+uv run alembic upgrade head
+uv run python -m scripts.seed_database --anchor-date 2026-11-04T12:00:00
+uv run pytest tests/integration/test_support_eval.py
+```
+
+It checks the tools' answers against the demo orders 10001-10005 and the four policies, on a
+frozen date, and skips itself when the dev DB is not seeded that way. A question marked
+`known_gap` is expected to fail (`xfail`): it documents what keyword search cannot do yet
+(for example "الموبايل وقع مني" does not reach the exclusions section, because the policy says
+"السقوط"). Embeddings are the planned fix; the tool contract does not change.
 
 ## Try it
 

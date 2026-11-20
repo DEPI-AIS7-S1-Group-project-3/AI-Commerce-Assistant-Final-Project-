@@ -1,0 +1,299 @@
+[
+  {
+    "id": 1,
+    "customer": "visitor",
+    "question": "الشحن بكام؟",
+    "tool": "policy_search",
+    "args": {
+      "query": "الشحن بكام؟"
+    },
+    "expect": {
+      "top": "shipping:3"
+    },
+    "expected_answer": "رسوم الشحن 60 جنيه للطلب، ومجاني لو إجمالي المنتجات 5000 جنيه أو أكتر (سياسة الشحن، بند 3)."
+  },
+  {
+    "id": 2,
+    "customer": "visitor",
+    "question": "الشحن لأسوان بياخد كام يوم؟",
+    "tool": "policy_search",
+    "args": {
+      "query": "الشحن لأسوان بياخد كام يوم؟"
+    },
+    "expect": {
+      "top3": "shipping:2"
+    },
+    "expected_answer": "أسوان من باقي المحافظات: خلال 4 أيام من إنشاء الطلب (سياسة الشحن، بند 2)."
+  },
+  {
+    "id": 3,
+    "customer": "visitor",
+    "question": "اقدر ارجع السماعة الداخلية؟",
+    "tool": "policy_search",
+    "args": {
+      "query": "اقدر ارجع السماعة الداخلية؟"
+    },
+    "expect": {
+      "top3": "returns:3"
+    },
+    "expected_answer": "السماعات الداخلية غير قابلة للإرجاع لأسباب صحية إلا لو وصلت بعيب تصنيع، وفي الحالة دي الضمان (سياسة الإرجاع، بند 3)."
+  },
+  {
+    "id": 4,
+    "customer": "visitor",
+    "question": "الضمان بيبدأ من امتى؟",
+    "tool": "policy_search",
+    "args": {
+      "query": "الضمان بيبدأ من امتى؟"
+    },
+    "expect": {
+      "top": "warranty:2"
+    },
+    "expected_answer": "الضمان بيبدأ من تاريخ التسليم المسجّل في الطلب (سياسة الضمان، بند 2)."
+  },
+  {
+    "id": 5,
+    "customer": "visitor",
+    "question": "ينفع الغي الطلب بعد ما اتشحن؟",
+    "tool": "policy_search",
+    "args": {
+      "query": "ينفع الغي الطلب بعد ما اتشحن؟"
+    },
+    "expect": {
+      "top": "cancellation:2"
+    },
+    "expected_answer": "لا، بعد الشحن مش بيتلغي حتى لو اتأخر، وبيتواصل مع البائع (سياسة الإلغاء، بند 2)."
+  },
+  {
+    "id": 6,
+    "customer": "visitor",
+    "question": "مهلة الإرجاع كام يوم؟",
+    "tool": "policy_search",
+    "args": {
+      "query": "مهلة الإرجاع كام يوم؟"
+    },
+    "expect": {
+      "top": "returns:1"
+    },
+    "expected_answer": "14 يوم من تاريخ التسليم، اليوم الرابع عشر مقبول والخامس عشر مرفوض (سياسة الإرجاع، بند 1)."
+  },
+  {
+    "id": 7,
+    "customer": "visitor",
+    "question": "الفلوس بترجع ازاي لو دفعت بالكارت؟",
+    "tool": "policy_search",
+    "args": {
+      "query": "الفلوس بترجع ازاي لو دفعت بالكارت؟"
+    },
+    "expect": {
+      "top3_any": [
+        "cancellation:4",
+        "returns:7"
+      ]
+    },
+    "expected_answer": "الكارت بيرجع لنفس الوسيلة (الإلغاء: حالة الدفع مُسترد. الإرجاع: خلال 7 أيام عمل من استلام المنتج)، من غير وعد بخصوص طلب معين."
+  },
+  {
+    "id": 8,
+    "customer": "visitor",
+    "question": "الضمان بيغطي لو الموبايل وقع مني؟",
+    "tool": "policy_search",
+    "args": {
+      "query": "الضمان بيغطي لو الموبايل وقع مني؟"
+    },
+    "expect": {
+      "top3": "warranty:4"
+    },
+    "expected_answer": "لا، الكسر والخدوش والسقوط مش مغطيين (سياسة الضمان، بند 4).",
+    "known_gap": true
+  },
+  {
+    "id": 9,
+    "customer": "visitor",
+    "question": "مين رئيس الجمهورية؟",
+    "tool": "policy_search",
+    "args": {
+      "query": "مين رئيس الجمهورية؟"
+    },
+    "expect": {
+      "empty": true
+    },
+    "expected_answer": "ده مش مكتوب في السياسات، من غير ما يخترع إجابة."
+  },
+  {
+    "id": 10,
+    "customer": "customer01@example.com",
+    "question": "طلباتي فين؟",
+    "tool": "order_list",
+    "args": {},
+    "expect": {
+      "total_orders": 8,
+      "order_ids_include": [
+        10002
+      ]
+    },
+    "expected_answer": "يعرض طلباته الأحدث الأول، ومنها 10002 (اتأكد ومستني الشحن)."
+  },
+  {
+    "id": 11,
+    "customer": "customer03@example.com",
+    "question": "طلب 10001 اتأخر ليه؟",
+    "tool": "order_get",
+    "args": {
+      "order_id": 10001
+    },
+    "expect": {
+      "status": "out_for_delivery",
+      "days_late": 5
+    },
+    "expected_answer": "خرج للتوصيل ومتأخر 5 أيام عن الميعاد المتوقع (30 أكتوبر). مفيش سبب مكتوب للتأخير، ويتواصل مع البائع."
+  },
+  {
+    "id": 12,
+    "customer": "customer03@example.com",
+    "question": "ينفع الغي 10001؟",
+    "tool": "order_eligibility",
+    "args": {
+      "order_id": 10001
+    },
+    "expect": {
+      "can_cancel": false,
+      "cancel_block": "already_shipped"
+    },
+    "expected_answer": "لا، اتشحن، والإلغاء قبل الشحن بس حتى لو متأخر. بعد الاستلام ممكن إرجاع خلال 14 يوم."
+  },
+  {
+    "id": 13,
+    "customer": "customer01@example.com",
+    "question": "ينفع الغي 10002؟",
+    "tool": "order_eligibility",
+    "args": {
+      "order_id": 10002
+    },
+    "expect": {
+      "can_cancel": true,
+      "cancel_block": null
+    },
+    "expected_answer": "أيوه ينفع لأنه مؤكد ولسه ما اتشحنش. التنفيذ بعد تأكيده عن طريق مساعد الطلبات، من غير ما الدعم ينفذ."
+  },
+  {
+    "id": 14,
+    "customer": "customer02@example.com",
+    "question": "ينفع ارجع 10003؟",
+    "tool": "order_eligibility",
+    "args": {
+      "order_id": 10003
+    },
+    "expect": {
+      "items.0.can_return": true,
+      "items.0.return_block": null
+    },
+    "expected_answer": "أيوه، اتسلّم من 3 أيام وفي مهلة الـ 14 يوم والمنتج قابل للإرجاع. التنفيذ عن طريق مساعد الطلبات."
+  },
+  {
+    "id": 15,
+    "customer": "customer05@example.com",
+    "question": "ينفع ارجع 10004؟",
+    "tool": "order_eligibility",
+    "args": {
+      "order_id": 10004
+    },
+    "expect": {
+      "items.0.can_return": false,
+      "items.0.return_block": "window_expired"
+    },
+    "expected_answer": "لا، مهلة الـ 14 يوم خلصت (اتسلّم من 31 يوم)."
+  },
+  {
+    "id": 16,
+    "customer": "customer04@example.com",
+    "question": "ينفع الغي 10005؟",
+    "tool": "order_eligibility",
+    "args": {
+      "order_id": 10005
+    },
+    "expect": {
+      "can_cancel": false,
+      "cancel_block": "already_cancelled"
+    },
+    "expected_answer": "الطلب ده متلغي بالفعل."
+  },
+  {
+    "id": 17,
+    "customer": "customer02@example.com",
+    "question": "الضمان بتاع 10003 لسه شغال؟",
+    "tool": "warranty_status",
+    "args": {
+      "order_id": 10003
+    },
+    "expect": {
+      "items.0.state": "active",
+      "items.0.days_left": 362
+    },
+    "expected_answer": "أيوه ساري، بيخلص في 1 نوفمبر 2027 وفاضل 362 يوم."
+  },
+  {
+    "id": 18,
+    "customer": "customer03@example.com",
+    "question": "الضمان بتاع 10001 بيخلص امتى؟",
+    "tool": "warranty_status",
+    "args": {
+      "order_id": 10001
+    },
+    "expect": {
+      "items.0.state": "not_started",
+      "items.0.ends_at": null
+    },
+    "expected_answer": "لسه ما بدأش لأن الضمان بيبدأ من التسليم والطلب لسه ماوصلش."
+  },
+  {
+    "id": 19,
+    "customer": "customer02@example.com",
+    "question": "كنت قدمت طلب ارجاع على 10003؟",
+    "tool": "return_status",
+    "args": {
+      "order_id": 10003
+    },
+    "expect": {
+      "empty": true
+    },
+    "expected_answer": "لا، مفيش طلبات إرجاع على الطلب ده."
+  },
+  {
+    "id": 20,
+    "customer": "customer01@example.com",
+    "question": "طلب رقم 99999",
+    "tool": "order_get",
+    "args": {
+      "order_id": 99999
+    },
+    "expect": {
+      "error": "order_not_found"
+    },
+    "expected_answer": "مش لاقي طلب بالرقم ده في حسابك، وبس."
+  },
+  {
+    "id": 21,
+    "customer": "customer01@example.com",
+    "question": "طلب 10003 حالته ايه؟",
+    "tool": "order_get",
+    "args": {
+      "order_id": 10003
+    },
+    "expect": {
+      "error": "order_not_found"
+    },
+    "expected_answer": "نفس الرد: الطلب ده بتاع عميل تاني ومبيتميّزش عن طلب مش موجود."
+  },
+  {
+    "id": 22,
+    "customer": "visitor",
+    "question": "طلبي فين؟",
+    "tool": "order_list",
+    "args": {},
+    "expect": {
+      "error": "login_required"
+    },
+    "expected_answer": "يطلب منه تسجيل الدخول الأول."
+  }
+]
