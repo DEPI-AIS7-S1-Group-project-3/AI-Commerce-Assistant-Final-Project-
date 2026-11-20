@@ -13,6 +13,17 @@ class Settings(BaseSettings):
     cors_origins: list[str] = ["http://localhost:5173"]
     env: str = "development"
 
+    # LLM layer. LLM_PROVIDERS is ordered: first = primary, the rest = fallbacks.
+    llm_providers: str = "gemini,groq,openrouter"
+    llm_timeout_s: float = 30.0
+    llm_models: dict[str, str] = {}  # per-provider model override, e.g. {"gemini": "..."}
+    gemini_api_key: str | None = None
+    groq_api_key: str | None = None
+    xai_api_key: str | None = None  # Grok
+    openrouter_api_key: str | None = None
+    openai_api_key: str | None = None
+    anthropic_api_key: str | None = None
+
     @model_validator(mode="after")
     def _reject_dev_secret_in_production(self) -> "Settings":
         if self.env == "production" and self.jwt_secret == DEV_JWT_SECRET:
