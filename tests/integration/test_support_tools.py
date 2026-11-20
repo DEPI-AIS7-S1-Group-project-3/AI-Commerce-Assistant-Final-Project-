@@ -157,6 +157,36 @@ def test_order_get_returns_status_and_expected_delivery(session):
     assert isinstance(r["timeline"], list)
 
 
+def test_late_order_reports_days_late_from_the_tool(session):
+    user = f.make_user(session)
+    order, _ = make_customer_order(session, user, status="out_for_delivery")
+    now = order.expected_delivery_at + timedelta(days=5, hours=3)
+    r = call_tool(
+        ToolContext(session=session, customer_id=user.id, now=now),
+        "order_get",
+        {"order_id": order.id},
+    )
+    assert r["days_late"] == 5
+    on_time = ToolContext(
+        session=session, customer_id=user.id, now=order.expected_delivery_at - timedelta(days=1)
+    )
+    assert call_tool(on_time, "order_get", {"order_id": order.id})["days_late"] == 0
+
+
+def test_delivered_order_is_never_late(session):
+    user = f.make_user(session)
+    order, _ = make_customer_order(session, user, status="delivered", delivered_days_ago=2)
+    assert call_tool(ctx(session, user), "order_get", {"order_id": order.id})["days_late"] == 0
+
+
+def test_context_clock_drives_eligibility(session):
+    user = f.make_user(session)
+    order, _ = make_customer_order(session, user, status="delivered", delivered_days_ago=3)
+    later = ToolContext(session=session, customer_id=user.id, now=NOW + timedelta(days=20))
+    (item,) = call_tool(later, "order_eligibility", {"order_id": order.id})["items"]
+    assert item["return_block"] == "window_expired"
+
+
 # ---- eligibility ----
 def test_pending_order_can_be_cancelled(session):
     user = f.make_user(session)
