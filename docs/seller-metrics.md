@@ -23,3 +23,6 @@ All numbers are computed in SQL by `services/seller_analytics.py`. The agent nev
 
 ## Stock
 Low stock = active products with `stock_qty <= threshold` (0 means out of stock). Sorted by lowest stock.
+
+## Returns
+`returns_report` counts returns by `returns.created_at` in [from, to). Rejected returns are excluded.
