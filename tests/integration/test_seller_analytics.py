@@ -132,10 +132,20 @@ def test_returns_report_skips_rejected(session, seller):
     o = _order(session, seller, p1, 1, Decimal("10.00"), status="delivered")
     item1 = session.scalar(select(OrderItem).where(OrderItem.order_id == o.id))
     item2 = f.make_order_item(session, order=o, product=p2, qty=1)
-    f.make_return(session, item1, reason_code="defective")
-    f.make_return(session, item2, reason_code="other", status="rejected")
+    when = T0 + timedelta(days=5)
+    f.make_return(session, item1, reason_code="defective", created_at=when)
+    f.make_return(session, item2, reason_code="other", status="rejected", created_at=when)
     r = sa.returns_report(session, seller.id, P)
     assert r == {"total_returns": 1, "by_reason": {"defective": 1}}
+
+
+def test_return_counted_by_return_date_not_order_date(session, seller):
+    p = f.make_product(session, seller_id=seller.id)
+    # order is older than the period, the return is inside it
+    o = _order(session, seller, p, 1, Decimal("10.00"), status="delivered", days=-40)
+    item = session.scalar(select(OrderItem).where(OrderItem.order_id == o.id))
+    f.make_return(session, item, reason_code="defective", created_at=T0 + timedelta(days=3))
+    assert sa.returns_report(session, seller.id, P)["total_returns"] == 1
 
 
 def test_isolation_between_sellers(session, seller):

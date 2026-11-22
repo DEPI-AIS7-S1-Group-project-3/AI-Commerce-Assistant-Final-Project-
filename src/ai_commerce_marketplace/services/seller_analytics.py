@@ -131,14 +131,19 @@ def orders_by_status(session: Session, seller_id: int, p: Period) -> dict[str, i
 
 
 def returns_report(session: Session, seller_id: int, p: Period) -> dict[str, Any]:
-    stmt = _in_period(
+    """Returns requested in [from, to) by returns.created_at. Rejected ones are excluded."""
+    stmt = (
         select(Return.reason_code, Return.status, func.count())
         .select_from(Return)
         .join(OrderItem, OrderItem.id == Return.order_item_id)
-        .join(Order, Order.id == OrderItem.order_id),
-        seller_id,
-        p,
-    ).group_by(Return.reason_code, Return.status)
+        .join(Order, Order.id == OrderItem.order_id)
+        .where(
+            Order.seller_id == seller_id,
+            Return.created_at >= p.date_from,
+            Return.created_at < p.date_to,
+        )
+        .group_by(Return.reason_code, Return.status)
+    )
     by_reason: dict[str, int] = {}
     total = 0
     for reason, status, n in session.execute(stmt):
