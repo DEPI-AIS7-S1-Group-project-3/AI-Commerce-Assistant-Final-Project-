@@ -54,7 +54,7 @@ def run(llm: LLMClient) -> int:
 
     print("2. Tool call (the model must ask for order 10002)")
     started = time.monotonic()
-    history = [system, Message("user", "طلب رقم 10002 حالته ايه؟")]
+    history = [system, Message("user", "طلب رقم 10002 حالته ايه وإجماليه كام؟")]
     r = llm.chat(history, [ORDER_TOOL], max_tokens=500)
     show(r, started)
     call = r.tool_calls[0] if r.tool_calls else None
