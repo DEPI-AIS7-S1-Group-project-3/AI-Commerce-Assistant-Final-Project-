@@ -31,15 +31,26 @@ class ProviderSpec:
 # Default model names change often: override them with LLM_MODELS instead of editing code.
 PROVIDERS: dict[str, ProviderSpec] = {
     "gemini": ProviderSpec("gemini", "", "gemini-3-flash-preview"),
-    "groq": ProviderSpec("openai", "https://api.groq.com/openai/v1", "llama-3.3-70b-versatile"),
+    "groq": ProviderSpec("openai", "https://api.groq.com/openai/v1", "openai/gpt-oss-120b"),
     "xai": ProviderSpec("openai", "https://api.x.ai/v1", "grok-4"),
     "openrouter": ProviderSpec(
-        "openai", "https://openrouter.ai/api/v1", "meta-llama/llama-3.3-70b-instruct:free"
+        "openai", "https://openrouter.ai/api/v1", "openai/gpt-oss-120b:free"
     ),
     "openai": ProviderSpec("openai", "https://api.openai.com/v1", "gpt-5-mini"),
     "anthropic": ProviderSpec("anthropic", "", "claude-sonnet-5-5"),
 }
 ALIASES = {"grok": "xai", "google": "gemini", "claude": "anthropic", "gpt": "openai"}
+
+
+def resolve_thinking_level(setting: str, model: str) -> str | None:
+    """ "auto" = "low" for Gemini 3 models (they think at "high" by default), nothing for older
+    models. "none" sends nothing. Anything else is passed through."""
+    value = setting.strip().lower()
+    if value in ("none", "off", ""):
+        return None
+    if value == "auto":
+        return "low" if model.startswith("gemini-3") else None
+    return value
 
 
 def parse_provider_list(value: str) -> list[str]:
@@ -58,6 +69,7 @@ def build_llm_client(
     models: Mapping[str, str] | None = None,
     timeout: float = DEFAULT_TIMEOUT_S,
     http: httpx.Client | None = None,
+    gemini_thinking: str = "auto",
 ) -> LLMClient:
     models = models or {}
     clients: list[LLMClient] = []
@@ -69,7 +81,15 @@ def build_llm_client(
             continue
         model = models.get(name) or spec.default_model
         if spec.kind == "gemini":
-            clients.append(GeminiClient(api_key=key, model=model, timeout=timeout, http=http))
+            clients.append(
+                GeminiClient(
+                    api_key=key,
+                    model=model,
+                    timeout=timeout,
+                    http=http,
+                    thinking_level=resolve_thinking_level(gemini_thinking, model),
+                )
+            )
         elif spec.kind == "anthropic":
             clients.append(AnthropicClient(api_key=key, model=model, timeout=timeout, http=http))
         else:
@@ -103,4 +123,5 @@ def get_llm_client() -> LLMClient:
         },
         models=settings.llm_models,
         timeout=settings.llm_timeout_s,
+        gemini_thinking=settings.llm_gemini_thinking,
     )
