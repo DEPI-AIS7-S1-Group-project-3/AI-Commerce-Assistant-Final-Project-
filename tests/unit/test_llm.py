@@ -1,4 +1,5 @@
 import json
+import logging
 
 import httpx
 import pytest
@@ -9,6 +10,7 @@ from ai_commerce_marketplace.llm import (
     BadResponseError,
     InvalidRequestError,
     Message,
+    ModelNotFoundError,
     NotConfiguredError,
     ProviderUnavailable,
     RateLimitError,
@@ -17,7 +19,7 @@ from ai_commerce_marketplace.llm import (
     build_llm_client,
 )
 from ai_commerce_marketplace.llm.anthropic import AnthropicClient
-from ai_commerce_marketplace.llm.factory import parse_provider_list
+from ai_commerce_marketplace.llm.factory import parse_provider_list, resolve_thinking_level
 from ai_commerce_marketplace.llm.fallback import FallbackClient
 from ai_commerce_marketplace.llm.gemini import SKIP_SIGNATURE, GeminiClient, clean_schema
 from ai_commerce_marketplace.llm.openai_compat import OpenAICompatClient
@@ -165,7 +167,7 @@ def test_openai_empty_choices_is_a_bad_response():
         (500, ProviderUnavailable),
         (503, ProviderUnavailable),
         (400, InvalidRequestError),
-        (404, InvalidRequestError),
+        (404, ModelNotFoundError),
     ],
 )
 def test_http_errors_map_to_our_errors(status, error):
@@ -520,3 +522,62 @@ def test_get_llm_client_reads_the_settings(monkeypatch):
         assert [c.name for c in chain.clients] == ["gemini", "xai"]
     finally:
         get_llm_client.cache_clear()
+
+
+# ---- found in the first live run ----
+def test_unknown_model_on_one_provider_does_not_stop_the_chain():
+    # Groq retired llama-3.3-70b-versatile: its 404 must not hide the providers after it
+    chain = FallbackClient(
+        [Stub("groq", error=ModelNotFoundError("model_not_found")), Stub("openrouter")]
+    )
+    r = chain.chat(HISTORY)
+    assert r.provider == "openrouter" and r.failed_providers == ("groq: model_not_found",)
+
+
+def test_the_log_says_why_a_provider_failed(caplog):
+    chain = FallbackClient(
+        [Stub("gemini", error=ProviderUnavailable("gemini timed out")), Stub("groq")]
+    )
+    # migrations/env.py calls logging.fileConfig, which disables loggers that already exist;
+    # the DB setup of other tests runs it, so switch this one back on.
+    logging.getLogger("ai_commerce_marketplace.llm.fallback").disabled = False
+    with caplog.at_level("WARNING"):
+        chain.chat(HISTORY)
+    assert "gemini timed out" in caplog.text
+
+
+def gemini_with(thinking):
+    seen = {}
+
+    def handler(request):
+        seen["body"] = json.loads(request.content)
+        return httpx.Response(200, json={"candidates": [{"content": {"parts": [{"text": "x"}]}}]})
+
+    client = GeminiClient(
+        api_key="k", model="gemini-3-flash-preview", http=http(handler), thinking_level=thinking
+    )
+    client.chat(HISTORY)
+    return seen["body"]["generationConfig"]
+
+
+def test_gemini_sends_the_thinking_level_when_set():
+    assert gemini_with("low")["thinkingConfig"] == {"thinkingLevel": "low"}
+
+
+def test_gemini_sends_no_thinking_config_by_default():
+    assert "thinkingConfig" not in gemini_with(None)
+
+
+def test_thinking_level_resolution():
+    assert resolve_thinking_level("auto", "gemini-3-flash-preview") == "low"
+    assert resolve_thinking_level("auto", "gemini-2.5-flash") is None  # older models use budgets
+    assert resolve_thinking_level("none", "gemini-3-flash-preview") is None
+    assert resolve_thinking_level("MEDIUM", "gemini-3-flash-preview") == "medium"
+
+
+def test_factory_applies_the_thinking_setting_to_gemini_only():
+    chain = build_llm_client(
+        ["gemini", "groq"], {"gemini": "g", "groq": "x"}, gemini_thinking="auto"
+    )
+    assert chain.clients[0].thinking_level == "low"
+    assert not hasattr(chain.clients[1], "thinking_level")
