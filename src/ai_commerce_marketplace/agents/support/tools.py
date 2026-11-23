@@ -18,7 +18,7 @@ Rules every tool follows:
 
 from dataclasses import dataclass
 from datetime import UTC, datetime
-from typing import Any
+from typing import Any, Literal
 
 from sqlalchemy.orm import Session
 
@@ -92,7 +92,12 @@ def _compact_order(o: Any, now: datetime) -> dict[str, Any]:
 
 # ---------------------------------------------------------------- policies
 def policy_search(ctx: ToolContext, query: str, limit: int = 3) -> dict[str, Any]:
-    """Best matching policy sections for a question, each with its source."""
+    """Best matching policy sections for a question, each with its source.
+
+    Args:
+        query: The customer's question in their own words, e.g. "الشحن بكام؟".
+        limit: How many sections to return, 1 to 5 (default 3).
+    """
 
     def run() -> dict[str, Any]:
         if not isinstance(query, str) or not query.strip():
@@ -119,8 +124,17 @@ def policy_search(ctx: ToolContext, query: str, limit: int = 3) -> dict[str, Any
     return safe(run)
 
 
-def policy_get(ctx: ToolContext, slug: str, section_no: int | None = None) -> dict[str, Any]:
-    """One whole policy, or one numbered section of it."""
+def policy_get(
+    ctx: ToolContext,
+    slug: Literal["shipping", "returns", "warranty", "cancellation"],
+    section_no: int | None = None,
+) -> dict[str, Any]:
+    """One whole policy, or one numbered section of it.
+
+    Args:
+        slug: Which policy to read.
+        section_no: Section number inside the policy, e.g. 3. Leave empty for the whole policy.
+    """
 
     def run() -> dict[str, Any]:
         if slug not in POLICY_SLUGS:
@@ -146,7 +160,11 @@ def policy_get(ctx: ToolContext, slug: str, section_no: int | None = None) -> di
 
 # ------------------------------------------------------------------ orders
 def order_list(ctx: ToolContext, limit: int = 5) -> dict[str, Any]:
-    """The customer's most recent orders (newest first), in short form."""
+    """The customer's most recent orders (newest first), in short form.
+
+    Args:
+        limit: How many orders to return, 1 to 10 (default 5).
+    """
 
     def run() -> dict[str, Any]:
         customer_id = _customer(ctx)
@@ -162,7 +180,11 @@ def order_list(ctx: ToolContext, limit: int = 5) -> dict[str, Any]:
 
 
 def order_get(ctx: ToolContext, order_id: int) -> dict[str, Any]:
-    """One order of the customer: items, status, expected delivery and the status timeline."""
+    """One order of the customer: items, status, expected delivery and the status timeline.
+
+    Args:
+        order_id: The order number the customer mentioned, e.g. 10002.
+    """
 
     def run() -> dict[str, Any]:
         order = orders.get_order(ctx.session, _customer(ctx), _order_id(order_id), _now(ctx))
@@ -185,6 +207,9 @@ def order_eligibility(ctx: ToolContext, order_id: int) -> dict[str, Any]:
     """Can the whole order be cancelled, and can each item be returned? With the reason if not.
 
     Answers come from the same rules the API enforces (``order_rules``).
+
+    Args:
+        order_id: The order number the customer mentioned, e.g. 10002.
     """
 
     def run() -> dict[str, Any]:
@@ -211,7 +236,11 @@ def order_eligibility(ctx: ToolContext, order_id: int) -> dict[str, Any]:
 
 
 def warranty_status(ctx: ToolContext, order_id: int) -> dict[str, Any]:
-    """Warranty start, end and days left for each item of an order (counted from delivery)."""
+    """Warranty start, end and days left for each item of an order (counted from delivery).
+
+    Args:
+        order_id: The order number the customer mentioned, e.g. 10003.
+    """
 
     def run() -> dict[str, Any]:
         return order_support.order_warranty(
@@ -222,7 +251,11 @@ def warranty_status(ctx: ToolContext, order_id: int) -> dict[str, Any]:
 
 
 def return_status(ctx: ToolContext, order_id: int) -> dict[str, Any]:
-    """Return requests already made on an order, with their status."""
+    """Return requests already made on an order, with their status.
+
+    Args:
+        order_id: The order number the customer mentioned, e.g. 10003.
+    """
 
     def run() -> dict[str, Any]:
         out = order_support.order_returns(ctx.session, _customer(ctx), _order_id(order_id))
