@@ -80,10 +80,13 @@ class GeminiClient(HTTPProvider):
         base_url: str = BASE_URL,
         timeout: float = DEFAULT_TIMEOUT_S,
         http: httpx.Client | None = None,
+        thinking_level: str | None = None,
     ):
         super().__init__(
             api_key=api_key, model=model, base_url=base_url, timeout=timeout, http=http
         )
+        # Gemini 3 thinks at "high" by default: slow, and thinking tokens eat max_tokens.
+        self.thinking_level = thinking_level
 
     def chat(
         self,
@@ -98,6 +101,8 @@ class GeminiClient(HTTPProvider):
             "contents": contents,
             "generationConfig": {"temperature": temperature, "maxOutputTokens": max_tokens},
         }
+        if self.thinking_level:
+            payload["generationConfig"]["thinkingConfig"] = {"thinkingLevel": self.thinking_level}
         if system:
             payload["systemInstruction"] = {"parts": [{"text": system}]}
         if tools:

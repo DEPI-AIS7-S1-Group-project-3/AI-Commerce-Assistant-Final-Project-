@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     # LLM layer. LLM_PROVIDERS is ordered: first = primary, the rest = fallbacks.
     llm_providers: str = "gemini,groq,openrouter"
     llm_timeout_s: float = 30.0
+    llm_gemini_thinking: str = "auto"  # auto | none | minimal | low | medium | high
     llm_models: dict[str, str] = {}  # per-provider model override, e.g. {"gemini": "..."}
     gemini_api_key: str | None = None
     groq_api_key: str | None = None
