@@ -41,7 +41,9 @@ class FallbackClient:
                 if not e.fallback_ok:
                     raise
                 failures.append(f"{client.name}: {e.code}")
-                log.warning("LLM provider %s failed (%s), trying the next one", client.name, e.code)
+                log.warning(
+                    "LLM provider %s failed (%s): %s. Trying the next one.", client.name, e.code, e
+                )
                 continue
             return replace(resp, failed_providers=tuple(failures)) if failures else resp
         raise AllProvidersFailed("All LLM providers failed: " + "; ".join(failures))

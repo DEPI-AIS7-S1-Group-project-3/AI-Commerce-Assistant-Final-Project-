@@ -25,6 +25,7 @@ GROQ_API_KEY=...
 OPENROUTER_API_KEY=...
 LLM_MODELS={"gemini": "gemini-3-flash-preview"}   # optional per-provider model override
 LLM_TIMEOUT_S=30
+LLM_GEMINI_THINKING=auto   # auto = "low" for Gemini 3 models; none | minimal | low | medium | high
 ```
 
 A provider with no key is skipped. With no key at all the app still starts, and a call
@@ -51,6 +52,17 @@ after the assistant message that carried `tool_calls`.
 `FallbackClient` tries providers in order. It moves on after a rate limit, an outage, a timeout,
 a bad key or an unusable answer. It stops at once on `InvalidRequestError` (our own request is
 wrong, so another provider would only hide the bug). `reply.failed_providers` says who failed.
+
+## Lessons from the first live run
+
+- **Gemini 3 thinks at `high` by default.** That made one short answer take 26 seconds, and the
+  thinking tokens count against `max_tokens`, so the reply was cut after a few words
+  (`finish=length`). The client now sends `thinkingLevel: low` for `gemini-3*` models
+  (`LLM_GEMINI_THINKING` to change it).
+- **A provider that does not know the model (HTTP 404) no longer stops the chain.** Groq retired
+  `llama-3.3-70b-versatile` on 2026-08-16; the default is now `openai/gpt-oss-120b`. Model names
+  change often: set `LLM_MODELS` when a provider answers `model_not_found`.
+- The log line for a failed provider now says why, not just the code.
 
 ## Notes
 

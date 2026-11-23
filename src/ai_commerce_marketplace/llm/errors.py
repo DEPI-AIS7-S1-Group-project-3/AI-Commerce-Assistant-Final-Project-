@@ -27,6 +27,15 @@ class AuthenticationError(LLMError):
     code = "auth_failed"
 
 
+class ModelNotFoundError(LLMError):
+    """This provider does not know the configured model (renamed, retired, or no access).
+
+    It is a configuration problem of one provider, so the chain keeps going.
+    """
+
+    code = "model_not_found"
+
+
 class BadResponseError(LLMError):
     """The provider answered, but not with something we can use."""
 
