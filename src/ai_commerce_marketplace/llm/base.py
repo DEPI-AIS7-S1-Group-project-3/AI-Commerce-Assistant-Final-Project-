@@ -11,6 +11,7 @@ from ai_commerce_marketplace.llm.errors import (
     BadResponseError,
     InvalidRequestError,
     LLMError,
+    ModelNotFoundError,
     ProviderUnavailable,
     RateLimitError,
 )
@@ -42,6 +43,8 @@ def raise_for_status(provider: str, resp: httpx.Response) -> None:
     status = resp.status_code
     if status in (401, 403):
         raise AuthenticationError(detail, provider=provider, status=status)
+    if status == 404:
+        raise ModelNotFoundError(detail, provider=provider, status=status)
     if status == 429:
         raise RateLimitError(detail, provider=provider, status=status)
     if status == 408 or status >= 500:
