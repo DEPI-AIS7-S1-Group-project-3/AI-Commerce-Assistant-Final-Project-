@@ -19,7 +19,7 @@ Read-only analytics assistant for a store owner. It answers questions about the 
 | `tools.py` | 7 tools, `REGISTRY`, and `call_tool()` (single entry point) |
 | `prompts.py` | `build_system_prompt(today)`: Egyptian Arabic rules and date ranges |
 | `eval/questions.json` | 15 questions with expected answers |
-| `graph.py` | not built yet (waiting for the router / LangGraph decision) |
+| `graph.py` | `run_agent(ctx, message, llm)`: the loop on the shared LLM client (max 5 steps) |
 
 ## Tools
 
@@ -45,6 +45,24 @@ from ai_commerce_marketplace.database.session import SessionLocal
 with SessionLocal() as s:
     ctx = ToolContext(session=s, seller_id=1)
     print(call_tool(ctx, "get_sales_summary", {"date_from": "2026-10-06", "date_to": "2026-11-05"}))
+```
+## Run with a real model
+
+Set `LLM_PROVIDERS` and the provider key in `.env` (see `llm/README.md`), then:
+
+```python
+from datetime import date
+from ai_commerce_marketplace.agents.seller.graph import run_agent
+from ai_commerce_marketplace.agents.seller.tools import ToolContext
+from ai_commerce_marketplace.database.session import SessionLocal
+from ai_commerce_marketplace.llm import get_llm_client
+
+with SessionLocal() as s:
+    ctx = ToolContext(session=s, seller_id=4)
+    r = run_agent(
+        ctx, "قارن آخر 30 يوم بالـ 30 اللي قبلهم", get_llm_client(), today=date(2026, 11, 4)
+    )
+    print(r.answer, r.tool_trace)
 ```
 
 ## Tests and eval
