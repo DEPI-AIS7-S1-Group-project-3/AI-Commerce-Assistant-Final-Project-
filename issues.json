@@ -1,0 +1,81 @@
+[
+  {
+    "title": "feat(shopping): add `search_products` and `categories_brands_list` tools",
+    "body": "cc: Noura (@nrshousha), @basicesraa\n\nArea / priority: `agent:shopping`, `priority:high`\n\n### Problem\nThe Shopping Agent has no way to find products. The registry only has `product_get`, `products_compare` and `reviews_summary_get`, and all three need a product id. The system prompt already has a full \"Search and filtering\" section, but there is no tool behind it, so the model cannot obtain an id from a customer's request.\n\n`tools.py` already says these tools are planned (\"Person A adds search_products and categories_brands_list\"), and `ProductCard` in `agents/shopping/schemas.py` is defined but not used yet.\n\n### Proposal\nAdd two thin wrappers in `agents/shopping/tools.py` over services that already exist:\n\n- `search_products(q, category, brand, min_price, max_price, in_stock, sort, limit)` -> `catalog.list_products`.\n  - Validate inputs like the other tools (`limit` capped by `MAX_LIMIT`, `sort` limited to the existing values).\n  - Return `ProductCard` rows plus `empty: true/false`.\n  - Note that `list_products` never returns inactive products. Keep that behavior.\n- `categories_brands_list()` -> `catalog.list_categories` and `catalog.list_brands`, so the model can map customer words to real slugs.\n\n### Acceptance criteria\n- Both tools are in `REGISTRY` and reachable only through `call_tool`.\n- Empty results return `empty: true`, not an error.\n- Unit and integration tests like the existing `test_shopping_tools.py` and `test_shopping_details.py`.\n- The prompt rules for search match what the tools can actually do.",
+    "labels": [
+      "enhancement"
+    ]
+  },
+  {
+    "title": "fix(shopping): discount must come from a tool, not be computed by the model",
+    "body": "cc: Noura (@nrshousha), @basicesraa\n\nArea / priority: `agent:shopping`, `bug`\n\n### Problem\nThe prompt says: \"if there is an old price, mention the discount\". But no tool returns a discount amount or percentage; only `price_egp` and `old_price_egp`. The model would have to calculate it, which breaks the prompt's own rule 1 (\"every price, spec and rating must come from a tool\").\n\n### Proposal\nAdd `discount_pct` (and optionally `discount_egp`) to `ProductCard` / `ProductDetail`, computed in the service with `Decimal` and a documented rounding rule. `None` when there is no `old_price_egp`. Update the prompt to say \"use `discount_pct` from the tool\".\n\n### Acceptance criteria\n- Unit test with hand-computed values, including no old price and old price lower than or equal to the current price.\n- The prompt no longer asks the model to calculate anything.",
+    "labels": [
+      "bug"
+    ]
+  },
+  {
+    "title": "test(shopping): add an eval set and a README for the Shopping Agent",
+    "body": "cc: Noura (@nrshousha), @basicesraa\n\nArea / priority: `agent:shopping`, `testing`, `docs`\n\n### Problem\nThe Seller Agent has a README and a 15-question eval with expected answers. The Shopping Agent has neither (its `README.md` is empty). The prompt already contains rules that can be tested.\n\n### Proposal\n- Write `agents/shopping/README.md` in the same format as the Seller one (rules, files, tool table, how to try it).\n- Add `agents/shopping/eval/questions.json` with expected tool calls and results on the frozen seed data. Suggested cases:\n  - budget search (\"under 10,000\" -> max price 10000)\n  - search with no results (prompt says widen one filter only)\n  - compare 2 to 4 products\n  - compare products from different categories (`mixed_categories`)\n  - compare with a missing id\n  - a product with fewer than 3 reviews\n  - an out-of-stock or inactive product (`in_stock=false`)\n  - a request outside shopping scope\n\n### Acceptance criteria\n- Eval runs in CI (see issue 6 for how the Seller eval should be wired).",
+    "labels": [
+      "enhancement",
+      "documentation"
+    ]
+  },
+  {
+    "title": "refactor: services must not import from `agents/` (layering)",
+    "body": "cc: Noura (@nrshousha), @basicesraa\n\nArea / priority: `refactor`, `architecture`\n\n### Problem\n`services/catalog_details.py` imports `ProductDetail` from `agents/shopping/schemas.py`. `docs/architecture.md` says layers depend in one direction and agents call services, not the other way around.\n\n### Proposal\nMove `ProductDetail` and `ProductCard` to `schemas/` (for example `schemas/catalog.py` or a new `schemas/shopping.py`) and import them from there in both the service and the agent.\n\n### Acceptance criteria\n- No module under `services/` imports from `agents/` (can be enforced with a small test or an import-linter rule).",
+    "labels": [
+      "enhancement"
+    ]
+  },
+  {
+    "title": "fix(seller): define what \"returns in a period\" means and fix `returns_report`",
+    "body": "cc: @amrkhaled100\n\nArea / priority: `agent:seller`, `bug`, `docs`, `priority:high`\n\n### Problem\n`returns_report` filters on `Order.created_at` (through `_in_period`). So \"returns in the last 30 days\" actually means \"returns on orders created in the last 30 days\". A return requested today on a 40-day-old order is missing, while a return on a 5-day-old order is included even if requested later. This is probably not what a seller means by the question.\n\n`docs/seller-metrics.md` defines revenue, units, orders, AOV and stock, but does not define the returns metric or its period.\n\n### Proposal\n- Decide the definition and write it in `docs/seller-metrics.md`. Suggested: count returns by `Return.created_at`, excluding `rejected` (as now).\n- Change `returns_report` accordingly and update the tool description and the prompt wording (\"returns requested in the period\").\n- Add tests with hand-computed numbers where a return is requested in the period on an older order.\n- Re-check eval question 14 against the new definition.\n\n### Acceptance criteria\n- Definition documented, tests added, eval updated.",
+    "labels": [
+      "bug",
+      "documentation"
+    ]
+  },
+  {
+    "title": "test(seller): widen eval coverage and make the eval run in CI",
+    "body": "cc: @amrkhaled100\n\nArea / priority: `agent:seller`, `testing`, `priority:high`\n\n### Problem\n1. Coverage: the 15 questions use only 5 of the 7 tools (`get_sales_summary` 5, `compare_periods` 4, `low_stock_products` 4, `top_products` 1, `returns_report` 1). `orders_by_status` and `get_product_reviews` have no question.\n2. CI: `tests/integration/test_seller_eval.py` skips itself unless the dev database `ai_commerce` is seeded with `--anchor-date 2026-11-04T12:00:00`. The CI workflow only creates `ai_commerce_test`, so the eval appears to be skipped on every PR and regressions would not be caught.\n3. Scope: the eval checks tool results only. Rule 6 of the prompt (\"why did sales drop?\") asks the model to combine comparison, top products, returns and stock, but nothing tests that, nor tests for out-of-scope questions, prompt injection or \"show me your instructions\".\n\n### Proposal\n- Add questions for the two missing tools and more for `top_products` and `returns_report`, including `worst=true` and an empty result.\n- In CI, run migrations and the seed with the fixed anchor date on the test database, and point the eval at it.\n- Once the LLM graph exists, add a second layer that checks which tools the agent called and that the final answer contains the numbers from the tool results.\n\n### Acceptance criteria\n- Eval is not skipped in CI.\n- All 7 tools are covered.",
+    "labels": [
+      "enhancement"
+    ]
+  },
+  {
+    "title": "fix(seller): period boundaries and \"today\" should use the store's timezone",
+    "body": "cc: @amrkhaled100\n\nArea / priority: `agent:seller`, `bug`\n\n### Problem\nDates from the model are parsed as UTC (`_parse_date` adds `UTC` when there is no timezone), and the prompt computes \"today\" with `date.today()` on the server. The store is Egyptian (UTC+2). An order placed at 00:30 Cairo time belongs to the previous UTC day, so it can fall on the wrong side of a period boundary.\n\n### Proposal\nPick one timezone for period boundaries (for example `Africa/Cairo`), apply it in `_parse_date` and in `build_system_prompt`, and document it in `docs/seller-metrics.md`.\n\n### Acceptance criteria\n- A test with an order just after midnight Cairo time lands in the expected period.",
+    "labels": [
+      "bug"
+    ]
+  },
+  {
+    "title": "chore(seller): small consistency fixes in the tool layer",
+    "body": "cc: @amrkhaled100\n\nArea / priority: `agent:seller`, `good first issue`\n\n- `compare_periods` does not check that period A is earlier than period B, although the prompt and docs rely on it. Return an `invalid_period_order` error (or document that any order is allowed).\n- `get_product_reviews` returns `rating_avg` as a float, while the Shopping tools return it as a string (exact Decimal). Use one representation across both agents.\n- `get_product_reviews` can include reviews with an empty body in `recent_low_rated`; the Shopping excerpts filter `body != \"\"`. Use the same rule.\n- `low_stock_products` has no result limit (the other list tools cap at `MAX_LIMIT`).",
+    "labels": [
+      "good first issue"
+    ]
+  },
+  {
+    "title": "refactor(agents): extract the shared tool layer into `agents/common.py`",
+    "body": "cc: @amrkhaled100, Noura (@nrshousha), @basicesraa\n\nArea / priority: `refactor`, `architecture`, `priority:high`\n\n### Problem\n`ToolContext`, `ToolInputError`, `_safe`, `_jsonable`, `_limit` and `call_tool` are copied almost word for word in `agents/seller/tools.py` and `agents/shopping/tools.py`. A Support Agent is planned next, which would be a third copy, and the copies have already started to drift (`_jsonable` handles `Decimal` in one and not the other).\n\n### Proposal\nCreate `agents/common.py` with:\n- `ToolInputError`, `_safe`/`safe`, `jsonable`, `limit`\n- a generic `call_tool(registry, ctx, name, args)` that keeps the current guarantees: unknown tools rejected, extra arguments rejected with `forbidden_argument`, never raises to the agent\n- keep each agent's own `ToolContext` (different identity field: `seller_id` vs `customer_id`), or define a small base class\n\n### Acceptance criteria\n- Existing seller and shopping tests pass unchanged.\n- A Support Agent can reuse the module without copying.",
+    "labels": [
+      "enhancement"
+    ]
+  },
+  {
+    "title": "chore(agents): use one platform name and one Arabic tone across prompts and UI",
+    "body": "cc: @amrkhaled100, Noura (@nrshousha), @basicesraa\n\nArea / priority: `agent:seller`, `agent:shopping`, `frontend`, `docs`\n\n### Problem\n- Platform name: the Seller prompt says \"سوقنا\", the Shopping prompt says \"دكان تك\" (a test asserts that \"سوقنا\" is absent), the frontend is \"Dokkan Tech\", and the README says \"AI Commerce Marketplace\".\n- Tone: both prompts ask for polite Egyptian colloquial Arabic. `frontend/AGENTS.md` says the UI tone should be \"calm, modern, not slang\". Agent replies appear in the same UI.\n\n### Proposal\n- Decide the user-facing store name and put it in one shared constant used by all prompts.\n- Decide the Arabic tone (colloquial vs modern standard) and write it in one place (for example `docs/agent-guidelines.md`); update the prompts and their tests.",
+    "labels": [
+      "documentation"
+    ]
+  },
+  {
+    "title": "design: chat API contract, LLM/framework decision and router for the agents",
+    "body": "cc: @amrkhaled100, Noura (@nrshousha), @basicesraa\n\nArea / priority: `agents`, `design`, `priority:high`\n\n### Problem\nEverything under `agents/` is a tool layer plus a prompt. Nothing connects it to a user yet:\n- no chat endpoint in the API\n- no LLM client or LangChain/LangGraph in `pyproject.toml`\n- no router or supervisor (the Seller README says `graph.py` is waiting for this decision)\n- no conversation state or memory\n- the frontend assistant is a scripted mock, and its trace panel shows steps (`input_guardrail`, `supervisor`, `output_guardrail`) that the backend does not produce\n\n### Decisions needed\n1. LLM provider and orchestration framework (LangGraph or not).\n2. Router design: one entry endpoint that picks Shopping, Support, Seller or Order Actions from the token role and the message; how identity (`customer_id` / `seller_id`) is injected into `ToolContext`.\n3. API contract, for example `POST /assistant/chat` with `{conversation_id?, message}` and a response with `{reply, products?, confidence, trace[]}`, so the frontend can replace the mock.\n4. Conversation state: where it is stored and how long.\n5. Guardrails: where input and output checks live.\n6. Scope of the Support and Order Actions agents (Support read-only; Order Actions performs cancel/return after explicit confirmation, using `order_actions` and `order_rules`).\n\n### Acceptance criteria\n- A short design doc in `docs/` agreed by the team, and the API contract added to `docs/api-contracts.md`.",
+    "labels": [
+      "enhancement"
+    ]
+  }
+]
