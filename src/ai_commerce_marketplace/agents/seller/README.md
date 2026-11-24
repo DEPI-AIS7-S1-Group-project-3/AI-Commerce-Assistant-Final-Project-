@@ -46,6 +46,24 @@ with SessionLocal() as s:
     ctx = ToolContext(session=s, seller_id=1)
     print(call_tool(ctx, "get_sales_summary", {"date_from": "2026-10-06", "date_to": "2026-11-05"}))
 ```
+## Run with a real model
+
+Set `LLM_PROVIDERS` and the provider key in `.env` (see `llm/README.md`), then:
+
+```python
+from datetime import date
+from ai_commerce_marketplace.agents.seller.graph import run_agent
+from ai_commerce_marketplace.agents.seller.tools import ToolContext
+from ai_commerce_marketplace.database.session import SessionLocal
+from ai_commerce_marketplace.llm import get_llm_client
+
+with SessionLocal() as s:
+    ctx = ToolContext(session=s, seller_id=4)
+    r = run_agent(
+        ctx, "قارن آخر 30 يوم بالـ 30 اللي قبلهم", get_llm_client(), today=date(2026, 11, 4)
+    )
+    print(r.answer, r.tool_trace)
+```
 
 ## Tests and eval
 
