@@ -14,6 +14,7 @@ import sys
 from sqlalchemy import select
 
 from ai_commerce_marketplace.agents.router.graph import handle_chat
+from ai_commerce_marketplace.database.models.order import Order
 from ai_commerce_marketplace.database.models.user import User
 from ai_commerce_marketplace.database.session import SessionLocal
 from ai_commerce_marketplace.llm import LLMError, get_llm_client
@@ -37,6 +38,12 @@ def main() -> int:
         seller = s.scalar(select(User).where(User.email == "seller1@example.com"))
         if customer is None or seller is None:
             print("Demo users not found: seed the database first (docs/demo-data.md).")
+            return 2
+
+        status = s.scalar(select(Order.status).where(Order.id == 10002))
+        if status != "confirmed":
+            print(f"Demo order 10002 is '{status}', not 'confirmed' (an earlier run cancelled it).")
+            print("Rebuild the demo data first: make db-reset && make seed")
             return 2
 
         r = handle_chat(s, llm, None, "عايز موبايل سامسونج رخيص")
