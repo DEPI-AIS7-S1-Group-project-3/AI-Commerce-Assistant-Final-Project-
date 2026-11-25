@@ -1,6 +1,6 @@
 # Router and orchestration: decisions
 
-Status: proposed, for team sign-off. Owner: Mohamed. Scope: the layer that connects the four
+Status: implemented in `agents/router/` (LangGraph); open questions below still need the team. Owner: Mohamed. Scope: the layer that connects the four
 agents (Shopping, Support, Order Actions, Seller) into one assistant behind one endpoint.
 
 ## What already exists

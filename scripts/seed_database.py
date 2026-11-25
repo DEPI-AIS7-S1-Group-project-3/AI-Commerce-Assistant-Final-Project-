@@ -338,7 +338,7 @@ def update_ratings(session) -> None:
 def fix_sequences(session) -> None:
     """الـ identity مابتتحرّكش لما ندخل ID صريح (orders بـ 10001..): نظبط كل sequence على max(id)."""
     for table in Base.metadata.sorted_tables:
-        if "id" not in table.c:
+        if "id" not in table.c or table.c.id.identity is None:  # uuid ids have no sequence
             continue
         session.execute(
             text(

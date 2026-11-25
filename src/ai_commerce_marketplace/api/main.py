@@ -12,6 +12,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from ai_commerce_marketplace.api.routes import (
     addresses,
+    assistant,
     auth,
     cart,
     catalog,
@@ -87,6 +88,7 @@ def create_app() -> FastAPI:
         return _error(request, 422, "validation_error", "Invalid data", jsonable_encoder(details))
 
     app.include_router(health.router)
+    app.include_router(assistant.router)
     app.include_router(auth.router)
     app.include_router(addresses.router)
     app.include_router(cart.router)

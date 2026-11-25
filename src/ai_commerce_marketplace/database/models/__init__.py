@@ -5,6 +5,7 @@ from ai_commerce_marketplace.database.models.catalog import (
     Product,
     ProductImage,
 )
+from ai_commerce_marketplace.database.models.conversation import ChatMessage, Conversation
 from ai_commerce_marketplace.database.models.order import (
     Order,
     OrderItem,
@@ -22,6 +23,8 @@ __all__ = [
     "Cart",
     "CartItem",
     "Category",
+    "ChatMessage",
+    "Conversation",
     "Order",
     "OrderItem",
     "OrderStatusHistory",

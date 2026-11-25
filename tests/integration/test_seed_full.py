@@ -345,7 +345,7 @@ def test_new_order_after_seed_gets_a_fresh_id(seeded):
 def test_all_sequences_are_ahead_of_seeded_ids(seeded):
     with SessionLocal() as s:
         for table in Base.metadata.sorted_tables:
-            if "id" not in table.c:
+            if "id" not in table.c or table.c.id.identity is None:  # uuid ids: no sequence
                 continue
             max_id = s.scalar(text(f"SELECT max(id) FROM {table.name}"))  # noqa: S608
             if max_id is None:
