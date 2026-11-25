@@ -30,6 +30,16 @@ def get_current_user(
     return user
 
 
+def get_optional_user(
+    creds: HTTPAuthorizationCredentials | None = Depends(_bearer),
+    session: Session = Depends(get_session),
+) -> User | None:
+    """The signed-in user, or None for a visitor. A bad token is still an error."""
+    if creds is None:
+        return None
+    return get_current_user(creds, session)
+
+
 def require_role(role: str) -> Callable[[User], User]:
     def checker(user: User = Depends(get_current_user)) -> User:
         if user.role != role:
