@@ -19,6 +19,13 @@ from typing import Any, Literal
 
 from sqlalchemy.orm import Session
 
+from ai_commerce_marketplace.agents.common import (
+    ToolInputError,
+    clamp_limit,
+    positive_id,
+    safe,
+)
+from ai_commerce_marketplace.agents.common import call_tool as _shared_call_tool
 from ai_commerce_marketplace.core.enums import ActorType, CancelReason, OrderStatus, ReturnReason
 from ai_commerce_marketplace.core.exceptions import AppError
 from ai_commerce_marketplace.schemas.order import OrderOut
@@ -131,14 +138,15 @@ class ToolContext:
     now: datetime | None = None  # only tests/eval set this; production uses the real clock
 
 
-class ToolInputError(ValueError):
-    def __init__(self, code: str, message: str) -> None:
-        super().__init__(message)
-        self.code = code
-
-
 def _ar(code: str) -> str:
     return MESSAGES_AR.get(code, GENERIC_ERROR_AR)
+
+
+def _with_ar(result: dict[str, Any]) -> dict[str, Any]:
+    """Add the Arabic text to a failure from the shared layer (the router may show it as is)."""
+    if result.get("ok") is False and "message_ar" not in result:
+        return {**result, "message_ar": _ar(str(result.get("error")))}
+    return result
 
 
 def _now(ctx: ToolContext) -> datetime:
@@ -146,20 +154,13 @@ def _now(ctx: ToolContext) -> datetime:
 
 
 def _safe(fn: Callable[[], dict[str, Any]]) -> dict[str, Any]:
-    """Run a tool body and always return a dict (never raise to the agent)."""
-    try:
-        return {"ok": True, **fn()}
-    except ToolInputError as e:
-        return {"ok": False, "error": e.code, "message": str(e), "message_ar": _ar(e.code)}
-    except AppError as e:
-        return {"ok": False, "error": e.code, "message": e.message, "message_ar": _ar(e.code)}
+    """common.safe (never raises for expected failures) plus message_ar."""
+    return _with_ar(safe(fn))
 
 
 # ---- input checks ----
 def _pos_int(value: Any, code: str, name: str) -> int:
-    if isinstance(value, bool) or not isinstance(value, int) or value < 1:
-        raise ToolInputError(code, f"{name} must be a positive integer")
-    return value
+    return positive_id(value, code=code, name=name)
 
 
 def _qty(value: Any) -> int | None:
@@ -269,7 +270,7 @@ def list_my_orders(
             raise ToolInputError(
                 "invalid_status", f"status must be one of {[str(s) for s in OrderStatus]}"
             )
-        n = min(_pos_int(limit, "invalid_limit", "limit"), MAX_LIMIT)
+        n = clamp_limit(limit, MAX_LIMIT)
         now = _now(ctx)
         rows = [
             _order_view(o, now)
@@ -560,44 +561,22 @@ REGISTRY: dict[str, dict[str, Any]] = {
 }
 
 
-def _bad_args(name: str, args: dict[str, Any]) -> dict[str, Any] | None:
-    spec = REGISTRY.get(name)
-    if spec is None:
-        code = "unknown_tool"
-        return {
-            "ok": False,
-            "error": code,
-            "message": f"No tool named {name}",
-            "message_ar": _ar(code),
-        }
-    extra = set(args) - set(spec["params"])
-    if extra:
-        # e.g. the model tried to pass customer_id
-        code = "forbidden_argument"
-        return {
-            "ok": False,
-            "error": code,
-            "message": f"Not allowed: {sorted(extra)}",
-            "message_ar": _ar(code),
-        }
-    return None
+# The same action tools seen from the router's side: "fn" is the step that changes data.
+# Never given to the LLM; only execute_confirmed uses it.
+_EXECUTE: dict[str, dict[str, Any]] = {
+    name: {"fn": spec["execute"], "params": spec["params"]}
+    for name, spec in REGISTRY.items()
+    if "execute" in spec
+}
 
 
 def call_tool(ctx: ToolContext, name: str, args: dict[str, Any]) -> dict[str, Any]:
-    """Single entry point for the LLM's tool calls. Never changes data."""
-    error = _bad_args(name, args)
-    if error:
-        return error
-    try:
-        return REGISTRY[name]["fn"](ctx, **args)
-    except TypeError:
-        code = "bad_arguments"
-        return {
-            "ok": False,
-            "error": code,
-            "message": "Missing or wrong arguments",
-            "message_ar": _ar(code),
-        }
+    """Single entry point for the LLM's tool calls. Never changes data.
+
+    The shared call_tool rejects unknown tools, arguments not in params (e.g. customer_id)
+    and a wrong call shape; this agent adds the Arabic message to every failure.
+    """
+    return _with_ar(_shared_call_tool(REGISTRY, ctx, name, args))
 
 
 def execute_confirmed(ctx: ToolContext, pending_action: dict[str, Any]) -> dict[str, Any]:
@@ -608,8 +587,7 @@ def execute_confirmed(ctx: ToolContext, pending_action: dict[str, Any]) -> dict[
     """
     name = pending_action.get("tool") if isinstance(pending_action, dict) else None
     args = pending_action.get("args") if isinstance(pending_action, dict) else None
-    spec = REGISTRY.get(name) if isinstance(name, str) else None
-    if spec is None or "execute" not in spec or not isinstance(args, dict):
+    if not isinstance(name, str) or name not in _EXECUTE or not isinstance(args, dict):
         code = "not_an_action"
         return {
             "ok": False,
@@ -617,17 +595,4 @@ def execute_confirmed(ctx: ToolContext, pending_action: dict[str, Any]) -> dict[
             "message": "Not a pending action",
             "message_ar": _ar(code),
         }
-    assert isinstance(name, str)
-    error = _bad_args(name, args)
-    if error:
-        return error
-    try:
-        return spec["execute"](ctx, **args)
-    except TypeError:
-        code = "bad_arguments"
-        return {
-            "ok": False,
-            "error": code,
-            "message": "Missing or wrong arguments",
-            "message_ar": _ar(code),
-        }
+    return _with_ar(_shared_call_tool(_EXECUTE, ctx, name, args))
