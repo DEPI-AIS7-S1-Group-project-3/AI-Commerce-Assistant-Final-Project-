@@ -12,6 +12,13 @@ Every price, spec and rating must come from a tool result, never from the LLM.
 | `prompts.py` | Done: rules for search and filters, compare, recommend, prices and policies |
 | `eval/questions.json` | Done: 15 questions with the expected tool result (search, spec filters, compare, reviews, out of stock, empty, bad spec key, missing product) |
 
+## Decision: no cart actions
+
+The Shopping Agent does not add products to the cart (team decision, 2026-11-25). It stays
+read-only: its replies carry product cards, and the customer adds to the cart with the normal
+button on the website. Adding a cart tool would need a confirmation flow and router changes
+(the router runs confirmed actions through Order Actions only) for no real gain.
+
 ## Tools
 
 | Tool | Owner | What it does | Parameters the LLM may fill |
