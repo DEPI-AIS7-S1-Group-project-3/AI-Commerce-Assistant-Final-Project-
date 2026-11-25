@@ -30,6 +30,7 @@ _CLAIM = re.compile(
     r"|(?:order|it)\s+(?:was|has been)\s+(?:cancelled|canceled|returned)",
     re.I,
 )
+_IDENTIFIER = re.compile(r"\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b")
 _NUMBER = re.compile(r"\d[\d,]*(?:\.\d+)?")
 _JAILBREAK = re.compile(
     r"ignore (?:all |your |previous )|reveal your prompt|system prompt|"
@@ -62,6 +63,7 @@ class GuardReport:
     leaked: bool = False
     false_action_claim: bool = False
     unsupported_numbers: list[int] = field(default_factory=list)
+    internal_terms: list[str] = field(default_factory=list)  # snake_case words, flagged only
 
     @property
     def changed(self) -> bool:
@@ -83,6 +85,7 @@ def check_reply(
         report.false_action_claim = True
         return NO_ACTION_REPLACEMENT, report
 
+    report.internal_terms = sorted(set(_IDENTIFIER.findall(reply)))
     known = _ints(user_message)
     for _, result in tool_results:
         known |= _ints(json.dumps(result, ensure_ascii=False, default=str))

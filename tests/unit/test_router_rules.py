@@ -115,3 +115,10 @@ def test_parse_label(text, expected):
     from ai_commerce_marketplace.agents.router.classify import parse_label
 
     assert parse_label(text, ("shopping", "support", "order_actions")) == expected
+
+
+def test_snake_case_words_are_flagged_not_blocked():
+    reply, report = check("مدة الضمان بتتحدد في warranty_months للمنتج")
+    assert report.internal_terms == ["warranty_months"]
+    assert not report.changed and "الضمان" in reply
+    assert check("مدة الضمان 12 شهر")[1].internal_terms == []
