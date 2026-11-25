@@ -47,3 +47,9 @@ def test_eval_questions_are_well_formed():
     for q in questions:
         assert q["tool"] in REGISTRY, q["id"]
         assert q["question"] and q["expected_answer"] and q["expect"], q["id"]
+
+
+def test_prompt_asks_for_direct_policy_answers_without_field_names():
+    p = build_system_prompt(date(2026, 11, 17))
+    assert "من غير «عادةً»" in p
+    assert "warranty_months" in p  # named only to forbid it

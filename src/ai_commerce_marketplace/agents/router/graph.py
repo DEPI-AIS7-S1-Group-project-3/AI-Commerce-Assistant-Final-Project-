@@ -200,6 +200,7 @@ def build_graph(session: Session, llm: LLMClient, user: User | None, now: dateti
                 "leaked": report.leaked,
                 "false_action_claim": report.false_action_claim,
                 "unsupported_numbers": report.unsupported_numbers,
+                "internal_terms": report.internal_terms,
                 "jailbreak_pattern": guards.looks_like_jailbreak(state["message"]),
             },
         }
