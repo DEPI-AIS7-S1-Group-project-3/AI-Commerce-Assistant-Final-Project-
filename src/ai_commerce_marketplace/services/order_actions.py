@@ -7,6 +7,7 @@ from ai_commerce_marketplace.core.enums import (
     ActorType,
     CancelReason,
     OrderStatus,
+    PaymentStatus,
     ReturnReason,
     ReturnStatus,
 )
@@ -137,6 +138,10 @@ def cancel_order(
             reason_code=reason_code,
             now=now,
         )
+        # Cancellation policy, section 4: a card/wallet payment goes back to the same method.
+        # Cash on delivery is only paid at delivery, so a cancellable order has nothing to refund.
+        if order.payment_status == PaymentStatus.PAID:
+            order.payment_status = PaymentStatus.REFUNDED
         session.commit()
         return order
     except Exception:

@@ -174,3 +174,35 @@ def test_order_api_has_item_id_and_delivered_at(session):
     body = client.get(f"/orders/{order.id}", headers={"Authorization": f"Bearer {token}"}).json()
     assert body["items"][0]["id"] == item.id
     assert body["delivered_at"] is not None
+
+
+# ---- refund on cancel (cancellation policy, section 4) ----
+@pytest.mark.parametrize("method", ["card", "wallet"])
+def test_cancel_refunds_a_paid_order(session, method):
+    user = f.make_user(session)
+    order = f.make_order(session, customer_id=user.id, payment_method=method, payment_status="paid")
+    f.make_order_item(session, order=order)
+    session.commit()
+    svc.cancel_order(session, user.id, order.id)
+    session.expire_all()
+    assert session.get(Order, order.id).payment_status == "refunded"
+
+
+def test_cancel_cash_on_delivery_has_nothing_to_refund(session):
+    user, order, _ = _order(session)  # cod, payment pending
+    svc.cancel_order(session, user.id, order.id)
+    session.expire_all()
+    assert session.get(Order, order.id).payment_status == "pending"
+
+
+def test_refused_cancel_does_not_refund(session):
+    user = f.make_user(session)
+    order = f.make_order(session, customer_id=user.id, payment_method="card", payment_status="paid")
+    f.make_order_item(session, order=order)
+    for t in (S.CONFIRMED, S.SHIPPED):
+        change_status(session, order, t, actor_type=ActorType.SELLER)
+    session.commit()
+    with pytest.raises(ConflictError):
+        svc.cancel_order(session, user.id, order.id)
+    session.expire_all()
+    assert session.get(Order, order.id).payment_status == "paid"
