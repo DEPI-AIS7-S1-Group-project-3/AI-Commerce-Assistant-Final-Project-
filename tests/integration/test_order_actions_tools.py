@@ -150,9 +150,28 @@ def test_other_customers_order_looks_like_missing_order(session, ctx):
     assert hidden["message_ar"] == "مش لاقي طلب بالرقم ده في حسابك."
 
 
-@pytest.mark.parametrize("bad", [0, -5, "10002", True, None])
+@pytest.mark.parametrize("bad", [0, -5, "abc", "10.5", 2.0, True, None])
 def test_bad_order_id(ctx, bad):
-    assert call_tool(ctx, "get_order", {"order_id": bad})["error"] == "invalid_order_id"
+    r = call_tool(ctx, "get_order", {"order_id": bad})
+    assert r["error"] == "invalid_order_id"
+    assert r["message_ar"] == MESSAGES_AR["invalid_order_id"]
+
+
+def test_order_id_as_text_is_accepted(session, ctx, customer):
+    # the shared positive_id accepts "12" (models often send numbers as text)
+    order, _, _ = _order(session, customer)
+    assert call_tool(ctx, "get_order", {"order_id": str(order.id)})["order"]["id"] == order.id
+
+
+def test_shared_layer_failures_carry_arabic(ctx):
+    for r in (
+        call_tool(ctx, "nope", {}),
+        call_tool(ctx, "get_order", {"customer_id": 1}),
+        call_tool(ctx, "get_order", {}),
+        execute_confirmed(ctx, {"tool": "cancel_order", "args": {}}),
+    ):
+        assert r["ok"] is False
+        assert r["message_ar"] == MESSAGES_AR[r["error"]]
 
 
 def test_days_late_for_late_order(session, ctx, customer):
