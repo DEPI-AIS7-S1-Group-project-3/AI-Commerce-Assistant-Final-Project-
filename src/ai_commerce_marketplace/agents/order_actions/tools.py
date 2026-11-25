@@ -15,10 +15,17 @@ the model. customer_id comes from the token via ToolContext; the model cannot pa
 from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
-from typing import Any
+from typing import Any, Literal
 
 from sqlalchemy.orm import Session
 
+from ai_commerce_marketplace.agents.common import (
+    ToolInputError,
+    clamp_limit,
+    positive_id,
+    safe,
+)
+from ai_commerce_marketplace.agents.common import call_tool as _shared_call_tool
 from ai_commerce_marketplace.core.enums import ActorType, CancelReason, OrderStatus, ReturnReason
 from ai_commerce_marketplace.core.exceptions import AppError
 from ai_commerce_marketplace.schemas.order import OrderOut
@@ -28,6 +35,24 @@ from ai_commerce_marketplace.services.order_rules import RETURN_WINDOW_DAYS
 
 MAX_LIMIT = 20
 MAX_REASON_TEXT = 500
+MAX_TITLE_IN_QUESTION = 120
+
+# Fixed values the model may send. The router builds the LLM tool schemas from these hints;
+# a test checks they match the enums in core/enums.py.
+OrderStatusName = Literal[
+    "pending",
+    "confirmed",
+    "shipped",
+    "out_for_delivery",
+    "delivered",
+    "cancelled",
+    "return_requested",
+    "returned",
+]
+CancelReasonCode = Literal["customer_request", "late_delivery", "other"]
+ReturnReasonCode = Literal[
+    "defective", "not_as_described", "changed_mind", "wrong_item", "damaged_in_shipping", "other"
+]
 
 # Eligibility flags the order API computes for the website buttons; hidden from the agent.
 UI_ORDER_FLAGS = ("can_cancel", "cancel_block")
@@ -113,14 +138,15 @@ class ToolContext:
     now: datetime | None = None  # only tests/eval set this; production uses the real clock
 
 
-class ToolInputError(ValueError):
-    def __init__(self, code: str, message: str) -> None:
-        super().__init__(message)
-        self.code = code
-
-
 def _ar(code: str) -> str:
     return MESSAGES_AR.get(code, GENERIC_ERROR_AR)
+
+
+def _with_ar(result: dict[str, Any]) -> dict[str, Any]:
+    """Add the Arabic text to a failure from the shared layer (the router may show it as is)."""
+    if result.get("ok") is False and "message_ar" not in result:
+        return {**result, "message_ar": _ar(str(result.get("error")))}
+    return result
 
 
 def _now(ctx: ToolContext) -> datetime:
@@ -128,20 +154,13 @@ def _now(ctx: ToolContext) -> datetime:
 
 
 def _safe(fn: Callable[[], dict[str, Any]]) -> dict[str, Any]:
-    """Run a tool body and always return a dict (never raise to the agent)."""
-    try:
-        return {"ok": True, **fn()}
-    except ToolInputError as e:
-        return {"ok": False, "error": e.code, "message": str(e), "message_ar": _ar(e.code)}
-    except AppError as e:
-        return {"ok": False, "error": e.code, "message": e.message, "message_ar": _ar(e.code)}
+    """common.safe (never raises for expected failures) plus message_ar."""
+    return _with_ar(safe(fn))
 
 
 # ---- input checks ----
 def _pos_int(value: Any, code: str, name: str) -> int:
-    if isinstance(value, bool) or not isinstance(value, int) or value < 1:
-        raise ToolInputError(code, f"{name} must be a positive integer")
-    return value
+    return positive_id(value, code=code, name=name)
 
 
 def _qty(value: Any) -> int | None:
@@ -171,6 +190,19 @@ def _reason_text(value: Any) -> str | None:
             "reason_text_too_long", f"reason_text must be text of at most {MAX_REASON_TEXT}"
         )
     return value.strip() or None
+
+
+def _title_for_question(title: str) -> str:
+    """A product title is written by a seller: keep it as plain data inside our question.
+
+    Control characters (line breaks included) are removed and the length is capped, so a title
+    cannot add lines or fake instructions to the confirmation text the customer sees.
+    """
+    clean = "".join(ch if ch.isprintable() else " " for ch in title)
+    clean = " ".join(clean.split())
+    if len(clean) > MAX_TITLE_IN_QUESTION:
+        clean = clean[: MAX_TITLE_IN_QUESTION - 1].rstrip() + "…"
+    return clean
 
 
 # ---- output shaping (all numbers come from the database) ----
@@ -223,13 +255,22 @@ def _load_order(ctx: ToolContext, order_id: int) -> dict[str, Any]:
 
 
 # ---- read tools ----
-def list_my_orders(ctx: ToolContext, status: str | None = None, limit: int = 10) -> dict[str, Any]:
+def list_my_orders(
+    ctx: ToolContext, status: OrderStatusName | None = None, limit: int = 10
+) -> dict[str, Any]:
+    """The customer's orders, newest first.
+
+    Args:
+        status: Only orders in this status, e.g. "delivered". Leave empty for all orders.
+        limit: How many orders to return, 1 to 20, e.g. 5.
+    """
+
     def run() -> dict[str, Any]:
         if status is not None and status not in list(OrderStatus):
             raise ToolInputError(
                 "invalid_status", f"status must be one of {[str(s) for s in OrderStatus]}"
             )
-        n = min(_pos_int(limit, "invalid_limit", "limit"), MAX_LIMIT)
+        n = clamp_limit(limit, MAX_LIMIT)
         now = _now(ctx)
         rows = [
             _order_view(o, now)
@@ -242,6 +283,12 @@ def list_my_orders(ctx: ToolContext, status: str | None = None, limit: int = 10)
 
 
 def get_order(ctx: ToolContext, order_id: int) -> dict[str, Any]:
+    """One order of the customer with its items, totals and status history.
+
+    Args:
+        order_id: The order number the customer mentioned, e.g. 10002.
+    """
+
     def run() -> dict[str, Any]:
         return {"order": _load_order(ctx, _pos_int(order_id, "invalid_order_id", "order_id"))}
 
@@ -264,6 +311,11 @@ def _cancel_check(ctx: ToolContext, order_id: int) -> dict[str, Any]:
 
 
 def check_cancel_eligibility(ctx: ToolContext, order_id: int) -> dict[str, Any]:
+    """Check only (changes nothing): can this order be cancelled, and if not, why.
+
+    Args:
+        order_id: The order number to check, e.g. 10002.
+    """
     return _safe(lambda: _cancel_check(ctx, order_id))
 
 
@@ -296,6 +348,13 @@ def _return_check(
 def check_return_eligibility(
     ctx: ToolContext, order_id: int, order_item_id: int, qty: int | None = None
 ) -> dict[str, Any]:
+    """Check only (changes nothing): can this item be returned, and if not, why.
+
+    Args:
+        order_id: The order number, e.g. 10003.
+        order_item_id: The item's order_item_id from get_order or list_my_orders, e.g. 3.
+        qty: How many pieces to return, e.g. 1. Leave empty for all pieces bought.
+    """
     return _safe(lambda: _return_check(ctx, order_id, order_item_id, qty))
 
 
@@ -310,15 +369,23 @@ def _pending(tool: str, args: dict[str, Any], question_ar: str) -> dict[str, Any
 
 
 def propose_cancel_order(
-    ctx: ToolContext, order_id: int, reason_code: str = CancelReason.CUSTOMER_REQUEST
+    ctx: ToolContext, order_id: int, reason_code: CancelReasonCode = "customer_request"
 ) -> dict[str, Any]:
+    """Ask to cancel an order. Changes nothing: returns a question the customer must confirm.
+
+    Args:
+        order_id: The order number to cancel, e.g. 10002.
+        reason_code: Why: "customer_request" (changed their mind, default), "late_delivery"
+            (it is taking too long) or "other".
+    """
+
     def run() -> dict[str, Any]:
         reason = _cancel_reason(reason_code)
         check = _cancel_check(ctx, order_id)
         if not check["allowed"]:
             return {**check, "needs_confirmation": False}
         o = check["order"]
-        titles = "، ".join(i["title"] for i in o["items"])
+        titles = "، ".join(_title_for_question(i["title"]) for i in o["items"])
         question = (
             f"هتلغي الطلب رقم {o['id']} ({titles}) بإجمالي {o['total_egp']} جنيه، "
             f"والسبب: {CANCEL_REASON_AR[CancelReason(reason)]}. متأكد؟ "
@@ -333,6 +400,8 @@ def propose_cancel_order(
 def execute_cancel_order(
     ctx: ToolContext, order_id: int, reason_code: str = CancelReason.CUSTOMER_REQUEST
 ) -> dict[str, Any]:
+    """Run a confirmed cancel. Called only through execute_confirmed, never by the model."""
+
     def run() -> dict[str, Any]:
         oid = _pos_int(order_id, "invalid_order_id", "order_id")
         reason = _cancel_reason(reason_code)
@@ -346,6 +415,14 @@ def execute_cancel_order(
             now=ctx.now,
         )
         order = _load_order(ctx, oid)
+        # The router shows message_ar to the customer as is, so the refund line comes from
+        # the stored payment status, not from the model.
+        message = f"تم إلغاء الطلب رقم {oid}."
+        if order["payment_status"] == "refunded":
+            message += (
+                f" المبلغ ({order['total_egp']} جنيه) هيرجع على نفس وسيلة الدفع "
+                f"({order['payment_method_ar']})."
+            )
         return {
             "done": True,
             "order_id": oid,
@@ -353,7 +430,7 @@ def execute_cancel_order(
             "status_ar": order["status_ar"],
             "payment_status": order["payment_status"],
             "stock_restored": True,
-            "message_ar": f"تم إلغاء الطلب رقم {oid}.",
+            "message_ar": message,
         }
 
     return _safe(run)
@@ -363,10 +440,20 @@ def propose_request_return(
     ctx: ToolContext,
     order_id: int,
     order_item_id: int,
-    reason_code: str,
+    reason_code: ReturnReasonCode,
     qty: int | None = None,
     reason_text: str | None = None,
 ) -> dict[str, Any]:
+    """Ask to return an item. Changes nothing: returns a question the customer must confirm.
+
+    Args:
+        order_id: The order number, e.g. 10003.
+        order_item_id: The item's order_item_id from get_order or list_my_orders, e.g. 3.
+        reason_code: Why, e.g. "defective". Ask the customer if it is not clear.
+        qty: How many pieces to return, e.g. 1. Leave empty for all pieces bought.
+        reason_text: The customer's own words about the problem, at most 500 characters.
+    """
+
     def run() -> dict[str, Any]:
         reason = _return_reason(reason_code)
         text = _reason_text(reason_text)
@@ -374,7 +461,7 @@ def propose_request_return(
         if not check["allowed"]:
             return {**check, "needs_confirmation": False}
         question = (
-            f"هتطلب إرجاع {check['qty']} من «{check['item']['title']}» "
+            f"هتطلب إرجاع {check['qty']} من «{_title_for_question(check['item']['title'])}» "
             f"من الطلب رقم {check['order_id']}، والسبب: {RETURN_REASON_AR[ReturnReason(reason)]}. "
             "متأكد؟ رد بـ «أيوه» عشان أنفذ أو «لأ» عشان نلغي العملية."
         )
@@ -398,6 +485,8 @@ def execute_request_return(
     qty: int | None = None,
     reason_text: str | None = None,
 ) -> dict[str, Any]:
+    """Run a confirmed return request. Called only through execute_confirmed."""
+
     def run() -> dict[str, Any]:
         oid = _pos_int(order_id, "invalid_order_id", "order_id")
         iid = _pos_int(order_item_id, "invalid_item_id", "order_item_id")
@@ -472,44 +561,22 @@ REGISTRY: dict[str, dict[str, Any]] = {
 }
 
 
-def _bad_args(name: str, args: dict[str, Any]) -> dict[str, Any] | None:
-    spec = REGISTRY.get(name)
-    if spec is None:
-        code = "unknown_tool"
-        return {
-            "ok": False,
-            "error": code,
-            "message": f"No tool named {name}",
-            "message_ar": _ar(code),
-        }
-    extra = set(args) - set(spec["params"])
-    if extra:
-        # e.g. the model tried to pass customer_id
-        code = "forbidden_argument"
-        return {
-            "ok": False,
-            "error": code,
-            "message": f"Not allowed: {sorted(extra)}",
-            "message_ar": _ar(code),
-        }
-    return None
+# The same action tools seen from the router's side: "fn" is the step that changes data.
+# Never given to the LLM; only execute_confirmed uses it.
+_EXECUTE: dict[str, dict[str, Any]] = {
+    name: {"fn": spec["execute"], "params": spec["params"]}
+    for name, spec in REGISTRY.items()
+    if "execute" in spec
+}
 
 
 def call_tool(ctx: ToolContext, name: str, args: dict[str, Any]) -> dict[str, Any]:
-    """Single entry point for the LLM's tool calls. Never changes data."""
-    error = _bad_args(name, args)
-    if error:
-        return error
-    try:
-        return REGISTRY[name]["fn"](ctx, **args)
-    except TypeError:
-        code = "bad_arguments"
-        return {
-            "ok": False,
-            "error": code,
-            "message": "Missing or wrong arguments",
-            "message_ar": _ar(code),
-        }
+    """Single entry point for the LLM's tool calls. Never changes data.
+
+    The shared call_tool rejects unknown tools, arguments not in params (e.g. customer_id)
+    and a wrong call shape; this agent adds the Arabic message to every failure.
+    """
+    return _with_ar(_shared_call_tool(REGISTRY, ctx, name, args))
 
 
 def execute_confirmed(ctx: ToolContext, pending_action: dict[str, Any]) -> dict[str, Any]:
@@ -520,8 +587,7 @@ def execute_confirmed(ctx: ToolContext, pending_action: dict[str, Any]) -> dict[
     """
     name = pending_action.get("tool") if isinstance(pending_action, dict) else None
     args = pending_action.get("args") if isinstance(pending_action, dict) else None
-    spec = REGISTRY.get(name) if isinstance(name, str) else None
-    if spec is None or "execute" not in spec or not isinstance(args, dict):
+    if not isinstance(name, str) or name not in _EXECUTE or not isinstance(args, dict):
         code = "not_an_action"
         return {
             "ok": False,
@@ -529,17 +595,4 @@ def execute_confirmed(ctx: ToolContext, pending_action: dict[str, Any]) -> dict[
             "message": "Not a pending action",
             "message_ar": _ar(code),
         }
-    assert isinstance(name, str)
-    error = _bad_args(name, args)
-    if error:
-        return error
-    try:
-        return spec["execute"](ctx, **args)
-    except TypeError:
-        code = "bad_arguments"
-        return {
-            "ok": False,
-            "error": code,
-            "message": "Missing or wrong arguments",
-            "message_ar": _ar(code),
-        }
+    return _with_ar(_shared_call_tool(_EXECUTE, ctx, name, args))

@@ -45,7 +45,9 @@ def main() -> int:
 
         r = handle_chat(s, llm, None, "الضمان على الموبايلات كام سنة؟")
         show("2. Visitor asks about the warranty", r)
-        checks["visitor warranty -> support"] = r.agent == "support" and bool(r.reply)
+        checks["visitor warranty -> support, no internal field names"] = (
+            r.agent == "support" and bool(r.reply) and not r.trace["guard"]["internal_terms"]
+        )
 
         r = handle_chat(s, llm, customer, "ألغي طلب 10002")
         show("3a. Customer asks to cancel order 10002", r)
@@ -58,7 +60,8 @@ def main() -> int:
 
         r = handle_chat(s, llm, customer, "طلب رقم 10001 حالته ايه؟")
         show("4. Customer asks about order 10001 (not theirs)", r)
-        checks["no data of another customer's order"] = "10001" not in r.reply or "مش" in r.reply
+        leaks = ("جنيه", "ج.م", "طريق", "تسليم", "شحن", "out_for_delivery", "customer03")
+        checks["no data of another customer's order"] = not any(w in r.reply for w in leaks)
 
         r = handle_chat(s, llm, seller, "مبيعاتي آخر 30 يوم كام؟")
         show("5. Seller asks about sales", r)
