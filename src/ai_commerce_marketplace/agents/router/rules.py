@@ -68,6 +68,13 @@ _SUPPORT = (
     "شكوي",
     "مشكله",
     "تواصل",
+    "وقع",
+    "اتكسر",
+    "اتكسرت",
+    "باظ",
+    "بايظ",
+    "عطلان",
+    "تالف",
     "policy",
     "warranty",
     "shipping",
@@ -206,7 +213,7 @@ def route(message: str, role: Role, last_agent: Agent | None = None) -> Decision
 
     if support and not shopping:
         return Decision("support", "rule", f"support:{support[0]}")
-    if shopping and not support:
+    if shopping and not support and not set(shopping) <= _NOUNS:  # a bare noun says no intent
         return Decision("shopping", "rule", f"shopping:{shopping[0]}")
     if has_number and not (support or shopping):
         return Decision("support", "rule", "order number")
