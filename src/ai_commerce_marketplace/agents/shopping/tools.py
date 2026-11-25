@@ -7,7 +7,7 @@ and reviews_summary_get (Person B). The LLM never passes customer_id; call_tool 
 from collections.abc import Callable
 from dataclasses import dataclass
 from decimal import Decimal, InvalidOperation
-from typing import Any
+from typing import Any, Literal, get_args
 
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
@@ -68,7 +68,27 @@ def _product_id(value: Any) -> int:
     return value
 
 
-SORTS = ("newest", "price_asc", "price_desc", "rating")
+Sort = Literal["newest", "price_asc", "price_desc", "rating"]
+SortSpec = Literal[
+    "ram_gb", "storage_gb", "battery_mah", "battery_hours", "camera_mp", "screen_inch"
+]
+SORTS = get_args(Sort)
+
+# What the model sees for `specs` (keys match services/catalog.py SPEC_*_KEYS).
+SPECS_SCHEMA: dict[str, Any] = {
+    "type": "object",
+    "properties": {
+        **{f"{k}_min": {"type": "number"} for k in get_args(SortSpec)},
+        "network": {"type": "string", "enum": ["4g", "5g"]},
+        "os": {"type": "string"},
+        "storage_type": {"type": "string"},
+        "type": {"type": "string"},
+        "connector": {"type": "string"},
+        "wireless": {"type": "boolean"},
+        "noise_cancelling": {"type": "boolean"},
+    },
+    "additionalProperties": False,
+}
 
 
 def _opt_text(value: Any, name: str) -> str | None:
@@ -102,17 +122,32 @@ def _product_ids(values: Any) -> list[int]:
 # ---- tools (Person A) ----
 def search_products(
     ctx: ToolContext,
-    query: Any = None,
-    category: Any = None,
-    brand: Any = None,
-    min_price: Any = None,
-    max_price: Any = None,
-    in_stock_only: Any = True,
-    sort: Any = "newest",
-    sort_spec: Any = None,
-    specs: Any = None,
-    limit: Any = 5,
+    query: str | None = None,
+    category: str | None = None,
+    brand: str | None = None,
+    min_price: float | None = None,
+    max_price: float | None = None,
+    in_stock_only: bool = True,
+    sort: Sort = "newest",
+    sort_spec: SortSpec | None = None,
+    specs: dict[str, Any] | None = None,
+    limit: int = 5,
 ) -> dict[str, Any]:
+    """Search active products with filters and a sort order.
+
+    Args:
+        query: Free text in Arabic or English, also for CPU or GPU names (e.g. "سامسونج جالاكسي").
+        category: Category slug from categories_brands_list (e.g. "mobiles").
+        brand: Brand slug from categories_brands_list (e.g. "samsung").
+        min_price: Lowest price in EGP (e.g. 9000).
+        max_price: Highest price in EGP (e.g. 15000).
+        in_stock_only: False to also show out-of-stock products (e.g. true).
+        sort: Result order (e.g. "price_asc").
+        sort_spec: Sort high to low by this spec instead of sort (e.g. "battery_mah").
+        specs: Spec filters, "<key>_min" means at least (e.g. {"ram_gb_min": 8, "network": "5g"}).
+        limit: How many products to return, 1 to 20 (e.g. 5).
+    """
+
     def run() -> dict[str, Any]:
         if sort not in SORTS:
             raise ToolInputError("invalid_sort", f"sort must be one of {list(SORTS)}")
@@ -139,6 +174,8 @@ def search_products(
 
 
 def categories_brands_list(ctx: ToolContext) -> dict[str, Any]:
+    """All categories (with spec_kind) and brands, each with its slug."""
+
     def run() -> dict[str, Any]:
         categories = [
             {
@@ -159,21 +196,39 @@ def categories_brands_list(ctx: ToolContext) -> dict[str, Any]:
 
 
 # ---- tools (Person B) ----
-def product_get(ctx: ToolContext, product_id: Any) -> dict[str, Any]:
+def product_get(ctx: ToolContext, product_id: int) -> dict[str, Any]:
+    """Full details of one product.
+
+    Args:
+        product_id: The product number (e.g. 12).
+    """
+
     def run() -> dict[str, Any]:
         return {"product": catalog_details.get_product(ctx.session, _product_id(product_id))}
 
     return _safe(run)
 
 
-def products_compare(ctx: ToolContext, product_ids: Any) -> dict[str, Any]:
+def products_compare(ctx: ToolContext, product_ids: list[int]) -> dict[str, Any]:
+    """Compare 2 to 4 products from the same category.
+
+    Args:
+        product_ids: The product numbers to compare, 2 to 4 of them (e.g. [12, 15]).
+    """
+
     def run() -> dict[str, Any]:
         return catalog_details.compare_products(ctx.session, _product_ids(product_ids))
 
     return _safe(run)
 
 
-def reviews_summary_get(ctx: ToolContext, product_id: Any) -> dict[str, Any]:
+def reviews_summary_get(ctx: ToolContext, product_id: int) -> dict[str, Any]:
+    """Rating summary and recent review excerpts of one product.
+
+    Args:
+        product_id: The product number (e.g. 12).
+    """
+
     def run() -> dict[str, Any]:
         return catalog_details.reviews_summary(ctx.session, _product_id(product_id))
 
@@ -232,6 +287,7 @@ REGISTRY: dict[str, dict[str, Any]] = {
             "specs",
             "limit",
         ],
+        "param_schema": {"specs": SPECS_SCHEMA},
     },
     "categories_brands_list": {
         "fn": categories_brands_list,

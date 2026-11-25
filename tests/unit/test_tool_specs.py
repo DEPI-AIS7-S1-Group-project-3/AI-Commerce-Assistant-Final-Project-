@@ -177,3 +177,12 @@ def test_explicit_schema_without_a_type_is_weak():
 
 def test_seller_is_fully_described_by_its_own_schemas():
     assert weak_params(SELLER) == []
+
+
+def test_shopping_is_fully_described():
+    assert weak_params(SHOPPING) == []
+    search = next(s for s in tool_specs(SHOPPING) if s.name == "search_products")
+    props = search.parameters["properties"]
+    assert props["sort"]["enum"] == ["newest", "price_asc", "price_desc", "rating"]
+    assert props["specs"]["additionalProperties"] is False
+    assert "ram_gb_min" in props["specs"]["properties"]
