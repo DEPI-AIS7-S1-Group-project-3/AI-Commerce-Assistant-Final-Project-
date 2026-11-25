@@ -31,7 +31,9 @@ def main() -> int:
         else:
             try:
                 llm = llm or get_llm_client()
-                got, _ = classify(llm, c["message"], c["role"], c["last_agent"])
+                got, resp = classify(llm, c["message"], c["role"], c["last_agent"])
+                if got is None:
+                    print(f"      model said: {resp.text!r} (finish={resp.finish_reason})")
             except LLMError as e:
                 print(f"LLM error ({e.code}): {e}")
                 return 2
