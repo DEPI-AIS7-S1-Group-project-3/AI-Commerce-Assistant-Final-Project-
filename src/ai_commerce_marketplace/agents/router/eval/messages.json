@@ -1,0 +1,307 @@
+[
+  {
+    "id": 1,
+    "message": "عايز موبايل سامسونج",
+    "role": "visitor",
+    "last_agent": null,
+    "expected": [
+      "shopping"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 2,
+    "message": "أرخص لابتوب عندكم",
+    "role": "visitor",
+    "last_agent": null,
+    "expected": [
+      "shopping"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 3,
+    "message": "قارن لي بين أول منتجين",
+    "role": "customer",
+    "last_agent": "shopping",
+    "expected": [
+      "shopping"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 4,
+    "message": "عاوز سماعة بلوتوث ميزانيتي 1000 جنيه",
+    "role": "visitor",
+    "last_agent": null,
+    "expected": [
+      "shopping"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 5,
+    "message": "ايه احسن غسالة؟",
+    "role": "customer",
+    "last_agent": null,
+    "expected": [
+      "shopping"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 6,
+    "message": "cheapest phone under 10000",
+    "role": "visitor",
+    "last_agent": null,
+    "expected": [
+      "shopping"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 7,
+    "message": "وبكام؟",
+    "role": "customer",
+    "last_agent": "shopping",
+    "expected": [
+      "shopping"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 8,
+    "message": "الضمان على الموبايلات كام سنة؟",
+    "role": "visitor",
+    "last_agent": null,
+    "expected": [
+      "support"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 9,
+    "message": "الشحن بكام للإسكندرية؟",
+    "role": "visitor",
+    "last_agent": null,
+    "expected": [
+      "support"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 10,
+    "message": "سياسة الاسترجاع ايه؟",
+    "role": "visitor",
+    "last_agent": null,
+    "expected": [
+      "support"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 11,
+    "message": "الطلب بيوصل امتى؟",
+    "role": "customer",
+    "last_agent": null,
+    "expected": [
+      "support"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 12,
+    "message": "طلب رقم 10002 حالته ايه؟",
+    "role": "customer",
+    "last_agent": null,
+    "expected": [
+      "support"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 13,
+    "message": "فين طلبي؟",
+    "role": "customer",
+    "last_agent": null,
+    "expected": [
+      "support"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 14,
+    "message": "سياسة الإلغاء إيه؟",
+    "role": "customer",
+    "last_agent": null,
+    "expected": [
+      "support"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 15,
+    "message": "والضمان؟",
+    "role": "visitor",
+    "last_agent": "support",
+    "expected": [
+      "support"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 16,
+    "message": "ألغي طلب 10002",
+    "role": "customer",
+    "last_agent": null,
+    "expected": [
+      "order_actions"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 17,
+    "message": "عايز أرجّع الطلب 10004",
+    "role": "customer",
+    "last_agent": null,
+    "expected": [
+      "order_actions"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 18,
+    "message": "كنسل الاوردر 10003",
+    "role": "customer",
+    "last_agent": null,
+    "expected": [
+      "order_actions"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 19,
+    "message": "cancel order 10002",
+    "role": "customer",
+    "last_agent": null,
+    "expected": [
+      "order_actions"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 20,
+    "message": "عايز ألغي طلب",
+    "role": "visitor",
+    "last_agent": null,
+    "expected": [
+      "support"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 21,
+    "message": "مبيعاتي الشهر ده",
+    "role": "seller",
+    "last_agent": null,
+    "expected": [
+      "seller"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 22,
+    "message": "ايه المنتجات اللي قربت تخلص؟",
+    "role": "seller",
+    "last_agent": null,
+    "expected": [
+      "seller"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 23,
+    "message": "ألغي طلب 10002",
+    "role": "seller",
+    "last_agent": null,
+    "expected": [
+      "seller"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 24,
+    "message": "اهلا",
+    "role": "customer",
+    "last_agent": null,
+    "expected": [
+      "shopping",
+      "support"
+    ],
+    "by": "llm"
+  },
+  {
+    "id": 25,
+    "message": "ازيك",
+    "role": "visitor",
+    "last_agent": null,
+    "expected": [
+      "shopping",
+      "support"
+    ],
+    "by": "llm"
+  },
+  {
+    "id": 26,
+    "message": "الموبايل وقع مني وشاشته اتكسرت",
+    "role": "customer",
+    "last_agent": null,
+    "expected": [
+      "support"
+    ],
+    "by": "llm"
+  },
+  {
+    "id": 27,
+    "message": "عندي مشكلة مع حاجة جتلي",
+    "role": "customer",
+    "last_agent": null,
+    "expected": [
+      "support"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 28,
+    "message": "الحاجة اللي جتلي مش زي الصورة",
+    "role": "customer",
+    "last_agent": null,
+    "expected": [
+      "support",
+      "order_actions"
+    ],
+    "by": "llm"
+  },
+  {
+    "id": 29,
+    "message": "ينفع اجيب حاجة تانية بداله؟",
+    "role": "customer",
+    "last_agent": null,
+    "expected": [
+      "support",
+      "order_actions"
+    ],
+    "by": "llm"
+  },
+  {
+    "id": 30,
+    "message": "عايز اغير رأيي في الطلب",
+    "role": "customer",
+    "last_agent": null,
+    "expected": [
+      "order_actions",
+      "support"
+    ],
+    "by": "llm"
+  }
+]
