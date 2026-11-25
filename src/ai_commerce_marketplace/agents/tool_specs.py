@@ -8,6 +8,9 @@ The schema is read from the tool function itself, so it cannot drift from the co
 - its description comes from the ``Args:`` section of the docstring;
 - the tool description comes from ``REGISTRY[name]["description"]``.
 
+A registry entry may instead carry a complete ``"schema"`` (a JSON-schema object written by hand,
+as the Seller agent does); it is used as written and checked against ``params``.
+
 A parameter typed ``Any`` (or not typed) gives the model no information, so it is reported as
 weak. When a tool validates its input by hand and has to keep ``Any`` in its signature, the
 registry entry can carry ``"param_schema": {"name": {...}}`` to give the model the real type.
@@ -76,7 +79,31 @@ def _arg_docs(fn: Callable[..., Any]) -> dict[str, str]:
     return docs
 
 
+def _explicit(name: str, entry: Any) -> tuple[ToolSpec, list[tuple[str, str]]]:
+    """A registry entry that carries its own JSON schema (``"schema"``) is used as written.
+
+    It must describe exactly the parameters listed in ``params``, so the two cannot drift apart.
+    """
+    schema = entry["schema"]
+    properties = schema.get("properties", {})
+    if set(properties) != set(entry["params"]):
+        raise ValueError(
+            f"{name}: schema properties {sorted(properties)} differ from params "
+            f"{sorted(entry['params'])}"
+        )
+    if not set(schema.get("required", [])) <= set(properties):
+        raise ValueError(f"{name}: schema requires a parameter it does not define")
+    weak = [
+        (p, "schema gives no type, enum or anyOf")
+        for p, prop in properties.items()
+        if not {"type", "enum", "anyOf"} & set(prop)
+    ]
+    return ToolSpec(name, entry["description"], dict(schema)), weak
+
+
 def _tool(name: str, entry: Any) -> tuple[ToolSpec, list[tuple[str, str]]]:
+    if "schema" in entry:
+        return _explicit(name, entry)
     fn = entry["fn"]
     sig = inspect.signature(fn)
     hints = get_type_hints(fn)
