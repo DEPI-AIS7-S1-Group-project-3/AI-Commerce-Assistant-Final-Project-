@@ -136,3 +136,44 @@ def test_support_tools_are_fully_described():
         "cancellation",
     ]
     assert policy_get.parameters["required"] == ["slug"]
+
+
+# ---- explicit "schema" (used by the Seller agent) ----
+def plain(ctx, a: int, b: str = "x"):
+    """No docstring args."""
+
+
+EXPLICIT = {
+    "type": "object",
+    "properties": {
+        "a": {"type": "integer", "minimum": 1, "maximum": 20},
+        "b": {"type": "string"},
+    },
+    "required": ["a"],
+    "additionalProperties": False,
+}
+
+
+def test_explicit_schema_is_used_as_written():
+    (spec,) = tool_specs(entry(plain, ["a", "b"], schema=EXPLICIT))
+    assert spec.parameters == EXPLICIT
+    assert weak_params(entry(plain, ["a", "b"], schema=EXPLICIT)) == []
+
+
+def test_explicit_schema_must_match_params():
+    with pytest.raises(ValueError, match="differ from params"):
+        tool_specs(entry(plain, ["a"], schema=EXPLICIT))
+    bad = {**EXPLICIT, "required": ["zzz"]}
+    with pytest.raises(ValueError, match="requires a parameter"):
+        tool_specs(entry(plain, ["a", "b"], schema=bad))
+
+
+def test_explicit_schema_without_a_type_is_weak():
+    schema = {"type": "object", "properties": {"a": {"description": "?"}}, "required": []}
+    assert weak_params(entry(plain, ["a"], schema=schema)) == [
+        ("t", "a", "schema gives no type, enum or anyOf")
+    ]
+
+
+def test_seller_is_fully_described_by_its_own_schemas():
+    assert weak_params(SELLER) == []

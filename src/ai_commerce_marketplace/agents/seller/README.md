@@ -19,7 +19,7 @@ Read-only analytics assistant for a store owner. It answers questions about the 
 | `tools.py` | 7 tools, `REGISTRY`, and `call_tool()` (single entry point) |
 | `prompts.py` | `build_system_prompt(today)`: Egyptian Arabic rules and date ranges |
 | `eval/questions.json` | 15 questions with expected answers |
-| `graph.py` | `run_agent(ctx, message, llm)`: the loop on the shared LLM client (max 5 steps) |
+| `graph.py` | `run_agent(ctx, message, llm)`: thin wrapper over the shared runner in `agents/runner.py` (max 5 steps) |
 
 ## Tools
 
