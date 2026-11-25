@@ -52,6 +52,13 @@ def _period(date_from: str, date_to: str, name: str = "period") -> Period:
 
 # ---- tools ----
 def get_sales_summary(ctx: ToolContext, date_from: str, date_to: str) -> dict[str, Any]:
+    """Revenue, units, orders count and average order value for a period.
+
+    Args:
+        date_from: Start of the period, inclusive, ISO date (e.g. 2026-10-06).
+        date_to: End of the period, exclusive, ISO date (e.g. 2026-11-05).
+    """
+
     def run() -> dict[str, Any]:
         raw = sa.sales_summary(ctx.session, ctx.seller_id, _period(date_from, date_to))
         s = sc.SalesSummary(**raw)
@@ -63,7 +70,14 @@ def get_sales_summary(ctx: ToolContext, date_from: str, date_to: str) -> dict[st
 def compare_periods(
     ctx: ToolContext, a_from: str, a_to: str, b_from: str, b_to: str
 ) -> dict[str, Any]:
-    """period_a is the baseline (earlier), period_b the later one."""
+    """Compare two periods. Period a is the earlier baseline, period b the later one.
+
+    Args:
+        a_from: Start of the baseline period, inclusive, ISO date (e.g. 2026-09-06).
+        a_to: End of the baseline period, exclusive, ISO date (e.g. 2026-10-06).
+        b_from: Start of the later period, inclusive, ISO date (e.g. 2026-10-06).
+        b_to: End of the later period, exclusive, ISO date (e.g. 2026-11-05).
+    """
 
     def run() -> dict[str, Any]:
         pa, pb = _period(a_from, a_to, "period_a"), _period(b_from, b_to, "period_b")
@@ -77,6 +91,15 @@ def compare_periods(
 def top_products(
     ctx: ToolContext, date_from: str, date_to: str, limit: int = 5, worst: bool = False
 ) -> dict[str, Any]:
+    """Best (or worst) selling products in a period.
+
+    Args:
+        date_from: Start of the period, inclusive, ISO date (e.g. 2026-10-06).
+        date_to: End of the period, exclusive, ISO date (e.g. 2026-11-05).
+        limit: How many products to return, 1 to 20 (e.g. 3).
+        worst: True for the least sold products instead of the best (e.g. false).
+    """
+
     def run() -> dict[str, Any]:
         raw = sa.top_products(
             ctx.session,
@@ -92,6 +115,12 @@ def top_products(
 
 
 def low_stock_products(ctx: ToolContext, threshold: int = 5) -> dict[str, Any]:
+    """Active products whose stock is at or below a threshold.
+
+    Args:
+        threshold: Maximum stock quantity to include; 0 means out of stock only (e.g. 5).
+    """
+
     def run() -> dict[str, Any]:
         if isinstance(threshold, bool) or not isinstance(threshold, int) or threshold < 0:
             raise ToolInputError("invalid_threshold", "threshold must be 0 or more")
@@ -103,6 +132,13 @@ def low_stock_products(ctx: ToolContext, threshold: int = 5) -> dict[str, Any]:
 
 
 def orders_by_status(ctx: ToolContext, date_from: str, date_to: str) -> dict[str, Any]:
+    """Number of orders per status in a period.
+
+    Args:
+        date_from: Start of the period, inclusive, ISO date (e.g. 2026-10-06).
+        date_to: End of the period, exclusive, ISO date (e.g. 2026-11-05).
+    """
+
     def run() -> dict[str, Any]:
         counts = sa.orders_by_status(ctx.session, ctx.seller_id, _period(date_from, date_to))
         return {"by_status": counts, "empty": not counts}
@@ -111,6 +147,13 @@ def orders_by_status(ctx: ToolContext, date_from: str, date_to: str) -> dict[str
 
 
 def returns_report(ctx: ToolContext, date_from: str, date_to: str) -> dict[str, Any]:
+    """Returns requested in a period, with their reasons. Rejected returns are excluded.
+
+    Args:
+        date_from: Start of the period, inclusive, ISO date (e.g. 2026-10-06).
+        date_to: End of the period, exclusive, ISO date (e.g. 2026-11-05).
+    """
+
     def run() -> dict[str, Any]:
         raw = sa.returns_report(ctx.session, ctx.seller_id, _period(date_from, date_to))
         r = sc.ReturnsReport(**raw)
@@ -120,23 +163,17 @@ def returns_report(ctx: ToolContext, date_from: str, date_to: str) -> dict[str, 
 
 
 def get_product_reviews(ctx: ToolContext, product_id: int) -> dict[str, Any]:
+    """Rating average, count and recent low-rated reviews of one of your products.
+
+    Args:
+        product_id: The product number (e.g. 41).
+    """
+
     def run() -> dict[str, Any]:
         r = sc.ProductReviews(**sa.product_reviews(ctx.session, ctx.seller_id, product_id))
         return {**r.model_dump(mode="json"), "empty": r.reviews_count == 0}
 
     return safe(run)
-
-
-_DATE = {"type": "string", "description": "ISO date, e.g. 2026-10-06 (end is exclusive)"}
-
-
-def _schema(properties: dict[str, Any], required: list[str]) -> dict[str, Any]:
-    return {
-        "type": "object",
-        "properties": properties,
-        "required": required,
-        "additionalProperties": False,
-    }
 
 
 # What the LLM may fill in. ctx is never listed here.
@@ -145,54 +182,36 @@ REGISTRY: dict[str, dict[str, Any]] = {
         "fn": get_sales_summary,
         "description": "Revenue, units, orders count and average order value for a period.",
         "params": ["date_from", "date_to"],
-        "schema": _schema({"date_from": _DATE, "date_to": _DATE}, ["date_from", "date_to"]),
     },
     "compare_periods": {
         "fn": compare_periods,
         "description": "Difference and percent change between two periods (a = baseline).",
         "params": ["a_from", "a_to", "b_from", "b_to"],
-        "schema": _schema(
-            {"a_from": _DATE, "a_to": _DATE, "b_from": _DATE, "b_to": _DATE},
-            ["a_from", "a_to", "b_from", "b_to"],
-        ),
     },
     "top_products": {
         "fn": top_products,
         "description": "Best (or worst) selling products in a period.",
         "params": ["date_from", "date_to", "limit", "worst"],
-        "schema": _schema(
-            {
-                "date_from": _DATE,
-                "date_to": _DATE,
-                "limit": {"type": "integer", "minimum": 1, "maximum": 20},
-                "worst": {"type": "boolean"},
-            },
-            ["date_from", "date_to"],
-        ),
     },
     "low_stock_products": {
         "fn": low_stock_products,
         "description": "Active products with stock at or below a threshold (0 = out of stock).",
         "params": ["threshold"],
-        "schema": _schema({"threshold": {"type": "integer", "minimum": 0}}, []),
     },
     "orders_by_status": {
         "fn": orders_by_status,
         "description": "Number of orders per status in a period.",
         "params": ["date_from", "date_to"],
-        "schema": _schema({"date_from": _DATE, "date_to": _DATE}, ["date_from", "date_to"]),
     },
     "returns_report": {
         "fn": returns_report,
         "description": "Returns count and reasons in a period (rejected returns excluded).",
         "params": ["date_from", "date_to"],
-        "schema": _schema({"date_from": _DATE, "date_to": _DATE}, ["date_from", "date_to"]),
     },
     "get_product_reviews": {
         "fn": get_product_reviews,
         "description": "Rating average, count and recent low-rated reviews of a product.",
         "params": ["product_id"],
-        "schema": _schema({"product_id": {"type": "integer", "minimum": 1}}, ["product_id"]),
     },
 }
 
