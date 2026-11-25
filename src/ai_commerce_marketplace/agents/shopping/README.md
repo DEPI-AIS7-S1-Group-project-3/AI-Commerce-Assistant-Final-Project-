@@ -10,8 +10,7 @@ Every price, spec and rating must come from a tool result, never from the LLM.
 | `schemas.py` | Done: `ProductCard` (search results), `ProductDetail` (details and compare) |
 | `tools.py` | Done: 5 tools registered (see below) |
 | `prompts.py` | Done: rules for search and filters, compare, recommend, prices and policies |
-| `graph.py` | Not built yet (waiting for the router / LangGraph decision) |
-| `eval/` | Not built yet (15-question set, same as the Seller agent) |
+| `eval/questions.json` | Done: 15 questions with the expected tool result (search, spec filters, compare, reviews, out of stock, empty, bad spec key, missing product) |
 
 ## Tools
 
@@ -60,3 +59,12 @@ CPU and GPU are free text and have no filter. They go into `query`.
     uv run pytest tests/integration/test_shopping_search.py tests/integration/test_shopping_details.py tests/integration/test_catalog_spec_filters.py -q
 
 The integration tests need PostgreSQL (the `ai_commerce_test` database).
+
+## Run the eval
+
+    uv run python -m scripts.seed_database --anchor-date 2026-11-04T12:00:00
+    uv run pytest tests/integration/test_shopping_eval.py -q
+
+The eval runs each question's tool call on the frozen demo data (the dev database `ai_commerce`).
+Questions name products by SKU, not id, because ids depend on insert order; the test turns SKUs
+into ids. It is skipped when the dev database is not seeded with that anchor date.
