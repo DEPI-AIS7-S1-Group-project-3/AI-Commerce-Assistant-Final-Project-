@@ -11,7 +11,8 @@ from datetime import date
 
 from ai_commerce_marketplace.agents.seller.prompts import build_system_prompt
 from ai_commerce_marketplace.agents.seller.tools import REGISTRY, ToolContext, call_tool
-from ai_commerce_marketplace.llm import LLMClient, LLMError, Message, ToolCall, ToolSpec
+from ai_commerce_marketplace.agents.tool_specs import tool_specs as build_tool_specs
+from ai_commerce_marketplace.llm import LLMClient, LLMError, Message, ToolCall
 
 MAX_STEPS = 5
 
@@ -25,14 +26,6 @@ class AgentResult:
     tool_trace: list[dict]
     stopped_early: bool = False
     error: str | None = None  # LLMError class name when the model could not be reached
-
-
-def tool_specs() -> list[ToolSpec]:
-    """What the model may see: name, description, JSON schema. Never ctx or seller_id."""
-    return [
-        ToolSpec(name=name, description=spec["description"], parameters=spec["schema"])
-        for name, spec in REGISTRY.items()
-    ]
 
 
 def _run_tool(ctx: ToolContext, call: ToolCall, trace: list[dict]) -> Message:
@@ -56,7 +49,7 @@ def run_agent(
         Message("system", build_system_prompt(today)),
         Message("user", user_message),
     ]
-    tools = tool_specs()
+    tools = build_tool_specs(REGISTRY)
     trace: list[dict] = []
 
     for _ in range(MAX_STEPS):

@@ -7,9 +7,9 @@ from ai_commerce_marketplace.agents.seller.graph import (
     STOPPED_ANSWER,
     UNAVAILABLE_ANSWER,
     run_agent,
-    tool_specs,
 )
-from ai_commerce_marketplace.agents.seller.tools import ToolContext
+from ai_commerce_marketplace.agents.seller.tools import REGISTRY, ToolContext
+from ai_commerce_marketplace.agents.tool_specs import tool_specs
 from ai_commerce_marketplace.llm import (
     AllProvidersFailed,
     LLMResponse,
@@ -91,7 +91,7 @@ def test_model_never_sees_identity(ctx):
 
 
 def test_every_tool_has_a_schema():
-    specs = tool_specs()
+    specs = tool_specs(REGISTRY)
     assert len(specs) == 7
     for s in specs:
         assert s.parameters["type"] == "object"
