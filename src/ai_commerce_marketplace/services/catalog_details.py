@@ -118,6 +118,18 @@ EXCERPTS_PER_SIDE = 5
 EXCERPT_CHARS = 300
 
 
+def clean_excerpt(body: str) -> str:
+    """Review text is written by customers: keep it as one plain line of data for the LLM.
+
+    Control and invisible characters (line breaks included) become spaces, runs of spaces are
+    collapsed, and the text is capped at EXCERPT_CHARS (with "…" when it was cut).
+    """
+    clean = " ".join("".join(ch if ch.isprintable() else " " for ch in body).split())
+    if len(clean) > EXCERPT_CHARS:
+        clean = clean[: EXCERPT_CHARS - 1].rstrip() + "…"
+    return clean
+
+
 def _excerpts(session: Session, product_id: int, ratings: tuple[int, ...]) -> list[dict[str, Any]]:
     """Newest non-empty reviews with these star ratings, trimmed for the LLM."""
     stmt = (
@@ -126,15 +138,19 @@ def _excerpts(session: Session, product_id: int, ratings: tuple[int, ...]) -> li
         .order_by(Review.created_at.desc(), Review.id.desc())
         .limit(EXCERPTS_PER_SIDE)
     )
-    return [
-        {
-            "rating": r.rating,
-            "text": r.body[:EXCERPT_CHARS],
-            "verified": r.is_verified_purchase,
-            "date": r.created_at.date().isoformat(),
-        }
-        for r in session.scalars(stmt)
-    ]
+    out = []
+    for r in session.scalars(stmt):
+        text = clean_excerpt(r.body)
+        if text:  # a body of only control characters is not an excerpt
+            out.append(
+                {
+                    "rating": r.rating,
+                    "text": text,
+                    "verified": r.is_verified_purchase,
+                    "date": r.created_at.date().isoformat(),
+                }
+            )
+    return out
 
 
 def reviews_summary(session: Session, product_id: int) -> dict[str, Any]:
