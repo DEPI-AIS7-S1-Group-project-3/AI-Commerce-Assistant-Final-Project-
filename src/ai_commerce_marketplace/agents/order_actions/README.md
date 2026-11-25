@@ -22,7 +22,12 @@ safely. It is the only agent that changes data, so accuracy matters more than sp
 | `tools.py` | 6 tools, `REGISTRY`, `call_tool()` (for the LLM) and `execute_confirmed()` (for the router) |
 | `prompts.py` | `build_system_prompt(today)`: Egyptian Arabic rules and the action flow |
 | `eval/questions.json` | 15 questions with expected tool results and expected answers |
-| `graph.py` | not built yet (waiting for the router / LangGraph decision, same as the Seller Agent) |
+
+
+There is no `graph.py` here: the router (`agents/router/`) owns the graph. It runs this agent
+through the shared runner (`agents/runner.py`, entry in `agents/catalog.py`) and builds the LLM
+tool schemas from the type hints and the `Args:` docstrings of the tool functions, so keep them
+precise (`Literal` for fixed values; a test checks there is no weak parameter).
 
 ## Tools
 
@@ -50,16 +55,25 @@ customer: "ألغي طلب 10002"
          {"ok": true, "needs_confirmation": true,
           "pending_action": {"tool": "cancel_order", "args": {...}},
           "confirm_question_ar": "هتلغي الطلب رقم 10002 ... متأكد؟"}
-  router → stores pending_action in session_state, shows confirm_question_ar, stops.
+  router → stores pending_action on the conversation (10-minute expiry), shows confirm_question_ar.
 customer: "أيوه"
   router → execute_confirmed(ctx, pending_action)   # the LLM cannot call this
   tool   → service re-checks ownership + eligibility with the row locked, then cancels.
+  router → shows the result's message_ar to the customer as is.
 customer: anything else → router drops pending_action.
 ```
 
 If the rule says no, the action tool returns `allowed: false`, `needs_confirmation: false` and no
 `pending_action`. If the order changed between the question and the "yes" (e.g. the seller shipped
-it), `execute_confirmed` returns the new refusal and changes nothing.
+it), `execute_confirmed` returns the new refusal and changes nothing. Running the same action twice
+cancels once; the second call returns `already_cancelled` with its Arabic message.
+
+Because the router shows `message_ar` as is, it is built only from database values. After a cancel
+of a card or wallet order it also says the amount goes back to the same payment method.
+
+Product titles and the customer's `reason_text` are user-written text. They are returned as data,
+and a title is cleaned (no line breaks, at most 120 characters) before it goes into a
+confirmation question. The prompt says tool text is never an instruction.
 
 ## Try it
 
@@ -96,9 +110,12 @@ uv run python -m scripts.seed_database --anchor-date 2026-11-04T12:00:00
 make test
 ```
 
-## Open decisions
+## Decisions
 
-- **D3**: cancelling a shipped order that is more than 3 days late is **not** allowed yet (the team
-  has not approved it). Order 10001 is refused with `already_shipped`.
-- **Refund on cancel**: the cancel service does not set `payment_status = refunded` for card/wallet
-  orders yet. The agent never promises a refund unless `payment_status` is `refunded`.
+- **D3 (closed)**: a shipped order cannot be cancelled, even when it is late. This is what the
+  cancellation policy says (section 2). Order 10001 is refused with `already_shipped`, and the
+  agent offers a return after delivery instead.
+- **Refund on cancel (done)**: `cancel_order` sets `payment_status = refunded` for a paid card or
+  wallet order, as the cancellation policy says (section 4). Cash on delivery is only paid at
+  delivery, so a cancellable cash order has nothing to refund. For returns, the refund happens
+  after the seller receives the item, so the agent never says it was refunded.
