@@ -31,13 +31,20 @@ def classify(
     reply = llm.chat(
         [Message("system", _prompt(allowed) + hint), Message("user", message)],
         temperature=0.0,
-        max_tokens=40,
+        max_tokens=300,
     )
-    match = re.search(r"\{.*?\}", reply.text, re.S)
-    label = None
+    return parse_label(reply.text, allowed), reply
+
+
+def parse_label(text: str, allowed: tuple[Agent, ...]) -> Agent | None:
+    """Read the agent from the model's text: JSON first, then a bare agent name."""
+    match = re.search(r"\{.*?\}", text, re.S)
     if match:
         try:
             label = json.loads(match.group(0)).get("agent")
         except (ValueError, AttributeError):
             label = None
-    return (label if label in allowed else None), reply  # type: ignore[return-value]
+        if label in allowed:
+            return label  # type: ignore[no-any-return]
+    found = [a for a in allowed if re.search(rf"\b{a}\b", text)]
+    return found[0] if len(found) == 1 else None
