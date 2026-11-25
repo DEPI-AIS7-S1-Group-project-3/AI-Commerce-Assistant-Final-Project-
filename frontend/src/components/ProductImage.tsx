@@ -4,21 +4,34 @@ import type { Product } from "@/types";
 
 const icons: Record<string, LucideIcon> = {
   mobiles: Smartphone,
+  phones: Smartphone,
   laptops: Laptop,
   audio: Headphones,
 };
 
 // Shows the first product image; falls back to a neutral category icon when there is
-// no image yet (mock data has none) or the image fails to load.
-export default function ProductImage({ product, className = "" }: { product: Product; className?: string }) {
+// no image yet or the image fails to load.
+export default function ProductImage({
+  product,
+  categorySlug,
+  title,
+  className = "",
+}: {
+  product?: Partial<Product>;
+  categorySlug?: string;
+  title?: string;
+  className?: string;
+}) {
   const [failed, setFailed] = useState(false);
-  const image = product.images[0];
+  const image = product?.images?.[0];
+  const catSlug = product?.category?.slug ?? categorySlug ?? "";
+  const label = product?.title_ar ?? title ?? "Product";
 
   if (!image || failed) {
-    const Icon = icons[product.category.slug] ?? Package;
+    const Icon = icons[catSlug] ?? Package;
     return (
-      <div className={`flex items-center justify-center bg-sand text-ink-soft/50 ${className}`} role="img" aria-label={product.title_ar}>
-        <Icon className="h-1/4 w-1/4" strokeWidth={1.25} aria-hidden />
+      <div className={`flex items-center justify-center bg-sand text-ink-soft/50 ${className}`} role="img" aria-label={label}>
+        <Icon className="h-2/3 w-2/3 max-h-8 max-w-8" strokeWidth={1.5} aria-hidden />
       </div>
     );
   }
@@ -26,7 +39,7 @@ export default function ProductImage({ product, className = "" }: { product: Pro
   return (
     <img
       src={image.url}
-      alt={image.alt_ar ?? product.title_ar}
+      alt={image.alt_ar ?? label}
       loading="lazy"
       onError={() => setFailed(true)}
       className={`object-cover ${className}`}

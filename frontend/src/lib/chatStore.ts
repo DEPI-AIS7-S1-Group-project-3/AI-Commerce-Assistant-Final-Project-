@@ -1,10 +1,27 @@
-import type { Reply } from "@/lib/assistantScript";
+import type { AgentName, ProductCard } from "@/api/assistant";
+
+/** What the backend really returns, stored per assistant message. */
+export interface AssistantReply {
+  text: string;
+  agent: AgentName;
+  products: ProductCard[];
+  needs_confirmation: { question: string } | null;
+  trace: unknown | null;
+}
 
 export type StoredMsg =
   | { id: string; role: "user"; text: string }
-  | { id: string; role: "assistant"; reply: Reply };
+  | { id: string; role: "assistant"; reply: AssistantReply };
 
-export type Chat = { id: string; title: string; updatedAt: number; messages: StoredMsg[] };
+export type Chat = {
+  id: string;
+  /** First user message, used as the sidebar title. */
+  title: string;
+  updatedAt: number;
+  /** Backend conversation id (uuid) for follow-up messages. */
+  backendConvoId: string | null;
+  messages: StoredMsg[];
+};
 
 const KEY = "dalil.chats.v1";
 
