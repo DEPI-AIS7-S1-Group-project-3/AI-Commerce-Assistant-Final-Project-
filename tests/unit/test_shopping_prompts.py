@@ -18,3 +18,9 @@ def test_prompt_states_the_key_rules():
         assert section in p
     assert "من 1 لـ 3 منتجات متاحة بس" in p
     assert "من نصوص التقييمات الراجعة بس" in p
+
+
+def test_prompt_forbids_computing_discounts_and_naming_fields():
+    p = build_system_prompt(date(2026, 11, 17))
+    assert "متحسبش خصم" in p
+    assert "warranty_months" in p  # named only to forbid it
