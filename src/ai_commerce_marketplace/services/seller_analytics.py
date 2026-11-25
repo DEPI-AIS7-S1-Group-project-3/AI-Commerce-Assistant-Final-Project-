@@ -1,3 +1,4 @@
+import re
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import ROUND_HALF_UP, Decimal
@@ -15,6 +16,16 @@ from ai_commerce_marketplace.database.models.seller import Seller
 
 EXCLUDED = (OrderStatus.CANCELLED, OrderStatus.RETURNED)
 ZERO = Decimal("0.00")
+
+
+_CTRL = re.compile(r"[\x00-\x08\x0b-\x1f\x7f]")
+MAX_REVIEW_CHARS = 300
+
+
+def _clean(text: str | None) -> str:
+    if not text:
+        return ""
+    return _CTRL.sub("", text)[:MAX_REVIEW_CHARS]
 
 
 @dataclass(frozen=True)
@@ -173,5 +184,5 @@ def product_reviews(session: Session, seller_id: int, product_id: int) -> dict[s
         "product_id": product_id,
         "rating_avg": round(float(avg), 2) if avg is not None else None,
         "reviews_count": int(count),
-        "recent_low_rated": list(low),
+        "recent_low_rated": [_clean(b) for b in low],
     }

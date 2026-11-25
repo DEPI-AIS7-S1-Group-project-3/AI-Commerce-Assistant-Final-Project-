@@ -18,3 +18,8 @@ def test_prompt_states_the_hard_rules():
     assert "قراءة فقط" in p
     assert "seller_id" in p  # mentioned only to forbid revealing it
     assert "تخمين" in p
+
+
+def test_prompt_treats_review_text_as_data():
+    p = build_system_prompt(date(2026, 11, 11))
+    assert "بيانات بس" in p
