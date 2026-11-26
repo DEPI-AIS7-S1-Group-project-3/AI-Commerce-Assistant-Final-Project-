@@ -38,17 +38,12 @@ def _dig(obj, dotted):
     return obj
 
 
-@pytest.mark.parametrize("q", QUESTIONS, ids=[f"q{q['id']}" for q in QUESTIONS])
-def test_tool_answers_match_gold(dev_session, q):
-    ctx = ToolContext(session=dev_session, seller_id=q["seller"])
-    r = call_tool(ctx, q["tool"], q["args"])
-    exp = q["expect"]
-
+def _check(ctx, tool, args, exp):
+    r = call_tool(ctx, tool, args)
     if "error" in exp:
         assert r["ok"] is False
         assert r["error"] == exp["error"]
         return
-
     assert r["ok"] is True, r
     for key, value in exp.items():
         if key == "product_ids":
@@ -62,3 +57,11 @@ def test_tool_answers_match_gold(dev_session, q):
         else:
             got = r[key]
             assert (str(got) if isinstance(value, str) else got) == value, key
+
+
+@pytest.mark.parametrize("q", QUESTIONS, ids=[f"q{q['id']}" for q in QUESTIONS])
+def test_tool_answers_match_gold(dev_session, q):
+    ctx = ToolContext(session=dev_session, seller_id=q["seller"])
+    steps = q.get("steps") or [{"tool": q["tool"], "args": q["args"], "expect": q["expect"]}]
+    for step in steps:
+        _check(ctx, step["tool"], step["args"], step["expect"])

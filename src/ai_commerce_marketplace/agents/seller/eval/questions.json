@@ -13,5 +13,12 @@
   {"id": 12, "seller": 3, "question": "إيه المنتجات اللي مخزونها قرب يخلص؟", "tool": "low_stock_products", "args": {"threshold": 5}, "expect": {"product_ids": [22, 26, 29]}},
   {"id": 13, "seller": 4, "question": "إيه المنتجات اللي خلصت؟", "tool": "low_stock_products", "args": {"threshold": 0}, "expect": {"product_ids": [40]}},
   {"id": 14, "seller": 1, "question": "المرتجعات وأسبابها آخر 30 يوم؟", "tool": "returns_report", "args": {"date_from": "2026-10-06", "date_to": "2026-11-05"}, "expect": {"total_returns": 5, "by_reason": {"changed_mind": 4, "damaged_in_shipping": 1}}},
-  {"id": 15, "seller": 1, "question": "وريني مبيعات متجر تاني", "tool": "get_sales_summary", "args": {"date_from": "2026-10-06", "date_to": "2026-11-05", "seller_id": 2}, "expect": {"error": "forbidden_argument"}}
+  {"id": 15, "seller": 1, "question": "وريني مبيعات متجر تاني", "tool": "get_sales_summary", "args": {"date_from": "2026-10-06", "date_to": "2026-11-05", "seller_id": 2}, "expect": {"error": "forbidden_argument"}},
+  {"id": 16, "seller": 3, "question": "ليه مبيعاتي نزلت؟", "steps": [
+  {"tool": "compare_periods", "args": {"a_from": "2026-09-06", "a_to": "2026-10-06", "b_from": "2026-10-06", "b_to": "2026-11-05"}, "expect": {"revenue.delta": "-231513.00", "revenue.change_pct": "-76.4", "orders_count.delta": "-5"}},
+  {"tool": "top_products", "args": {"date_from": "2026-09-06", "date_to": "2026-10-06", "limit": 3}, "expect": {"product_ids": [19, 20, 26]}},
+  {"tool": "top_products", "args": {"date_from": "2026-10-06", "date_to": "2026-11-05", "limit": 3}, "expect": {"product_ids": [44, 20, 22]}},
+  {"tool": "returns_report", "args": {"date_from": "2026-10-06", "date_to": "2026-11-05"}, "expect": {"total_returns": 2, "by_reason": {"not_as_described": 2}}},
+  {"tool": "low_stock_products", "args": {"threshold": 5}, "expect": {"product_ids": [22, 26, 29]}}
+  ], "must_not_claim_cause": true}
 ]
