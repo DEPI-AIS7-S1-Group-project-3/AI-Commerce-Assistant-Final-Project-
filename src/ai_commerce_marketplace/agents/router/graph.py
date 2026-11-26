@@ -99,6 +99,10 @@ def build_graph(session: Session, llm: LLMClient, user: User | None, now: dateti
         conv = state["conv"]
         pending = store.live_pending(conv, now)
         if pending is None:
+            # A bare "yes" after an order action whose confirmation expired (or never existed):
+            # never run anything, and do not let the model guess what the user agreed to.
+            if conv.last_agent == "order_actions" and is_yes(state["message"]):
+                return {"reply": guards.NO_PENDING_REPLY, "agent": "order_actions"}
             return {}
         store.clear_pending(conv)  # one try: a yes runs it, anything else drops it
         if not is_yes(state["message"]):
