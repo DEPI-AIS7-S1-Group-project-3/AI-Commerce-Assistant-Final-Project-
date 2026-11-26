@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 
 from ai_commerce_marketplace.agents.router.graph import handle_chat
 from ai_commerce_marketplace.api.dependencies import get_optional_user
+from ai_commerce_marketplace.api.rate_limit import assistant_limiter
 from ai_commerce_marketplace.core.config import settings
 from ai_commerce_marketplace.core.exceptions import AppError
 from ai_commerce_marketplace.database.models.user import User
@@ -26,10 +27,13 @@ def get_llm() -> LLMClient:
 @router.post("/chat", response_model=ChatOut)
 def chat(
     data: ChatIn,
+    request: Request,
     user: User | None = Depends(get_optional_user),
     session: Session = Depends(get_session),
     llm: LLMClient = Depends(get_llm),
 ):
+    who = f"user:{user.id}" if user else f"ip:{request.client.host if request.client else '?'}"
+    assistant_limiter.check(who, settings.assistant_rate_limit_per_minute)
     try:
         result = handle_chat(session, llm, user, data.message, data.conversation_id)
     except LLMError:
