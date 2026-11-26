@@ -381,9 +381,18 @@ export default function AssistantPage() {
 
                 {/* Confirmation flow (Cancel & Return) */}
                 {isLast && m.reply.needs_confirmation && (
-                  <div className="mt-4 rounded-ctl border border-line bg-surface p-3">
-                    <p className="text-sm font-medium">{m.reply.needs_confirmation.question}</p>
-                    <div className="mt-2 flex flex-wrap gap-2">
+                  <div
+                    className={
+                      m.reply.needs_confirmation.question.trim() !== m.reply.text.trim()
+                        ? "mt-4 rounded-ctl border border-line bg-surface p-3"
+                        : "mt-3"
+                    }
+                  >
+                    {/* The backend reply already holds this question: show it once */}
+                    {m.reply.needs_confirmation.question.trim() !== m.reply.text.trim() && (
+                      <p className="text-sm font-medium">{m.reply.needs_confirmation.question}</p>
+                    )}
+                    <div className="flex flex-wrap gap-2">
                       <button
                         type="button"
                         className="btn-primary !px-5 !py-2 text-sm font-semibold"

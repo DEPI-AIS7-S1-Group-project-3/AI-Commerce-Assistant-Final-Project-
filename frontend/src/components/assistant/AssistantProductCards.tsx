@@ -4,6 +4,7 @@ import { formatPrice } from "@/lib/format";
 import { useCart } from "@/hooks/useCart";
 import type { ProductCard } from "@/api/assistant";
 import ProductImage from "@/components/ProductImage";
+import { useCategories } from "@/hooks/useProducts";
 
 interface Props {
   products: ProductCard[];
@@ -16,6 +17,11 @@ interface Props {
 export default function AssistantProductCards({ products }: Props) {
   const { lang, t } = useI18n();
   const { add } = useCart();
+  const { data: categories } = useCategories();
+  const categoryName = (slug: string) => {
+    const c = categories?.find((x) => x.slug === slug);
+    return c ? (lang === "ar" ? c.name_ar : c.name_en) : slug;
+  };
 
   if (!products.length) return null;
 
@@ -38,7 +44,7 @@ export default function AssistantProductCards({ products }: Props) {
                 <bdi>{p.title_ar}</bdi>
               </Link>
               <p className="text-xs text-ink-soft">
-                {p.brand} · {p.category_slug}
+                {p.brand} · {categoryName(p.category_slug)}
               </p>
               {rating !== null && (
                 <p className="text-xs text-ink-soft">
