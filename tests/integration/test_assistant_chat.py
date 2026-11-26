@@ -211,3 +211,58 @@ def test_orders_table_untouched_by_a_visitor(session):
     llm = FakeLLM(say("أهلا"))
     chat(make_client(session, llm), "عايز موبايل")
     assert session.scalar(select(Order.id).limit(1)) == before
+
+
+def test_a_stale_yes_gets_a_fixed_reply_and_never_calls_the_model(session, customer_order):
+    user, order = customer_order
+    t0 = datetime(2026, 11, 4, 12, 0, tzinfo=UTC)
+    llm = FakeLLM(call("cancel_order", {"order_id": order.id}), say("؟"))
+    first = handle_chat(session, llm, user, f"ألغي طلب {order.id}", now=t0)
+    late = handle_chat(
+        session, llm, user, "أيوه", first.conversation_id, now=t0 + timedelta(minutes=11)
+    )
+    assert "مفيش حاجة مستنية تأكيدك" in late.reply
+    assert late.agent == "order_actions"
+    assert len(llm.sent) == 2  # the late yes did not reach the model
+    session.refresh(order)
+    assert order.status == "pending"
+
+
+@pytest.fixture
+def small_limit(monkeypatch):
+    from ai_commerce_marketplace.api.rate_limit import assistant_limiter
+    from ai_commerce_marketplace.core.config import settings
+
+    monkeypatch.setattr(settings, "assistant_rate_limit_per_minute", 2)
+    assistant_limiter.reset()
+    yield
+    assistant_limiter.reset()
+
+
+def test_the_third_message_in_a_minute_gets_429_with_a_clear_code(session, small_limit):
+    client = make_client(session, FakeLLM(say("1"), say("2"), say("3")))
+    assert chat(client, "عايز موبايل").status_code == 200
+    assert chat(client, "عايز لابتوب").status_code == 200
+    r = chat(client, "عايز سماعة")
+    assert r.status_code == 429
+    assert r.json()["code"] == "rate_limited"
+
+
+def test_the_limit_is_per_user_not_global(session, small_limit, customer_order):
+    user, _ = customer_order
+    client = make_client(session, FakeLLM(*[say("ok")] * 6))
+    for _ in range(2):
+        assert chat(client, "عايز موبايل").status_code == 200
+    assert chat(client, "عايز موبايل").status_code == 429
+    assert chat(client, "عايز موبايل", user).status_code == 200  # another caller, own window
+
+
+def test_limiter_window_slides():
+    from ai_commerce_marketplace.api.rate_limit import RateLimitedError, SlidingWindowLimiter
+
+    lim = SlidingWindowLimiter(window_s=60)
+    lim.check("k", 1, now=0)
+    with pytest.raises(RateLimitedError):
+        lim.check("k", 1, now=30)
+    lim.check("k", 1, now=61)  # the old hit left the window
+    lim.check("k", 0, now=62)  # 0 disables
