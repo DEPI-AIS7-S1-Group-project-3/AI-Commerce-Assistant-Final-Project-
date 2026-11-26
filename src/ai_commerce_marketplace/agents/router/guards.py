@@ -19,6 +19,9 @@ from ai_commerce_marketplace.nlp.arabic import normalize_ar
 MAX_MESSAGE_CHARS = 2000
 
 LEAK_REPLACEMENT = "حصلت مشكلة مؤقتة وأنا بجاوب. ممكن تعيد سؤالك؟"
+NO_PENDING_REPLY = (
+    "مفيش حاجة مستنية تأكيدك دلوقتي. لو عايز تلغي أو ترجّع طلب، قول لي رقم الطلب وأنا أبدأ من الأول."
+)
 NO_ACTION_REPLACEMENT = "لسه ما اتعملش أي تغيير على طلبك. لو عايز تلغيه أو ترجّعه قولّي رقم الطلب."
 
 _INTERNAL = re.compile(
