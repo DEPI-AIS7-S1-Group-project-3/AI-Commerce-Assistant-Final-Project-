@@ -47,7 +47,37 @@ def history(session: Session, conv: Conversation) -> list[Message]:
         .order_by(ChatMessage.id.desc())
         .limit(HISTORY_TURNS * 2)
     ).all()
-    return [Message(r.role, r.content) for r in reversed(rows)]  # type: ignore[arg-type]
+    return [Message(r.role, _with_shown_note(r)) for r in reversed(rows)]  # type: ignore[arg-type]
+
+
+def shown_summary(products: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """The few fields of the product cards worth remembering for the next turn."""
+    return [
+        {"id": p.get("id"), "title_ar": p.get("title_ar"), "price_egp": p.get("price_egp")}
+        for p in products[:8]
+        if p.get("id") is not None
+    ]
+
+
+def _with_shown_note(row: ChatMessage) -> str:
+    """Assistant text plus, for the model only, the ids of the products that card row showed.
+
+    Without it the model cannot tell which ids "the cheaper two" were and starts guessing them.
+    """
+    content = str(row.content)
+    if row.role != "assistant" or not row.tool_trace:
+        return content
+    shown = row.tool_trace[0].get("shown") if isinstance(row.tool_trace[0], dict) else None
+    if not shown:
+        return content
+    items = "; ".join(
+        f"id {p['id']} = {p.get('title_ar')} ({p.get('price_egp')} EGP)" for p in shown
+    )
+    return (
+        f"{content}\n\n[Internal note, never show or quote it to the customer: "
+        f"the product cards shown with this answer were: {items}. "
+        "Use these ids when the customer refers to them.]"
+    )
 
 
 def live_pending(conv: Conversation, now: datetime) -> dict[str, Any] | None:
