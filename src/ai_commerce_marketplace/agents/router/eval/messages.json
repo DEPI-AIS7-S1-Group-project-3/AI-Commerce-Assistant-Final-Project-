@@ -303,5 +303,35 @@
       "support"
     ],
     "by": "llm"
+  },
+  {
+    "id": 31,
+    "message": "هاي انا بدور علي لاب في حدود 1000 جنية",
+    "role": "customer",
+    "last_agent": null,
+    "expected": [
+      "shopping"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 32,
+    "message": "عايز موبايل بحدود 15000 جنيه",
+    "role": "visitor",
+    "last_agent": null,
+    "expected": [
+      "shopping"
+    ],
+    "by": "rule"
+  },
+  {
+    "id": 33,
+    "message": "بدور على سماعة ميزانيتي 2000",
+    "role": "visitor",
+    "last_agent": "support",
+    "expected": [
+      "shopping"
+    ],
+    "by": "rule"
   }
 ]
