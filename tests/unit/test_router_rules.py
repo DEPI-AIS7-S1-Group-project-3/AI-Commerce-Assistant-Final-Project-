@@ -146,3 +146,22 @@ def test_todays_date_is_not_an_unsupported_number():
     assert report.unsupported_numbers == []
     _, report = check("النهارده 27 نوفمبر.")
     assert report.unsupported_numbers == [27]
+
+
+@pytest.mark.parametrize(
+    "message",
+    [
+        "هاي انا بدور علي لاب في حدود 1000 جنية",
+        "عايز موبايل بحدود 15000 جنيه",
+        "بدور على سماعة ميزانيتي 2000",
+        "عايز لابتوب ميزانيتي 40 الف",
+    ],
+)
+def test_an_amount_of_money_is_not_an_order_number(message):
+    assert route(message, "customer", None).agent == "shopping"
+
+
+def test_a_real_order_number_still_goes_to_the_order_flows():
+    assert route("ألغي طلب 10002", "customer", None).agent == "order_actions"
+    assert route("طلب 10105 وصل فين؟", "customer", None).agent == "support"
+    assert route("الشحن بكام 60 جنيه؟", "visitor", None).agent == "support"
