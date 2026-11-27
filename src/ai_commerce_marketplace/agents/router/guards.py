@@ -34,6 +34,10 @@ _CLAIM = re.compile(
     re.I,
 )
 _IDENTIFIER = re.compile(r"\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b")
+# "(out_for_delivery)" or "(days_late = 2)": a code the model pasted next to its Arabic wording
+_BRACKETED_CODE = re.compile(
+    r"[ \t]*[(\[（]\s*[a-z][a-z0-9]*(?:_[a-z0-9]+)+(?:\s*[=:][^)\]）\n]*)?\s*[)\]）]"
+)
 _NUMBER = re.compile(r"\d[\d,]*(?:\.\d+)?")
 _JAILBREAK = re.compile(
     r"ignore (?:all |your |previous )|reveal your prompt|system prompt|"
@@ -79,6 +83,7 @@ def check_reply(
     user_message: str,
     tool_names: set[str],
     action_done: bool,
+    allowed_numbers: frozenset[int] = frozenset(),
 ) -> tuple[str, GuardReport]:
     report = GuardReport()
     if _INTERNAL.search(reply) or any(re.search(rf"\b{re.escape(n)}\b", reply) for n in tool_names):
@@ -88,8 +93,9 @@ def check_reply(
         report.false_action_claim = True
         return NO_ACTION_REPLACEMENT, report
 
-    report.internal_terms = sorted(set(_IDENTIFIER.findall(reply)))
-    known = _ints(user_message)
+    reply = _BRACKETED_CODE.sub("", reply)  # the Arabic wording stays, the code goes
+    report.internal_terms = sorted(set(_IDENTIFIER.findall(reply)))  # whatever is left: flagged
+    known = _ints(user_message) | set(allowed_numbers)
     for _, result in tool_results:
         known |= _ints(json.dumps(result, ensure_ascii=False, default=str))
     report.unsupported_numbers = sorted(n for n in _ints(reply) if n >= 10 and n not in known)

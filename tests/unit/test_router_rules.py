@@ -122,3 +122,27 @@ def test_snake_case_words_are_flagged_not_blocked():
     assert report.internal_terms == ["warranty_months"]
     assert not report.changed and "الضمان" in reply
     assert check("مدة الضمان 12 شهر")[1].internal_terms == []
+
+
+def test_codes_in_brackets_are_stripped_but_the_arabic_wording_stays():
+    reply, report = check(
+        "الطلب حالته **خرج للتوصيل** (out_for_delivery)، متأخر يومين (days_late = 2)."
+    )
+    assert reply == "الطلب حالته **خرج للتوصيل**، متأخر يومين."
+    assert report.internal_terms == []  # nothing left to flag
+    assert not report.changed  # a clean-up, not a replacement: cards and confirmations stay
+
+
+def test_a_bare_code_is_still_flagged_not_silently_rewritten():
+    reply, report = check("السبب: changed_mind")
+    assert reply == "السبب: changed_mind"
+    assert report.internal_terms == ["changed_mind"]
+
+
+def test_todays_date_is_not_an_unsupported_number():
+    reply, report = guards.check_reply(
+        "النهارده 27 نوفمبر 2026.", [], "", TOOLS, False, frozenset({27, 11, 2026})
+    )
+    assert report.unsupported_numbers == []
+    _, report = check("النهارده 27 نوفمبر.")
+    assert report.unsupported_numbers == [27]
