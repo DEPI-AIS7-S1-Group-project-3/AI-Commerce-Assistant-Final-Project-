@@ -97,6 +97,28 @@ def test_tool_round_trip():
     assert [m.role for m in r.new_messages] == ["assistant", "tool", "assistant"]
 
 
+def test_null_arguments_are_dropped_before_the_tool_runs():
+    seen = []
+
+    def opt(ctx, order_id: int, section_no: int | None = None):
+        """Optional arg.
+
+        Args:
+            order_id: The order number.
+            section_no: Optional section.
+        """
+        seen.append(section_no)
+        return {"ok": True}
+
+    reg = {"opt": {"fn": opt, "description": "d", "params": ["order_id", "section_no"]}}
+    agent = AgentSpec(
+        "demo", reg, lambda ctx, n, a: common_call_tool(reg, ctx, n, a), lambda today: "S"
+    )
+    llm = FakeLLM(call("opt", {"order_id": 1, "section_no": None}), say("تمام"))
+    r = run_agent(llm, agent, Ctx(), "x")
+    assert seen == [None] and r.trace[0].ok  # null did not reach the tool as a bad value
+
+
 def test_parallel_tool_calls_all_run_and_all_answer():
     calls = (ToolCall("a", "order_get", {"order_id": 1}), ToolCall("b", "ping", {}))
     first = LLMResponse("", calls, "tool_calls", Usage(), "gemini", "m")

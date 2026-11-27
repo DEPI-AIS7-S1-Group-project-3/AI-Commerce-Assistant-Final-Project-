@@ -5,7 +5,7 @@ DEV_JWT_SECRET = "dev-only-change-me-not-for-production-use"
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     database_url: str
     jwt_secret: str = DEV_JWT_SECRET

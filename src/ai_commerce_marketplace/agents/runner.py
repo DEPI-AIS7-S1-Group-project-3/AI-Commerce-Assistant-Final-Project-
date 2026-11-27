@@ -133,7 +133,9 @@ def run_agent(
         messages.append(Message("assistant", last.text, last.tool_calls))
         for call in last.tool_calls:
             began = time.monotonic()
-            result = agent.call_tool(ctx, call.name, call.arguments)
+            # Some models send null for an optional argument: treat it as "not given".
+            args = {k: v for k, v in call.arguments.items() if v is not None}
+            result = agent.call_tool(ctx, call.name, args)
             trace.append(
                 ToolTrace(
                     tool=call.name,
