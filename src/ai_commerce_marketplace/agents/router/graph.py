@@ -222,7 +222,8 @@ def build_graph(session: Session, llm: LLMClient, user: User | None, now: dateti
             state["message"],
             state["reply"] or "",
             state["agent"],
-            [state["trace"]],
+            # `shown` lets the next turn resolve "the second one" / "compare them" to real ids
+            [{**state["trace"], "shown": store.shown_summary(state.get("products") or [])}],
         )
         return {}
 
