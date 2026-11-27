@@ -19,6 +19,7 @@ from dataclasses import dataclass
 
 from sqlalchemy import select
 
+from ai_commerce_marketplace.agents.router.cards import short_name
 from ai_commerce_marketplace.agents.router.graph import handle_chat
 from ai_commerce_marketplace.database.models.order import Order
 from ai_commerce_marketplace.database.models.user import User
@@ -212,6 +213,13 @@ def main() -> int:
                     problems.append(f"agent {r.agent}, expected {'/'.join(st.agents)}")
                 if st.products and not r.products:
                     problems.append("no product cards")
+                stray = [
+                    short_name(p)
+                    for p in r.products
+                    if short_name(p).casefold() not in r.reply.casefold()
+                ]
+                if stray:
+                    problems.append(f"cards the reply never mentions: {stray}")
                 if st.confirm is True and r.needs_confirmation is None:
                     problems.append("no confirmation asked")
                 if st.confirm is False and r.needs_confirmation is not None:
