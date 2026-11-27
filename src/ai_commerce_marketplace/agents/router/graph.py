@@ -20,7 +20,7 @@ from sqlalchemy.orm import Session
 from ai_commerce_marketplace.agents import runner
 from ai_commerce_marketplace.agents.catalog import AGENTS
 from ai_commerce_marketplace.agents.order_actions import tools as oa_tools
-from ai_commerce_marketplace.agents.router import guards, store
+from ai_commerce_marketplace.agents.router import cards, guards, store
 from ai_commerce_marketplace.agents.router.classify import classify
 from ai_commerce_marketplace.agents.router.confirm import is_yes
 from ai_commerce_marketplace.agents.router.rules import Agent, Role, route
@@ -209,6 +209,10 @@ def build_graph(session: Session, llm: LLMClient, user: User | None, now: dateti
             },
         }
         update: State = {"reply": reply, "trace": trace}
+        # Cards = the products the final reply talks about, not just the last search result
+        update["products"] = cards.pick_cards(
+            reply, state.get("tool_results", []), CARD_TOOLS, state.get("products") or []
+        )
         if report.changed:
             update["products"] = []
             update["needs_confirmation"] = None
