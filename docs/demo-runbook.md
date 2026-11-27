@@ -22,8 +22,8 @@ Copy `.env.example` to `.env` in the project root and fill it:
 |---|---|
 | `DATABASE_URL` | already right if your database is `ai_commerce` with user `app` |
 | `CORS_ORIGINS` | keep both `localhost:5173` and `127.0.0.1:5173` |
-| `LLM_PROVIDERS` | `gemini,groq` (first = primary, the rest = fallback when it fails or hits a limit) |
-| `GEMINI_API_KEY`, `GROQ_API_KEY` | put **both**: the free Gemini tier hits 429 often, Groq then answers |
+| `LLM_PROVIDERS` | first = primary, the rest = fallbacks. Recommended: `gemini,groq,openrouter=nvidia/nemotron-3.5-super-vl:free,openrouter=nvidia/nemotron-3-ultra-550b-a55b:free` |
+| `GEMINI_API_KEY`, `GROQ_API_KEY`, `OPENROUTER_API_KEY` | put **all three**: the free Gemini tier runs out of daily quota, Groq allows only 8000 tokens a minute, OpenRouter's free models catch the rest |
 | `ASSISTANT_DEBUG_TRACE` | `false` for the demo |
 
 Copy `frontend/.env.example` to `frontend/.env` and set:
@@ -35,6 +35,15 @@ VITE_API_URL=http://localhost:8000
 
 `VITE_USE_MOCK=false` is what connects the site to the real API. With `true` you get fake data and the
 assistant is not real.
+
+### Check the models first (1 minute)
+
+```powershell
+uv run python -m scripts.llm_probe
+```
+
+It sends one real tool-calling request to every entry in `LLM_PROVIDERS` and prints `OK`, `FAIL`,
+`WEAK` or `NOTOOL`. Keep only the `OK` ones: a model that cannot call tools cannot run the agents.
 
 ## 1. Before every demo or rehearsal: reset the data
 

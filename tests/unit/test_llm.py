@@ -589,3 +589,55 @@ def test_factory_applies_the_thinking_setting_to_gemini_only():
     )
     assert chain.clients[0].thinking_level == "low"
     assert not hasattr(chain.clients[1], "thinking_level")
+
+
+# ---- "name=model" entries: one provider, several models ----
+def test_provider_entries_can_pin_a_model_and_repeat_a_provider():
+    value = "gemini, groq ,openrouter=a/b:free,openrouter=c/d:free,openrouter=a/b:free"
+    assert parse_provider_list(value) == [
+        "gemini",
+        "groq",
+        "openrouter=a/b:free",
+        "openrouter=c/d:free",
+    ]
+    with pytest.raises(ValueError, match="llama"):
+        parse_provider_list("gemini,llama=x")
+
+
+def test_pinned_models_become_separate_fallbacks_with_readable_names():
+    keys = {"gemini": "k", "openrouter": "k"}
+    chain = build_llm_client(
+        ["gemini", "openrouter=a/b:free", "openrouter=c/d:free", "openrouter"], keys
+    )
+    assert [c.name for c in chain.clients] == [
+        "gemini",
+        "openrouter:a/b:free",
+        "openrouter:c/d:free",
+        "openrouter",
+    ]
+    assert [c.model for c in chain.clients[1:3]] == ["a/b:free", "c/d:free"]
+
+
+# ---- cooldown: a provider that just failed with 429/503 is skipped for a while ----
+def test_a_rate_limited_provider_rests_so_the_next_call_skips_it():
+    now = [0.0]
+    a = Stub("gemini", error=RateLimitError("quota"))
+    b = Stub("groq")
+    chain = FallbackClient([a, b], clock=lambda: now[0])
+    chain.chat(HISTORY)
+    chain.chat(HISTORY)
+    assert (a.calls, b.calls) == (1, 2)  # second call did not bother the resting provider
+    now[0] = 25.0
+    chain.chat(HISTORY)
+    assert a.calls == 2  # rested long enough, tried again
+
+
+def test_when_every_provider_is_resting_they_are_all_tried_anyway():
+    a = Stub("gemini", error=RateLimitError("quota"))
+    b = Stub("groq", error=ProviderUnavailable("down"))
+    chain = FallbackClient([a, b], clock=lambda: 0.0)
+    with pytest.raises(AllProvidersFailed):
+        chain.chat(HISTORY)
+    with pytest.raises(AllProvidersFailed):
+        chain.chat(HISTORY)
+    assert (a.calls, b.calls) == (2, 2)
