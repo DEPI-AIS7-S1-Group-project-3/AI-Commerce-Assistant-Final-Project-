@@ -266,3 +266,23 @@ def test_limiter_window_slides():
         lim.check("k", 1, now=30)
     lim.check("k", 1, now=61)  # the old hit left the window
     lim.check("k", 0, now=62)  # 0 disables
+
+
+def test_the_next_turn_knows_which_products_were_shown(session):
+    f.make_product(session, title_ar="لابتوب تجريبي أول")
+    f.make_product(session, title_ar="لابتوب تجريبي ثاني")
+    llm = FakeLLM(
+        call("search_products", {"limit": 3}),
+        say("دول الترشيحات"),
+        say("تمام"),
+    )
+    client = make_client(session, llm)
+    first = chat(client, "عايز لابتوب").json()
+    assert first["products"], "the first answer must carry cards"
+    chat(client, "قارن لي بين أرخص اتنين", conversation_id=first["conversation_id"])
+    history_text = " ".join(m.content for m in llm.sent[-1][0])
+    for p in first["products"]:
+        assert f"id {p['id']} =" in history_text
+    assert "never show or quote" in history_text
+    # and the note is for the model only: the stored reply the user sees is untouched
+    assert "Internal note" not in first["reply"]

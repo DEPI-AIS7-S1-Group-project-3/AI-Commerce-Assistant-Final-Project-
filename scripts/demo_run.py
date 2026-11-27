@@ -35,6 +35,7 @@ class Step:
     products: bool | None = None  # True = must return cards
     confirm: bool | None = None  # True = must ask to confirm, False = must not
     new_chat: bool = False  # start a new conversation for this actor
+    needs_tool: str | None = None  # a tool name prefix that must have been called
 
 
 SCENES: list[tuple[str, list[Step]]] = [
@@ -191,7 +192,17 @@ def main() -> int:
                 n += 1
                 if st.new_chat:
                     convs[st.actor] = None
-                r = handle_chat(s, llm, users[st.actor], st.message, convs.get(st.actor))
+                try:
+                    r = handle_chat(s, llm, users[st.actor], st.message, convs.get(st.actor))
+                except LLMError as e:  # one bad provider day must not stop the whole run
+                    s.rollback()
+                    print(f"\n[{n:02d}] {st.actor.upper()}: {st.message}")
+                    print(f"     FAIL: LLM error ({e.code}): {str(e)[:160]}")
+                    results.append((f"{n:02d} {st.message}", False))
+                    md.append(f"**{st.actor}:** {st.message}  \n> LLM error ({e.code})\n")
+                    if args.pause:
+                        time.sleep(args.pause)
+                    continue
                 convs[st.actor] = r.conversation_id
                 s.commit()  # like the API: each answer is saved on its own
 
@@ -205,6 +216,9 @@ def main() -> int:
                     problems.append("no confirmation asked")
                 if st.confirm is False and r.needs_confirmation is not None:
                     problems.append("asked for confirmation when it must not")
+                called = [t["tool"] for t in r.trace.get("tools", [])]
+                if st.needs_tool and not any(c.startswith(st.needs_tool) for c in called):
+                    problems.append(f"answered without calling a {st.needs_tool}* tool")
                 if guard.get("leaked") or guard.get("internal_terms"):
                     problems.append(f"guard flagged: {guard}")
                 ok = not problems
