@@ -175,6 +175,14 @@ def test_http_errors_map_to_our_errors(status, error):
         openai_client(reply({"error": "x"}, status)).chat(HISTORY)
 
 
+def test_a_malformed_tool_call_from_the_model_is_not_our_bug():
+    """Groq answers 400 tool_use_failed when the model sends null for an integer: fall back."""
+    body = {"error": {"code": "tool_use_failed", "message": "Tool call validation failed"}}
+    with pytest.raises(BadResponseError) as e:
+        openai_client(reply(body, 400)).chat(HISTORY)
+    assert e.value.fallback_ok
+
+
 def test_timeout_and_network_errors_are_unavailable():
     def timeout(request):
         raise httpx.ReadTimeout("slow")
