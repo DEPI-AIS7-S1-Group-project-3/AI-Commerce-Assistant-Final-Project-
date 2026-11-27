@@ -88,6 +88,13 @@ _SHOPPING = (
     "عاوز",
     "ابحث",
     "دور",
+    "بدور",
+    "هدور",
+    "ادور",
+    "دورلي",
+    "لاب",
+    "لابات",
+    "ميزانيت",
     "ارخص",
     "اغلي",
     "احسن",
@@ -105,6 +112,7 @@ _SHOPPING = (
     "ماركه",
     "منتج",
     "سعر",
+    "جنيه",
     "بكام",
     "تقييم",
     "تقييمات",
@@ -123,6 +131,10 @@ _SHOPPING = (
 _POLICY = ("سياسه", "شروط", "ينفع", "ممكن", "policy", "مده", "ازاي", "امتي", "كام يوم")
 
 _ORDER_NUMBER = re.compile(r"\b\d{4,}\b")
+# "1000 جنيه", "في حدود 15000", "ميزانيتي 40 الف": money, not an order number
+_MONEY = re.compile(
+    r"\d[\d,]*\s*(?:جنيه|جم|egp|الف|k)\b|(?:حدود|ميزانيت\w*|تحت|فوق|بسعر|اقل من|اكتر من)\s*\d[\d,]*"
+)
 _YES_NO_ONLY = re.compile(r"^\W*(لا|لاء|no)\W*$")
 
 
@@ -138,11 +150,13 @@ def _words(text: str) -> list[str]:
 
 
 _PREFIXES = ("وال", "بال", "لل", "ال")
-_WEAK_SHOPPING = {"بكام", "سعر", "تقييم", "تقييمات"}
+_WEAK_SHOPPING = {"بكام", "سعر", "تقييم", "تقييمات", "جنيه"}
 # Product names say what the question is about, not what the customer wants to do.
 _NOUNS = {
     "موبايل",
     "لابتوب",
+    "لاب",
+    "لابات",
     "سماعه",
     "تلفزيون",
     "غساله",
@@ -189,7 +203,7 @@ def route(message: str, role: Role, last_agent: Agent | None = None) -> Decision
 
     text = normalize_ar(message)
     tokens = _tokens(text)
-    has_number = bool(_ORDER_NUMBER.search(text))
+    has_number = bool(_ORDER_NUMBER.search(_MONEY.sub(" ", text)))
 
     action = _hit(text, tokens, _ACTION)
     support = _hit(text, tokens, _SUPPORT)
