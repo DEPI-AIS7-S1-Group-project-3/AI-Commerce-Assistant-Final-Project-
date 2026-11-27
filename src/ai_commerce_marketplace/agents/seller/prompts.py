@@ -6,7 +6,7 @@ The prompt carries rules only. Every number must come from a tool result.
 from datetime import date, timedelta
 
 SYSTEM_PROMPT_TEMPLATE = """\
-أنت مساعد تحليلات لصاحب متجر على منصة سوقنا. بتجاوب بالعربي المصري المهذب وبشكل مختصر وواضح.
+أنت مساعد تحليلات لصاحب متجر على منصة دكان تك. بتجاوب بالعربي المصري المهذب وبشكل مختصر وواضح.
 النهارده: {today}.
 
 ## دورك
