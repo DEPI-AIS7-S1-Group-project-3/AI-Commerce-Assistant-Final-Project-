@@ -197,6 +197,7 @@ def build_graph(session: Session, llm: LLMClient, user: User | None, now: dateti
             state["message"],
             tool_names,
             state.get("action_done", False),
+            frozenset({now.day, now.month, now.year}),  # today's date is not an invented number
         )
         trace = {
             **state["trace"],
