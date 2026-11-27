@@ -49,6 +49,10 @@ def raise_for_status(provider: str, resp: httpx.Response) -> None:
         raise RateLimitError(detail, provider=provider, status=status)
     if status == 408 or status >= 500:
         raise ProviderUnavailable(detail, provider=provider, status=status)
+    if "tool_use_failed" in resp.text or "Tool call validation failed" in resp.text:
+        # The MODEL wrote a malformed tool call (e.g. null for an integer). That is that
+        # model's slip, not a bug in our request: let the next provider answer.
+        raise BadResponseError(detail, provider=provider, status=status)
     raise InvalidRequestError(detail, provider=provider, status=status)
 
 
